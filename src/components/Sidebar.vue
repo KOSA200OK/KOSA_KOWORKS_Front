@@ -22,19 +22,39 @@
         <div class="menu">
             <router-link class="button" to="/">
                 <span class="material-icons">home</span>
-                <span class="text">Home</span>
+                <span class="text">메인</span>
             </router-link>
-            <router-link class="button" to="/about">
-                <span class="material-icons">visibility</span>
-                <span class="text">About</span>
+            <router-link class="button" to="/attendancelist">
+                <span class="material-icons">check_circle</span>
+                <span class="text">근태관리</span>
             </router-link>
-            <router-link class="button" to="/about">
+            <router-link class="button" to="/address">
                 <span class="material-icons">group</span>
-                <span class="text">Team</span>
+                <span class="text">주소록</span>
             </router-link>
-            <router-link class="button" to="/about">
-                <span class="material-icons">email</span>
-                <span class="text">Contact</span>
+            <router-link class="button" to="/chat/list">
+                <span class="material-icons">chat</span>
+                <span class="text">채팅</span>
+            </router-link>
+            <router-link class="button" to="/calendar/list">
+                <span class="material-icons">calendar_month</span>
+                <span class="text">일정</span>
+            </router-link>
+            <router-link class="button" to="/meetingroom">
+                <span class="material-icons">meeting_room</span>
+                <span class="text">회의실 예약</span>
+            </router-link>
+            <router-link class="button" to="/carrent/carlist">
+                <span class="material-icons">no_crash</span>
+                <span class="text">차량 예약</span>
+            </router-link>
+            <router-link class="button" to="/stuff/request">
+                <span class="material-icons">add_box</span>
+                <span class="text">비품 요청</span>
+            </router-link>
+            <router-link class="button" to="/stuff/requestmanage/">
+                <span class="material-icons">shelves</span>
+                <span class="text">비품 요청 관리</span>
             </router-link>
         </div>
 
