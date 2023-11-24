@@ -24,7 +24,8 @@ export default {
       try {
         const data = { memberId: memberId.value, password: password.value };
         const res = await axios.post(`http://localhost:8880/login`, data);
-        console.log(res.data);
+        console.log(res.data.memberId);
+        console.log(res.data.password);
       } catch (error) {
         console.error(error);
       }
