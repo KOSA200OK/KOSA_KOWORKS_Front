@@ -1,13 +1,6 @@
 <template>
-    <div>
-        <h3>메인홈입니다</h3>
-    </div>
-</template>
-<script>
-export default {
-    
-}
-</script>
-<style>
-    
-</style>
+    <main class="home-page">
+      <h1>Home</h1>
+      <p>This is the home page</p>
+    </main>
+  </template>
