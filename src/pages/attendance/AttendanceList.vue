@@ -4,9 +4,10 @@
          
          v-for="a in attendanceList"
          :key="a.id"/> -->
+         <!-- {{ pageGroup }} -->
         <AttendanceItem :a="a"
             v-if="pageGroup"
-            v-for="a in attendanceList.list"
+            v-for="a in pageGroup"
             :key="a.id"/>
         <PageGroup
             v-if="pageGroup" :pg="pageGroup" 
@@ -20,7 +21,7 @@
 </template>
 <script>
 import AttendanceItem from './AttendanceItem.vue'
-import PageGroup from './PageGroup.vue'
+import PageGroup from '@/components/PageGroup.vue'
 import axios from 'axios'
 export default {
     name: 'AttendanceList',
@@ -29,8 +30,9 @@ export default {
     data() {
         return {
             // pageTitle: '근태내역',
+            currentPage: 1,
             pageGroup: null, // 페이지 그룹 초기화
-            attendanceList:[]
+            // attendanceList:[]
         }
     },
     methods: {

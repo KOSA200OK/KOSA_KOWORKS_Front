@@ -16,9 +16,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ a.department.name }}</td>
-                    <td>{{ a.name }}</td>
-                    <td>{{ a.position }}</td>
+                    <td>{{ a.memberId.department.name }}</td>
+                    <td>{{ a.memberId.name }}</td>
+                    <td>{{ a.memberId.position }}</td>
                     <td>{{ a.attendanceDate }}</td>
                     <td>{{ a.startTime }}</td>
                     <td>{{ a.endTime }}</td>
