@@ -50,7 +50,7 @@ export default {
     },
     created(){
         if(this.currentPage <= this.totalPage){
-            this.start = (this.currentPage -1 ) / 5 * 5+1
+            this.start = (this.currentPage) / 5 * 5+1
             this.end = this.start + 5 - 1
 
             if(this.end>this.totalPage){
