@@ -1,39 +1,45 @@
 <template>
   <div>
-    <h2>로그인</h2>
-    <form @submit.prevent="login">
-      <label for="username">사원번호:</label>
-      <input type="text" id="memberId" v-model="memberId" required />
+    <h2 v-if="!isLoggedIn">Login</h2>
+    <form v-if="!isLoggedIn" @submit.prevent="login">
+      <label for="id">사원번호: </label>
+      <input v-model="id" type="text" id="id" required />
 
-      <label for="password">비밀번호:</label>
-      <input type="password" id="password" v-model="password" required />
+      <label for="password">비밀번호: </label>
+      <input v-model="password" type="password" id="password" required />
 
-      <button type="submit">로그인</button>
+      <button type="submit">Login</button>
     </form>
+
+    <router-view v-if="isLoggedIn"></router-view>
   </div>
 </template>
+
 <script>
 import axios from "axios";
-import { ref } from "vue";
 
 export default {
-  setup() {
-    const memberId = ref("");
-    const password = ref("");
-    const login = async () => {
-      try {
-        const data = { memberId: memberId.value, password: password.value };
-        const res = await axios.post(`http://localhost:8880/login`, data);
-        console.log(res.data.memberId);
-        console.log(res.data.password);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  data() {
     return {
-      login,
+      id: "",
+      password: "",
+      isLoggedIn: false,
     };
+  },
+  methods: {
+    async login() {
+      try {
+        const response = await axios.post("http://localhost:8880/login", {
+          id: this.id,
+          password: this.password,
+        });
+        this.isLoggedIn = true;
+        this.$router.push("/home");
+        this.$data.user = response.data;
+      } catch (error) {
+        console.error("Login failed:", error);
+      }
+    },
   },
 };
 </script>
-<style></style>

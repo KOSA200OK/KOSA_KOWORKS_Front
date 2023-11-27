@@ -1,13 +1,12 @@
 <template>
   <div>
-    <h3>메인홈입니다</h3>
+    <Sidebar />
   </div>
-  <Login />
 </template>
 <script>
-import Login from "./Login.vue";
+import Sidebar from "../components/Sidebar.vue";
 export default {
-  components: { Login },
+  components: { Sidebar },
 };
 </script>
 <style></style>
