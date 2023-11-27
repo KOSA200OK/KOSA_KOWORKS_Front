@@ -1,6 +1,12 @@
 <template>
-    <main class="home-page">
-      <h1>Home</h1>
-      <p>This is the home page</p>
-    </main>
-  </template>
+  <div>
+    <Sidebar />
+  </div>
+</template>
+<script>
+import Sidebar from "../components/Sidebar.vue";
+export default {
+  components: { Sidebar },
+};
+</script>
+<style></style>
