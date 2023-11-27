@@ -14,7 +14,17 @@
                     <th>상태</th>
                 </tr>
             </thead>
-            <tbody/>
+            <tbody>
+                <tr>
+                    <td>{{ a.department.name }}</td>
+                    <td>{{ a.name }}</td>
+                    <td>{{ a.position }}</td>
+                    <td>{{ a.attendanceDate }}</td>
+                    <td>{{ a.startTime }}</td>
+                    <td>{{ a.endTime }}</td>
+                    <td>{{ a.status === 1 ? '퇴근' : '' }}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </template>
