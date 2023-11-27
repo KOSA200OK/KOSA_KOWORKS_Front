@@ -1,11 +1,12 @@
 <template>
   <div class="app">
+    <Sidebar />
     <Login />
-    <router-view />
   </div>
 </template>
 <script setup>
 import Login from "./pages/Login.vue";
+import Sidebar from "./components/Sidebar.vue";
 </script>
 <style lang="scss">
 :root {
