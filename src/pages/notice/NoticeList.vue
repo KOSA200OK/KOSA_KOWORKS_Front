@@ -15,7 +15,8 @@
                     :n="n"
                     v-if="noticelist"
                     v-for="n in noticelist.content" 
-                    v-bind:key="n.id"/>
+                    v-bind:key="n.id"
+                    @click="clickNoticeInfo(`${n.id}`)"/>
             </tbody>
             
             <PageGroup 
@@ -54,6 +55,14 @@ export default {
             })
         },
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
+
+        //----리스트 중 한 항목 클릭되었을 때 할 일 START----
+        clickNoticeInfo(id) {
+            this.id = id;
+            this.$router.push({path: `./${id}`})
+        },
+        //----리스트 중 한 항목 클릭되었을 때 할 일 END----
+
     },
     watch: {
         //----라우터값이 변경되었을 때 할 일 START----
@@ -80,52 +89,58 @@ export default {
 </script>
 <style scoped>
 table {
-    width: 800px;
-    height: 30rem;
-    margin-left: 200px;
-    margin-right: auto;
-    margin-top: 100px;
-    clear:both;
+  border-collapse: collapse;
+  width: 1000px;
 
-    /* border-top: 1px solid #0dffbf; */
-    border-collapse: collapse;
-    color: white;
+  margin-left: 200px;
+  margin-right: auto;
+  margin-top: 100px;
 }
 
-thead {
-    width: 800px;
+/* 테이블 행 */
+th{
+  padding: 8px;
+  height: 80px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
 }
 
-thead > tr > th {
-    width: 100px;
-    height : 80px;
-    font-size: 20px;
-    color: #333;
+th {
+  background-color: var(--dark);
+  color: #ddd;
 }
 
-tbody {
-    width: 800px;
-    height : 80px;
-    font-size: 20px;
-    color: #333;
+/* 테이블 올렸을 때 */
+tbody tr:hover {
+  background-color: #d3d3d3;
+  opacity: 0.9;
+  cursor: pointer;
 }
 
-/* tbody > tr > td {
-    width: 500px;
-    height : 80px;
-    font-size: 20px;
-    color: #333;
-} */
-
-/* top-left border-radius
-table tr:first-child th:first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+/* 테이블 비율 */
+th:nth-child(1),
+td:nth-child(1) {
+  width: 20%;
 }
 
-top-right border-radius
-table tr:first-child th:last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-} */
+th:nth-child(2),
+td:nth-child(2) {
+  width: 40%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+  width: 20%;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+  width: 20%;
+}
+
+tr:nth-child(even) {
+  background-color: #fff6f6;
+}
+
 </style>
