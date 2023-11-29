@@ -30,12 +30,12 @@
          </div>
         <br>
         <PageGroup
-            v-if="pageGroup" :pg="pageGroup" 
+            v-if="attendanceList" 
             :path="/attendance/"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-            :totalPage="carlist.totalPages"
-            :cntPerPage="carlist.size"
-            :totalCnt="carlist.totalElements"
+            :totalPage="attendanceList.totalPages"
+            :cntPerPage="attendanceList.size"
+            :totalCnt="attendanceList.totalElements"
         />
     <!-- </div> -->
 </template>
@@ -65,11 +65,11 @@ export default {
                 this.attendanceList = response.data
 
             // 받아온 데이터를 오름차순으로 정렬합니다.
-            // this.pageGroup.sort((a, b) => {
-            //     return a.attendanceDate.localeCompare(b.attendanceDate);
-            // });
-            // 받아온 데이터를 내림차순으로 정렬합니다.
-            //     this.pageGroup.sort((a, b) => {
+            this.attendanceList.sort((a, b) => {
+                return a.attendanceDate.localeCompare(b.attendanceDate);
+            });
+            // // 받아온 데이터를 내림차순으로 정렬합니다.
+            //     this.attendanceList.sort((a, b) => {
             //     return b.attendanceDate.localeCompare(a.attendanceDate);
             // });
             })
@@ -102,10 +102,13 @@ export default {
 <style scoped>
 .title {
     text-align: center;
-    font-size: 24px;
-    color: #333; 
+    font-size: 28px;
+    color: #2c3e50;
     text-transform: uppercase;
-    margin-bottom: 10px; 
+    margin-top: 100px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
 }
 .attendance{
     font-family: 'Arial', sans-serif;
