@@ -4,7 +4,6 @@
         <router-view></router-view>
         <!-- SECTION END -->
     </section>
-    <h1>hi</h1>
 </template>
 <script>
 export default {
