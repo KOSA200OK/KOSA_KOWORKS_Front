@@ -7,18 +7,34 @@
     </tr>
     <div class="modal-wrap" v-show="modalCheck" >
         <div class="modal-container">
-            <form class="apply">
-                <label>신청자 : </label>
-                <label>부서명 : </label>
-                <label>차량번호 : {{c.carNo}}</label>
-                <label>차종 : {{c.carType}}</label>
-                <label>시작날짜 : <input type="date" id="startDate" v-model="startDate" :min="minStartDate" @input="inputHandler"/> ~ <input type="date" id="endDate" v-model="endDate" :min="minEndDate" @input="inputHandler"/></label>
-                <label>대여목적 : <input type="text" id="purpose" v-model="purpose" @input="inputHandler"/></label>
+            <form class="apply" @submit:prevent="reserveHandler">
+                <label>신청자 : </label><br><br>
+                <label>부서명 : </label><br><br>
+                <label>차량번호 : {{c.carNo}}</label><br><br>
+                <label>차종 : {{c.carType}}</label><br><br><br>
+                <label>대여기간 : </label><input type="date" 
+                                    name="startDate" 
+                                    v-model="startDate"
+                                    :min="minStartDate" 
+                                    @input="inputHandler" 
+                                    required>
+                                     ~ <input type="date" 
+                                                name="endDate" 
+                                                v-model="endDate" 
+                                                :min="minEndDate" 
+                                                @input="inputHandler" 
+                                                required><br><br><br>
+                <label>대여목적 : </label><input type="text" 
+                                        name="purpose" 
+                                        v-model="purpose" 
+                                        @input="inputHandler" 
+                                        placeholder="대여목적을 입력하세요."
+                                        required>
+                <div class="modal-btn">
+                    <button type="submit" class="ok">신청</button>
+                    <button class="cancel" @click="openModal">취소</button>
+                </div>
             </form>
-            <div class="modal-btn">
-                <button @click="openModal">닫기</button>
-                <button type=submit @click.prevent="reserveHandler">확인</button>
-            </div>
         </div>
     </div>
 </template>
@@ -29,6 +45,9 @@ export default {
     props:["c"],
     data(){
         return {
+            startDate: "",
+            endDate: "",
+            purpose: "",
             modalCheck : false,
             minStartDate: this.getCurrentDate(),
             minEndDate: this.getCurrentDate(),
@@ -73,6 +92,12 @@ export default {
         reserveHandler(){
             this.formData.startDate = this.formatToYYMMDD(new Date(this.startDate));
             this.formData.endDate = this.formatToYYMMDD(new Date(this.endDate));
+
+            if(this.formData.endDate<this.formData.startDate){
+                alert("올바른 날짜 기입이 아닙니다. 대여기간을 다시 확인하세요.")
+                return false
+            }
+
             const url = `${this.backURL}/carrent/reserve`
             const data = this.formData
             console.log(data)
@@ -80,6 +105,7 @@ export default {
             axios.post(url,data)
                 .then((Response)=>{
                     alert('성공')
+                    this.modalCheck = !this.modalCheck
                 })
                 .catch((Error)=>{
                     console.log(Error)
@@ -114,5 +140,17 @@ td{
   border-radius: 10px;
   padding: 20px;
   box-sizing: border-box;
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)
+}
+.modal-btn{
+    position: relative;
+    left: 50%;
+    margin-top : 50px;
+}
+.ok{
+    margin-right : 20px;
+}
+.cancel{
+    margin-left : 20px;
 }
 </style>
