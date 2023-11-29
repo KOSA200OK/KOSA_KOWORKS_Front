@@ -50,8 +50,12 @@
       </router-link>
       <router-link class="button" to="/carrent/carlist">
         <span class="material-icons">no_crash</span>
-        <span class="text">차량 예약</span>
+        <span class="text">차량 예약</span><br>
       </router-link>
+      <!-- <router-link class="button" to="/carrent/carlist">
+        <span class="material-icons">car_rental</span>
+        <span class="text">차량 관리</span>
+      </router-link> -->
       <router-link class="button" to="/stuff/request">
         <span class="material-icons">add_box</span>
         <span class="text">비품 요청</span>
