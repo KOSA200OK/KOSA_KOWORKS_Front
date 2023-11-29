@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <Sidebar />
-  </div>
+  <h1>홈</h1>
+  <button>출근</button>
 </template>
 <script>
 import Sidebar from "../components/Sidebar.vue";
