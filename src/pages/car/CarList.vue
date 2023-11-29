@@ -13,7 +13,7 @@
                 <CarListItem :c="c"
                             v-if="carlist"
                             v-for="c in carlist.content"
-                            :key="c.carId"/>
+                            :key="c.id"/>
             </tbody>
         </table>
         <PageGroup
@@ -37,6 +37,7 @@ export default {
         return {
             currentPage: 1,
             carlist: null,
+            modalCheck : false
         }
     },
     methods: {
@@ -50,8 +51,9 @@ export default {
             .catch((Error)=>{
                 console.log(Error)
             })
-        }
+        },
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
+
     },
     watch: {
         //----라우터값이 변경되었을 때 할 일 START----

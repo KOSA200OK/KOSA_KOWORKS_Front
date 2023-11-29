@@ -21,8 +21,8 @@
                 </thead>
                 <tbody>
                     <AttendanceItem :a="a"
-                        v-if="pageGroup"
-                        v-for="a in pageGroup"
+                        v-if="attendanceList"
+                        v-for="a in attendanceList.content"
                         :key="a.id"/>
                 </tbody>
              </table>
@@ -30,12 +30,12 @@
          </div>
         <br>
         <PageGroup
-            v-if="pageGroup" :pg="pageGroup" 
-            :path="/attendanceList/"
-            :currentPage="$route.params.currentPage?$route.params.currentPage: 1"
-            :start="pageGroup.startPage" 
-            :end="pageGroup.endPage"
-            :total="pageGroup.totalPage"
+            v-if="attendanceList" 
+            :path="/attendance/"
+            :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
+            :totalPage="attendanceList.totalPages"
+            :cntPerPage="attendanceList.size"
+            :totalCnt="attendanceList.totalElements"
         />
     <!-- </div> -->
 </template>
@@ -51,27 +51,27 @@ export default {
         return {
             // pageTitle: '근태내역',
             currentPage: 1,
-            pageGroup: null, // 페이지 그룹 초기화
+            attendanceList: null, // 페이지 그룹 초기화
             // attendanceList:[]
         }
     },
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/attendance?memberId=1`
+            const url = `${this.backURL}/attendance?memberId=1&currentPage=${this.currentPage}`
             axios.get(url)
             .then(response=>{
                 // this.attendanceList = response.data
-                this.pageGroup = response.data
+                this.attendanceList = response.data
 
             // 받아온 데이터를 오름차순으로 정렬합니다.
-            // this.pageGroup.sort((a, b) => {
-            //     return a.attendanceDate.localeCompare(b.attendanceDate);
-            // });
-            // 받아온 데이터를 내림차순으로 정렬합니다.
-                this.pageGroup.sort((a, b) => {
-                return b.attendanceDate.localeCompare(a.attendanceDate);
+            this.attendanceList.sort((a, b) => {
+                return a.attendanceDate.localeCompare(b.attendanceDate);
             });
+            // // 받아온 데이터를 내림차순으로 정렬합니다.
+            //     this.attendanceList.sort((a, b) => {
+            //     return b.attendanceDate.localeCompare(a.attendanceDate);
+            // });
             })
         }
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
@@ -79,7 +79,15 @@ export default {
     },
     watch: {
         // --- 라우터값이 변경되었을 때 할 일 START ---
-
+        $route(newRoute, oldRoute) {
+            console.log("라우터값이 변경" + newRoute.path + "," + oldRoute.path)
+            if (newRoute.params.currentPage) {
+                this.currentPage = newRoute.params.currentPage
+            } else {
+                this.currentPage = 1
+            }
+            this.axiosHandler(this.currentPage)
+        }
         // --- 라우터값이 변경되었을 때 할 일 END ---
     },
     created() {
@@ -94,10 +102,13 @@ export default {
 <style scoped>
 .title {
     text-align: center;
-    font-size: 24px;
-    color: #333; 
+    font-size: 28px;
+    color: #2c3e50;
     text-transform: uppercase;
-    margin-bottom: 10px; 
+    margin-top: 100px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
 }
 .attendance{
     font-family: 'Arial', sans-serif;
