@@ -20,7 +20,7 @@
 
     <h3>Menu</h3>
     <div class="menu">
-      <router-link class="button" to="/">
+      <router-link class="button" to="/home">
         <span class="material-icons">home</span>
         <span class="text">메인</span>
       </router-link>

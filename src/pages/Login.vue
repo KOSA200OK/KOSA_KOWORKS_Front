@@ -26,6 +26,10 @@ export default {
       isLoggedIn: false,
     };
   },
+  created() {
+    // 페이지가 로드될 때 세션 정보를 확인
+    this.checkSession();
+  },
   methods: {
     async login() {
       try {
@@ -34,10 +38,19 @@ export default {
           password: this.password,
         });
         this.isLoggedIn = true;
-        this.$router.push("/home");
+        this.$router.push("/");
         this.$data.user = response.data;
       } catch (error) {
         console.error("Login failed:", error);
+      }
+    },
+
+    async checkSession() {
+      try {
+        const response = await axios.get("http://localhost:8880/checkSession");
+        this.isLoggedIn = response.data;
+      } catch (error) {
+        console.error("Error checking session:", error);
       }
     },
   },
