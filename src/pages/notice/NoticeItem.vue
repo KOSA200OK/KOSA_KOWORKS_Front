@@ -1,12 +1,10 @@
 <template lang="">
-    <div class="notice">
-        <tr>
-            <td>{{n.id}}</td>
-            <td>{{n.title}}</td>
-            <td>{{n.regdate}}</td>
-            <td>{{n.member.name}}</td>
-        </tr>
-    </div>
+    <tr>
+        <td>{{n.id}}</td>
+        <td>{{n.title}}</td>
+        <td>{{n.regdate}}</td>
+        <td>{{n.member.name}}</td>
+    </tr>
 </template>
 <script>
 export default {
@@ -21,11 +19,13 @@ export default {
 </script>
 <style scoped>
 
-div.notice > tr > td {
-    width: 3000rem;
-    /* height : 50px; */
-    font-size: 20px;
-    color: #333;
+td {
+  width: 150rem;
+  height: 80px;
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
 }
 
 </style>
