@@ -24,9 +24,13 @@
         <span class="material-icons">home</span>
         <span class="text">메인</span>
       </router-link>
-      <router-link class="button" to="/attendancelist">
+      <router-link class="button" to="/attendance">
         <span class="material-icons">check_circle</span>
         <span class="text">근태관리</span>
+      </router-link>
+      <router-link class="button" to="/notice/noticelist">
+        <span class="material-icons">group</span>
+        <span class="text">공지사항</span>
       </router-link>
       <router-link class="button" to="/address/members">
         <span class="material-icons">group</span>

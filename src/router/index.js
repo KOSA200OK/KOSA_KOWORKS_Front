@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "@/pages/Home.vue";
-import AttendanceList from "@/pages/attendance/AttendanceItem.vue";
+import Attendance from '@/pages/attendance/AttendanceList.vue'
 import Address from "@/pages/address/AddressList.vue";
-import CarList from '@/pages/car/CarList.vue'
+import CarList from '@/pages/car/CarList.vue';
+import NoticeList from '@/pages/notice/NoticeList.vue';
+import NoticeInfo from '@/pages/notice/NoticeInfo.vue';
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -17,7 +19,11 @@ const router = createRouter({
     // { path: '/stuff/request', component: Attendance },
     // { path: '/stuff/requestmanage/', component: Attendance },
     { path: '/carrent/carlist/', component: CarList },
+    { path: '/attendance', component: Attendance },
     { path: '/carrent/carlist/:currentPage', component: CarList },
+    { path: '/notice/noticelist/', component: NoticeList },
+    { path: '/notice/noticelist/:currentPage', component: NoticeList },
+    { path: '/notice/:id', component: NoticeInfo },
   ],
 });
 

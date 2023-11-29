@@ -1,9 +1,13 @@
 <template>
   <div>
     <h2>주소록</h2>
+    <!-- 검색창과 검색내용이 양방향으로 binding시키기 위해 v-model사용 -->
+    <input v-model="search" type="text" placeholder="이름 또는 직급을 입력" />
+    <!-- 화면에 사원정보가 조회되기 전까지는 화면에 Loading... 보여줌 -->
     <div v-if="loading">Loading...</div>
     <div v-else>
-      <div v-for="member in members" :key="member.id">
+      <!-- key를 member.id로 정해서 <tr></tr>안의 내용을 반복 -->
+      <div v-for="member in filteredMembers" :key="member.id">
         <tr>
           <td>사원번호: {{ member.id }}</td>
           <td>이름: {{ member.name }}</td>
@@ -16,25 +20,41 @@
   </div>
 </template>
 <script>
-import { ref, onMounted } from "vue";
 import axios from "axios";
 
 export default {
+  // loading, members, search 초기화
   data() {
     return {
       loading: true,
       members: [],
+      search: "",
     };
   },
+  //computed를 안 쓰면 값 변화에 따른 화면 갱신이 자동으로 안 됨
+  computed: {
+    filteredMembers() {
+      return this.members.filter((member) => {
+        // 검색어가 없거나, 검색어가 이름과 직급에 포함되어 있는 경우에만 반환
+        return (
+          !this.search ||
+          member.name.includes(this.search) ||
+          member.position.includes(this.search)
+        );
+      });
+    },
+  },
+  // mounted훅은 컴포넌트가 화면에 마운트(삽입)된 후에 실행되는 함수, 여기서는 findAll()을 실행
   mounted() {
-    this.fetchMembers();
+    this.findAll();
   },
   methods: {
-    async fetchMembers() {
+    async findAll() {
       try {
         const response = await axios.get(
           `http://localhost:8880/address/members`
         );
+        // response.data에는 id, name, position, tel정보가 있음, 그 정보를 members배열에 넣음
         this.members = response.data;
         this.loading = false;
       } catch (error) {
