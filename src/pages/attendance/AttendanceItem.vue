@@ -3,7 +3,14 @@
         <!-- <table> -->
             <!-- <tbody> -->
                 <tr>
-                    <td>{{ a.member.departmentId }}</td>
+                    <td>{{ 
+                            a.member.departmentId === 1 ? 'IT개발부' :
+                            a.member.departmentId === 2 ? '개발1팀' :
+                            a.member.departmentId === 3 ? '개발2팀' :
+                            a.member.departmentId === 4 ? '개발3팀' :
+                            a.member.departmentId === 5 ? '개발4팀' :
+                            ''
+                        }}</td>
                     <td>{{ a.member.name }}</td>
                     <td>{{ a.member.position }}</td>
                     <td>{{ a.attendanceDate }}</td>
