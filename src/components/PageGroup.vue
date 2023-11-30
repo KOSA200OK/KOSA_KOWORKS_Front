@@ -49,14 +49,17 @@ export default {
     methods: {
     },
     created(){
+        console.log(this.currentPage)
         if(this.currentPage <= this.totalPage){
-            this.start = (this.currentPage) / 5 * 5+1
+            this.start = (this.currentPage - 1 ) / 5 * 5+1
             this.end = this.start + 5 - 1
 
             if(this.end>this.totalPage){
                 this.end = this.totalPage
             }
         }
+        console.log(this.start)
+        console.log(this.end)
     }
 }
 </script>
