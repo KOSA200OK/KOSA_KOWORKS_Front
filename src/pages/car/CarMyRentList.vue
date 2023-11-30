@@ -43,18 +43,27 @@ export default {
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const memberId = 2
+            const memberId = "0002"
             const url = `${this.backURL}/carrent/myrentlist?memberId=${memberId}&currentPage=${this.currentPage}`
             axios.get(url)
             .then(response=>{
                 this.myrentlist = response.data
+                this.myrentlist.content.reqDate = this.formatToYYYYMMDD(this.myrentlist.content.reqDate)
+                this.myrentlist.content.startDate = this.formatToYYYYMMDD(this.myrentlist.content.startDate)
+                this.myrentlist.content.endDate = this.formatToYYYYMMDD(this.myrentlist.content.endDate)
+                console.log(this.myrentlist.content.reqDate)
             })
             .catch((Error)=>{
                 console.log(Error)
             })
         },
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
-
+        formatToYYYYMMDD(date) {
+            const year = date.getFullYear()
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
     },
     watch: {
         //----라우터값이 변경되었을 때 할 일 START----

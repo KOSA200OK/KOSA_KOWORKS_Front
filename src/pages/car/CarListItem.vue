@@ -3,11 +3,11 @@
         <td>{{c.id}}</td>
         <td>{{c.carNo}}</td>
         <td>{{c.carType}}</td>
-        <td><button v-if="c.status==0" @click="openModal">신청</button><span v-if="c.status==1">대여중</span></td>
+        <td><button v-if="c.status==0" @click="openModal">신청</button></td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck" >
         <div class="modal-container">
-            <form class="apply" @submit:prevent="reserveHandler">
+            <form class="apply" @submit.prevent="reserveHandler">
                 <label>신청자 : </label><br><br>
                 <label>부서명 : </label><br><br>
                 <label>차량번호 : {{c.carNo}}</label><br><br>
@@ -53,7 +53,7 @@ export default {
             minEndDate: this.getCurrentDate(),
             formData: {
                 member: {
-                    id: 1
+                    id: "1"
                 },
                 car: {
                     id: this.c.id
@@ -106,6 +106,7 @@ export default {
                 .then((Response)=>{
                     alert('성공')
                     this.modalCheck = !this.modalCheck
+                    return false
                 })
                 .catch((Error)=>{
                     console.log(Error)
