@@ -1,60 +1,69 @@
 <template lang="">
-    <div class="carlist">
-        <router-link class="myrentlistbutton" to="/carrent/myrentlist">차량 예약 내역</router-link>
+    <div class="myrentlist">
         <table>
             <thead>
                 <tr>
-                    <th>차대번호</th>
-                    <th>차량번호</th>
-                    <th>차종</th>
+                    <th>신청날짜</th>
+                    <th>대여목적</th>
+                    <th>대여기간</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <CarListItem :c="c"
-                            v-if="carlist"
-                            v-for="c in carlist.content"
-                            :key="c.id"/>
+                <CarMyRentListItem :m="m"
+                            v-if="myrentlist"
+                            v-for="m in myrentlist.content"
+                            :key="m.id"/>
             </tbody>
         </table>
         <PageGroup
-            v-if="carlist" 
-            :path="'/carrent/carlist/'"
+            v-if="myrentlist" 
+            :path="'/carrent/myrentlist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-            :totalPage="carlist.totalPages"
-            :cntPerPage="carlist.size"
-            :totalCnt="carlist.totalElements"
+            :totalPage="myrentlist.totalPages"
+            :cntPerPage="myrentlist.size"
+            :totalCnt="myrentlist.totalElements"
         />
     </div>
 </template>
 <script>
-import CarListItem from '@/pages/car/CarListItem.vue'
+import CarMyRentListItem from '@/pages/car/CarMyRentListItem.vue'
 import PageGroup from '@/components/PageGroup.vue'
 import axios from 'axios'
 export default {
-    name: 'CarList',
-    components: { CarListItem, PageGroup},
+    name: 'CarMyRentList',
+    components: { CarMyRentListItem, PageGroup},
     data() {
         return {
             currentPage: 1,
-            carlist: null,
+            myrentlist: null,
             modalCheck : false
         }
     },
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/carrent/carlist?currentPage=${this.currentPage}`
+            const memberId = "0002"
+            const url = `${this.backURL}/carrent/myrentlist?memberId=${memberId}&currentPage=${this.currentPage}`
             axios.get(url)
             .then(response=>{
-                this.carlist = response.data
+                this.myrentlist = response.data
+                this.myrentlist.content.reqDate = this.formatToYYYYMMDD(this.myrentlist.content.reqDate)
+                this.myrentlist.content.startDate = this.formatToYYYYMMDD(this.myrentlist.content.startDate)
+                this.myrentlist.content.endDate = this.formatToYYYYMMDD(this.myrentlist.content.endDate)
+                console.log(this.myrentlist.content.reqDate)
             })
             .catch((Error)=>{
                 console.log(Error)
             })
         },
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
-
+        formatToYYYYMMDD(date) {
+            const year = date.getFullYear()
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
     },
     watch: {
         //----라우터값이 변경되었을 때 할 일 START----
@@ -70,7 +79,7 @@ export default {
         //----라우터값이 변경되었을 때 할 일 END----     
     },
     created() {
-        console.log('created carlist')
+        console.log('created myrentlist')
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
@@ -79,13 +88,13 @@ export default {
 }
 </script>
 <style scoped>
-.carlist{
+.myrentlist{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-.carlist>table{
+.myrentlist>table{
     width : 1000px;
     border-top:solid 3px #363840;
     border-bottom:solid 3px #363840;
@@ -97,14 +106,6 @@ th{
 th{
     font-size: 15px;
     border-bottom: solid 3px #363840;
-}
-.myrentlistbutton{
-    width : 200px;
-    padding : 10px;
-    margin-left : 500px;
-    margin-top : 50px;
-    margin-bottom: 100px;
-    border : solid 3px black;
 }
 
 </style>
