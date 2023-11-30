@@ -31,10 +31,11 @@ export default {
             return `${year}/${month}/${day}`;
         },
         applyCancel(){
-            const url = `${this.backURL}/carrent/reservecancel`
-            axios.get(url)
+            const url = `${this.backURL}/carrent/cancelreserve/${this.m.id}`
+            axios.delete(url)
             .then(response=>{
-                this.carlist = response.data
+                console.log(response.status)
+                alert("취소되었습니다.")
             })
             .catch((Error)=>{
                 console.log(Error)

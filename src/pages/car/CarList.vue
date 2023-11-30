@@ -44,7 +44,7 @@ export default {
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/carrent/carlist?currentPage=${this.currentPage}`
+            const url = `${this.backURL}/carrent/carlist/${this.currentPage}`
             axios.get(url)
             .then(response=>{
                 this.carlist = response.data
