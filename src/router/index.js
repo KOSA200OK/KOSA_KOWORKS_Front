@@ -5,6 +5,7 @@ import Attendance from "@/pages/attendance/AttendanceList.vue";
 import Address from "@/pages/address/AddressList.vue";
 import CarList from "@/pages/car/CarList.vue";
 import CarMyRentList from '@/pages/car/CarMyRentList.vue'
+import CarManageList from '@/pages/car/CarManageList.vue'
 import NoticeList from "@/pages/notice/NoticeList.vue";
 import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import ChatRoomList from "@/pages/chat/ChatRoomList.vue";
@@ -24,6 +25,9 @@ const router = createRouter({
     { path: "/carrent/carlist/", component: CarList },
     { path: "/carrent/carlist/:currentPage", component: CarList },
     { path: '/carrent/myrentlist', component: CarMyRentList },
+    { path: '/carrent/myrentlist/:currentPage', component: CarMyRentList },
+    { path: '/carrent/carmanagelist', component: CarManageList },
+    { path: "/carrent/carmanagelist/:currentPage", component: CarManageList },
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },
     { path: "/notice/noticelist/", component: NoticeList },

@@ -45,6 +45,9 @@ export default {
         // 브라우저 스토리지에 로그인 상태 저장
         localStorage.setItem("isLoggedIn", "true");
 
+        // SSE 구독 시작 ==
+
+
         this.$router.push("/");
         this.$data.user = response.data;
       } catch (error) {
