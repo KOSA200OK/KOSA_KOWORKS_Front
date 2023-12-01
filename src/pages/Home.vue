@@ -54,7 +54,7 @@ export default {
 			axios
 				.put(url, memberData)
 				.then((response) => {
-					alert('퇴근 완료 조심히가세요~');
+					alert('퇴근 완료! 조심히가세요~');
 				})
 				.catch((error) => {
 					console.error('퇴근 요청 실패', error);
