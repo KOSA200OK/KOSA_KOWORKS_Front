@@ -1,6 +1,8 @@
 <template lang="">
-    <div class="carlist">
-        <router-link class="myrentlistbutton" to="/carrent/myrentlist">차량 예약 내역</router-link>
+    <div class="carmanagelist">
+    <div class="optionbuttons">
+        <div class="waiting">승인대기</div><div class="renting">대여중</div><div class="noreturn">미반납</div>
+    </div>
         <table>
             <thead>
                 <tr>
@@ -11,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                <CarListItem :c="c"
+                <CarManageListItem :c="c"
                             v-if="carlist"
                             v-for="c in carlist.content"
                             :key="c.id"/>
@@ -19,7 +21,7 @@
         </table>
         <PageGroup
             v-if="carlist" 
-            :path="'/carrent/carlist/'"
+            :path="'/carrent/carmanagelist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
             :totalPage="carlist.totalPages"
             :cntPerPage="carlist.size"
@@ -28,23 +30,22 @@
     </div>
 </template>
 <script>
-import CarListItem from '@/pages/car/CarListItem.vue'
+import CarManageListItem from '@/pages/car/CarManageListItem.vue'
 import PageGroup from '@/components/PageGroup.vue'
 import axios from 'axios'
 export default {
-    name: 'CarList',
-    components: { CarListItem, PageGroup},
+    name: 'CarManageList',
+    components: { CarManageListItem, PageGroup},
     data() {
         return {
             currentPage: 1,
-            carlist: null,
-            modalCheck : false
+            carlist: null
         }
     },
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/carrent/carlist/${this.currentPage}`
+            const url = `${this.backURL}/carrent/carmanagelist/${this.currentPage}`
             axios.get(url)
             .then(response=>{
                 this.carlist = response.data
@@ -70,7 +71,7 @@ export default {
         //----라우터값이 변경되었을 때 할 일 END----     
     },
     created() {
-        console.log('created carlist')
+        console.log('created carmanagelist')
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
@@ -79,16 +80,28 @@ export default {
 }
 </script>
 <style scoped>
-.carlist{
+.carmanagelist{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-.carlist>table{
+.carmanagelist>table{
     width : 1000px;
     border-top:solid 3px #363840;
     border-bottom:solid 3px #363840;
+}
+.optionbuttons{
+    margin-left : 20%;
+}
+.waiting, .renting, .noreturn{
+    text-align: center;
+    float : left;
+    padding : 20px;
+    margin : 50px;
+    margin-top : 200px;
+    border : solid 3px #363840;
+    cursor : pointer;
 }
 th{
     padding : 25px;
@@ -97,14 +110,6 @@ th{
 th{
     font-size: 15px;
     border-bottom: solid 3px #363840;
-}
-.myrentlistbutton{
-    width : 200px;
-    padding : 10px;
-    margin-left : 500px;
-    margin-top : 50px;
-    margin-bottom: 100px;
-    border : solid 3px black;
 }
 
 </style>
