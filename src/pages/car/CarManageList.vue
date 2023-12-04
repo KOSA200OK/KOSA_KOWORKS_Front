@@ -1,8 +1,9 @@
 <template lang="">
     <div class="carmanagelist">
-    <div class="optionbuttons">
-        <div class="waiting">승인대기</div><div class="renting">대여중</div><div class="noreturn">미반납</div>
-    </div>
+        <div class="optionbuttons">
+            <div class="waiting">승인대기</div><div class="renting">대여중</div><div class="noreturn">미반납</div>
+        </div>
+        <CarsMap/>
         <table>
             <thead>
                 <tr>
@@ -31,11 +32,12 @@
 </template>
 <script>
 import CarManageListItem from '@/pages/car/CarManageListItem.vue'
+import CarsMap from '@/pages/car/CarsMap.vue'
 import PageGroup from '@/components/PageGroup.vue'
 import axios from 'axios'
 export default {
     name: 'CarManageList',
-    components: { CarManageListItem, PageGroup},
+    components: { CarManageListItem, PageGroup, CarsMap},
     data() {
         return {
             currentPage: 1,
@@ -85,6 +87,9 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    /* width: 90%; */
+    text-align: center;
+    margin-left:45px;
 }
 .carmanagelist>table{
     width : 1000px;
@@ -93,13 +98,13 @@ export default {
 }
 .optionbuttons{
     margin-left : 20%;
+    margin-top : 500px;
 }
 .waiting, .renting, .noreturn{
     text-align: center;
     float : left;
     padding : 20px;
     margin : 50px;
-    margin-top : 200px;
     border : solid 3px #363840;
     cursor : pointer;
 }
