@@ -29,7 +29,7 @@
         <span class="text">근태관리</span>
       </router-link>
       <router-link class="button" to="/notice/noticelist">
-        <span class="material-icons">group</span>
+        <span class="material-icons">campaign</span>
         <span class="text">공지사항</span>
       </router-link>
       <router-link class="button" to="/address/members">
@@ -52,10 +52,10 @@
         <span class="material-icons">no_crash</span>
         <span class="text">차량 예약</span><br>
       </router-link>
-      <!-- <router-link class="button" to="/carrent/carlist">
+      <router-link class="button" to="/carrent/carmanagelist">
         <span class="material-icons">car_rental</span>
         <span class="text">차량 관리</span>
-      </router-link> -->
+      </router-link>
       <router-link class="button" to="/stuff/request">
         <span class="material-icons">add_box</span>
         <span class="text">비품 요청</span>

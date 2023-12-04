@@ -53,7 +53,7 @@ export default {
             minEndDate: this.getCurrentDate(),
             formData: {
                 member: {
-                    id: "1"
+                    id: "0002"
                 },
                 car: {
                     id: this.c.id

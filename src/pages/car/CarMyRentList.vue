@@ -48,10 +48,10 @@ export default {
             axios.get(url)
             .then(response=>{
                 this.myrentlist = response.data
-                this.myrentlist.content.reqDate = this.formatToYYYYMMDD(this.myrentlist.content.reqDate)
-                this.myrentlist.content.startDate = this.formatToYYYYMMDD(this.myrentlist.content.startDate)
-                this.myrentlist.content.endDate = this.formatToYYYYMMDD(this.myrentlist.content.endDate)
-                console.log(this.myrentlist.content.reqDate)
+                // this.myrentlist.content.reqDate = this.formatToYYYYMMDD(this.myrentlist.content.reqDate)
+                // this.myrentlist.content.startDate = this.formatToYYYYMMDD(this.myrentlist.content.startDate)
+                // this.myrentlist.content.endDate = this.formatToYYYYMMDD(this.myrentlist.content.endDate)
+                // console.log(this.myrentlist.content.reqDate)
             })
             .catch((Error)=>{
                 console.log(Error)
