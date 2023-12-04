@@ -1,11 +1,20 @@
 <template>
-	<h1>홈</h1>
+	<main class="home-page">
+		<div class="container">
+			<div class="item-1"> <!-- 찬석 -->
+				<button @click="attendanceHandler"> 출근 </button>
+				<button @click="attendance2Handler">퇴근</button>
+			</div>
+			<div class="item-2">B</div>
+			<div class="item-3">C</div>
+			<div class="item-4">D</div>
+		</div>
 
-	<div> <!-- 찬석 -->
-		<button @click="attendanceHandler"> 출근 </button>
-		<button @click="attendance2Handler">퇴근</button>
-	</div>
-
+		<!-- <div>
+			<button @click="attendanceHandler"> 출근 </button>
+			<button @click="attendance2Handler">퇴근</button>
+		</div> -->
+	</main>
 </template>
 <script>
 import Sidebar from "../components/Sidebar.vue";
@@ -63,4 +72,15 @@ export default {
 	},
 };
 </script>
-<style></style>
+<style>
+
+.container{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: repeat(2, minmax(400px, auto));
+	row-gap: 30px;
+	column-gap: 20px;
+	
+} 
+
+</style>
