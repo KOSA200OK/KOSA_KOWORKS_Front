@@ -1,57 +1,55 @@
 <template lang="">
-    <div class="carmanagelist">
-        <div class="optionbuttons">
-            <router-link class="waiting" to="/carrent/carwaitinglist">승인대기</router-link>
-            <div class="renting">대여중</div><div class="noreturn">미반납</div>
-        </div>
-        <CarsMap/>
+    <div class="waitinglist">
         <table>
             <thead>
                 <tr>
-                    <th>차대번호</th>
+                    <th>신청날짜</th>
+                    <th>소속부서</th>
+                    <th>예약자</th>
                     <th>차량번호</th>
-                    <th>차종</th>
+                    <th>대여기간</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <CarManageListItem :c="c"
-                            v-if="carlist"
-                            v-for="c in carlist.content"
-                            :key="c.id"/>
+                <CarWaitingListItem :w="w"
+                            v-if="waitinglist"
+                            v-for="w in waitinglist.content"
+                            :key="w.id"/>
             </tbody>
         </table>
         <PageGroup
-            v-if="carlist" 
-            :path="'/carrent/carmanagelist/'"
+            v-if="waitinglist" 
+            :path="'/carrent/carwaitinglist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-            :totalPage="carlist.totalPages"
-            :cntPerPage="carlist.size"
-            :totalCnt="carlist.totalElements"
+            :totalPage="waitinglist.totalPages"
+            :cntPerPage="waitinglist.size"
+            :totalCnt="waitinglist.totalElements"
         />
     </div>
 </template>
 <script>
-import CarManageListItem from '@/pages/car/CarManageListItem.vue'
-import CarsMap from '@/pages/car/CarsMap.vue'
+import CarWaitingListItem from '@/pages/car/CarWaitingListItem.vue'
 import PageGroup from '@/components/PageGroup.vue'
 import axios from 'axios'
 export default {
-    name: 'CarManageList',
-    components: { CarManageListItem, PageGroup, CarsMap},
+    name: 'WaitingList',
+    components: { CarWaitingListItem, PageGroup},
     data() {
         return {
             currentPage: 1,
-            carlist: null
+            waitinglist: null,
+            modalCheck : false
         }
     },
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/carrent/carmanagelist/${this.currentPage}`
+            const url = `${this.backURL}/carrent/carwaitinglist/${this.currentPage}`
             axios.get(url)
             .then(response=>{
-                this.carlist = response.data
+                this.waitinglist = response.data
+                console.log(this.waitinglist)
             })
             .catch((Error)=>{
                 console.log(Error)
@@ -74,7 +72,7 @@ export default {
         //----라우터값이 변경되었을 때 할 일 END----     
     },
     created() {
-        console.log('created carmanagelist')
+        console.log('created carwaitinglist')
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
@@ -83,31 +81,16 @@ export default {
 }
 </script>
 <style scoped>
-.carmanagelist{
+.waitinglist{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* width: 90%; */
-    text-align: center;
-    margin-left:45px;
 }
-.carmanagelist>table{
+.waitinglist>table{
     width : 1000px;
     border-top:solid 3px #363840;
     border-bottom:solid 3px #363840;
-}
-.optionbuttons{
-    margin-left : 20%;
-    margin-top : 500px;
-}
-.waiting, .renting, .noreturn{
-    text-align: center;
-    float : left;
-    padding : 20px;
-    margin : 50px;
-    border : solid 3px #363840;
-    cursor : pointer;
 }
 th{
     padding : 25px;
