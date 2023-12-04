@@ -16,7 +16,7 @@ export default {
 
 	},
 	methods: {
-		// ======================= 확인 버튼 ===============================
+		// ======================= 확인 버튼 ================================
 		attendanceHandler() {
 			const url = `${this.backURL}/attendance`;
 			const memberId = 1; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
