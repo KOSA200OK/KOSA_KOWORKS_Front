@@ -10,7 +10,8 @@ import NoticeList from "@/pages/notice/NoticeList.vue";
 import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import ChatRoomList from "@/pages/chat/ChatRoomList.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
-import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue"
+import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
+import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -35,6 +36,7 @@ const router = createRouter({
     { path: "/notice/:id", component: NoticeInfo },
     { path: '/meetingroom', component: MeetingRoomList },
     { path: '/meetingroom/myreservation', component: MeetingRoomResList},
+    { path: '/meetingroom/timeline', component: MeetingRoomTimeline },
   ],
 });
 

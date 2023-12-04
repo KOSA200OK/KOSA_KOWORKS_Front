@@ -1,7 +1,7 @@
 <template>
     <div class="meetingroomlist">
         <div class="date"><h2>{{currentDate()}}</h2></div>
-        <table>
+        <table class="scrollable-table">
             <thead>
                 <tr>
                 <th>회의실</th>
@@ -17,6 +17,17 @@
                     v-bind:key="mr.id"
                     @click="clickMeetingRoomReservation()"
                 />
+                <!-- <tr v-for="(room, index) in meetingroomreslist.content" :key="room.id">
+                <td>{{ room.name }}</td>
+                <td v-for="time in times" :key="`${mr.id}_${time}`">
+                     <MeetingRoomItem 
+                    :mr="mr"
+                    v-if="meetingroomlist"
+                    v-for="mr in meetingroomlist" 
+                    v-bind:key="mr.id"
+                    @click="clickMeetingRoomReservation()"
+                    />
+                </td> -->
             </tbody>
         </table>
     </div>
@@ -31,7 +42,8 @@ export default {
     data() {
         return {
             meetingroomlist : [],
-            date: ''
+            date: '',
+            times: this.generateTimeSlots(),
         }
     }, 
     methods: {
@@ -39,6 +51,21 @@ export default {
             const current = new Date();
             const date = current.getFullYear()+'-'+(current.getMonth()+1)+'-'+current.getDate();
             return date;
+        },
+
+        generateTimeSlots() {
+            // 30분 간격으로 시간 생성
+            const times = [];
+            const startTime = 8 * 60; // 8:00 시작 (8시 * 60분)
+            const endTime = 20 * 60; // 20:00 종료 (20시 * 60분)
+
+            for (let i = startTime; i <= endTime; i += 30) {
+                const hours = Math.floor(i / 60);
+                const minutes = i % 60;
+                times.push(`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`);
+            }
+
+            return times;
         },
 
         //----예약하기 클릭했을 때 할 일 START----
@@ -67,9 +94,13 @@ export default {
         const currentDate = new Date();
         // 날짜를 'yyyy-mm-dd' 형식으로 변환
         const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+        console.log(formattedDate)
         //------> 바꾸기>> 클릭한 날짜값을 가져와야함
 
-        const url = `${this.backURL}/meetingroom?meetingDate=${formattedDate}`
+        const tempdate = '2023-11-30';
+        console.log(tempdate)
+
+        const url = `${this.backURL}/meetingroom?meetingDate='${tempdate}'`
         axios.get(url)
         .then(response=>{
             this.meetingroomlist = response.data;
@@ -81,6 +112,16 @@ export default {
 }
 </script>
 <style scoped>
+/* .scrollable-table {
+  width: 50%;
+  overflow-x: scroll;
+}
+
+.scrollable-table th {
+  min-width: 100px; 
+  white-space: nowrap; 
+} */
+
 div.date {
     margin-left: 200px;
     margin-right: auto;
