@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="waitinglist">
+    <div class="noreturnlist">
         <table>
             <thead>
                 <tr>
@@ -8,55 +8,53 @@
                     <th>예약자</th>
                     <th>차량번호</th>
                     <th>대여기간</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <CarWaitingListItem :w="w"
-                            v-if="waitinglist"
-                            v-for="w in waitinglist.content"
-                            :key="w.id"/>
+                <CarNoReturnListItem :n="n"
+                            v-if="noreturnlist"
+                            v-for="n in noreturnlist.content"
+                            :key="n.id"/>
             </tbody>
         </table>
         <PageGroup
-            v-if="waitinglist" 
-            :path="'/carrent/carwaitinglist/'"
+            v-if="rentlist" 
+            :path="'/carrent/noreturnlist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-            :totalPage="waitinglist.totalPages"
-            :cntPerPage="waitinglist.size"
-            :totalCnt="waitinglist.totalElements"
+            :totalPage="noreturnlist.totalPages"
+            :cntPerPage="noreturnlist.size"
+            :totalCnt="noreturnlist.totalElements"
         />
     </div>
 </template>
 <script>
-import CarWaitingListItem from '@/pages/car/CarWaitingListItem.vue'
+import CarNoReturnListItem from '@/pages/car/CarNoReturnListItem.vue'
 import PageGroup from '@/components/PageGroup.vue'
 import axios from 'axios'
 export default {
-    name: 'WaitingList',
-    components: { CarWaitingListItem, PageGroup},
+    name: 'CarNoReturnList',
+    components: { CarNoReturnListItem, PageGroup},
     data() {
         return {
             currentPage: 1,
-            waitinglist: null,
+            noreturnlist: null,
             modalCheck : false
         }
     },
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/carrent/waitinglist/${this.currentPage}`
+            const url = `${this.backURL}/carrent/noreturnlist/${this.currentPage}`
             axios.get(url)
             .then(response=>{
-                this.waitinglist = response.data
-                console.log(this.waitinglist)
+                this.noreturnlist = response.data
+                console.log(this.noreturnlist)
             })
             .catch((Error)=>{
                 console.log(Error)
             })
         },
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
-
     },
     watch: {
         //----라우터값이 변경되었을 때 할 일 START----
@@ -72,7 +70,7 @@ export default {
         //----라우터값이 변경되었을 때 할 일 END----     
     },
     created() {
-        console.log('created carwaitinglist')
+        console.log('created noreturnlist')
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
@@ -81,13 +79,13 @@ export default {
 }
 </script>
 <style scoped>
-.waitinglist{
+.noreturnlist{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-.waitinglist>table{
+.noreturnlist>table{
     width : 1000px;
     border-top:solid 3px #363840;
     border-bottom:solid 3px #363840;
