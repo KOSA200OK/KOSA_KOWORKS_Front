@@ -9,14 +9,6 @@
                     시간
                 </th>
                 </tr>
-                <!-- <tr>
-                    <th></th>
-                    <th>
-                        <div class="time-container">
-                            <div v-for="time in times" :key="time">{{ time }}</div>
-                        </div>
-                    </th>
-                </tr> -->
             </thead>
 
             <tbody>
@@ -173,15 +165,6 @@ div.date {
 .time-container > div {
     padding:10px;
 }
-
-/* table {
-  border-collapse: collapse;
-  width: 1000px;
-
-  margin-left: 200px;
-  margin-right: auto;
-  margin-top: 50px;
-} */
 
 /* 테이블 행 */
 th{

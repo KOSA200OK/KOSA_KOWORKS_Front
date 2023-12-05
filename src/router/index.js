@@ -13,7 +13,6 @@ import ChatRoomList from "@/pages/chat/ChatRoomList.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
 import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
-import MeetingRoomTimeline2 from "@/pages/meetingroom/MeetingRoomTimeline_ver2.vue";
 
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue"
 import StuffReq from "@/pages/stuff/StuffReq.vue"
@@ -44,7 +43,6 @@ const router = createRouter({
     { path: '/meetingroom', component: MeetingRoomList },
     { path: '/meetingroom/myreservation', component: MeetingRoomResList},
     { path: '/meetingroom/timeline', component: MeetingRoomTimeline },
-    { path: '/meetingroom/timeline2', component: MeetingRoomTimeline2 },
     { path: "/stuff/request", component: StuffReq },
   ],
 });
