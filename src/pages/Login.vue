@@ -55,7 +55,7 @@ export default {
 			}
 		},
 
-		// 찬석
+		// 찬석 =============== SSE 구독 ============================
 		async startSSE() {
 			if(this.isLoggedIn) {
 				// EventSource를 이용해 SSE 구독 시작
@@ -71,7 +71,7 @@ export default {
 				});
 			}
 		},
-		// 찬석
+		// 찬석 ============ 웹브라우저 실시간 알림창 표시 =============
 		async showNotification(data) {
 			// 브라우저 알림
 			const notification = new Notification("제목", {
