@@ -70,7 +70,7 @@
 
     <div class="menu">
       <span class="material-icons">account_circle</span>
-      <span>오찬석 사장님 환영합니다</span>
+      <span></span>
     </div>
   </aside>
 </template>
