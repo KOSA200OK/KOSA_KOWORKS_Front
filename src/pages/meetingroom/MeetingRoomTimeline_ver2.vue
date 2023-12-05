@@ -38,120 +38,144 @@
   </MbscEventcalendar>
   </div>
 </template>
-<script setup>
+<script>
 import '@mobiscroll/vue/dist/css/mobiscroll.min.css'
 import { ref } from 'vue'
 import { MbscEventcalendar, setOptions, localeKo } from '@mobiscroll/vue'
 import MeetingRoomItem from '@/pages/meetingroom/MeetingRoomItem.vue'
 
-setOptions({
-  locale: localeKo,
-  theme: 'windows',
-  themeVariant: 'light'
-})
+// setOptions({
+//   locale: localeKo,
+//   theme: 'windows',
+//   themeVariant: 'light'
+// })
 
-const myEvents = ref([
-  {
-    start: '2023-12-05T10:30',
-    end: '2023-12-05T13:00',
-    title: 'Tire change',
-    color: '#7a5886',
-    taskType: 'material-repeat',
-    resource: 1
+export default {
+  components: {
+    MeetingRoomItem,
   },
-  generateEvents(),
-  // {
-  //   start: '2023-12-05T10:30',
-  //   end: '2023-12-05T13:00',
-  //   title: 'Tire change',
-  //   color: '#7a5886',
-  //   taskType: 'material-repeat',
-  //   resource: 1
-  // },
-  // {
-  //   start: '2023-12-05T07:00',
-  //   end: '2023-12-05T10:00',
-  //   title: 'Brake maintenance',
-  //   color: '#9da721',
-  //   taskType: 'cogs',
-  //   resource: 2
-  // },
-  // {
-  //   start: '2023-12-04T13:30',
-  //   end: '2023-12-04T16:30',
-  //   title: 'Fluid maintenance',
-  //   color: '#cd6957',
-  //   taskType: 'cogs',
-  //   resource: 1
-  // },
-  // {
-  //   start: '2023-12-04T11:00',
-  //   end: '2023-12-04T14:00',
-  //   title: 'Oil change',
-  //   color: '#637e57',
-  //   taskType: 'material-repeat',
-  //   resource: 3
-  // },
-  // {
-  //   start: '2023-12-04T08:00',
-  //   end: '2023-12-04T12:00',
-  //   title: 'Engine inspection',
-  //   color: '#6c5d45',
-  //   taskType: 'material-search',
-  //   resource: 3
-  // },
-  // {
-  //   start: '2023-12-04T14:00',
-  //   end: '2023-12-04T19:00',
-  //   title: 'Car painting',
-  //   color: '#50789d',
-  //   taskType: 'material-format-paint',
-  //   resource: 2
-  // }
-]);
+  setup() {
+    const myEvents = ref([
+      {
+        start: '2023-12-05T10:30',
+        end: '2023-12-05T13:00',
+        title: 'Tire change',
+        color: '#7a5886',
+        taskType: 'material-repeat',
+        resource: 1,
+      },
+      // ... 다른 이벤트들
+    ]);
 
-function generateEvents() {
-  const events = [];
-  for (let i = 0; i < 5; i++) {
-    events.push({
-      start: `2023-12-05T${10 + i}:00`,
-      end: `2023-12-05T${11 + i}:30`,
-      title: `Event ${i + 2}`,
-      color: '#abcdef',
-      taskType: 'custom-task',
-      resource: 2
-    });
-  }
-  return events;
+    return {
+      myEvents,
+    };
+  },
 };
 
-const myResources = ref([
-  {
-    id: 1,
-    name: 'Ryan',
-    color: '#239a21'
-  },
-  {
-    id: 2,
-    name: 'Kate',
-    color: '#01adff'
-  },
-  {
-    id: 3,
-    name: 'John',
-    color: '#ff0101'
-  },
-    {
-    id: 4,
-    name: 'Amy',
-    color: '#01adff'
-  },
-    {
-    id: 5,
-    name: 'Johnny',
-    color: '#239a21'
-  }
-])
+
+// const myEvents = ref([
+//   {
+//     start: '2023-12-05T10:30',
+//     end: '2023-12-05T13:00',
+//     title: 'Tire change',
+//     color: '#7a5886',
+//     taskType: 'material-repeat',
+//     resource: 1
+//   },
+//   generateEvents(),
+//   // {
+//   //   start: '2023-12-05T10:30',
+//   //   end: '2023-12-05T13:00',
+//   //   title: 'Tire change',
+//   //   color: '#7a5886',
+//   //   taskType: 'material-repeat',
+//   //   resource: 1
+//   // },
+//   // {
+//   //   start: '2023-12-05T07:00',
+//   //   end: '2023-12-05T10:00',
+//   //   title: 'Brake maintenance',
+//   //   color: '#9da721',
+//   //   taskType: 'cogs',
+//   //   resource: 2
+//   // },
+//   // {
+//   //   start: '2023-12-04T13:30',
+//   //   end: '2023-12-04T16:30',
+//   //   title: 'Fluid maintenance',
+//   //   color: '#cd6957',
+//   //   taskType: 'cogs',
+//   //   resource: 1
+//   // },
+//   // {
+//   //   start: '2023-12-04T11:00',
+//   //   end: '2023-12-04T14:00',
+//   //   title: 'Oil change',
+//   //   color: '#637e57',
+//   //   taskType: 'material-repeat',
+//   //   resource: 3
+//   // },
+//   // {
+//   //   start: '2023-12-04T08:00',
+//   //   end: '2023-12-04T12:00',
+//   //   title: 'Engine inspection',
+//   //   color: '#6c5d45',
+//   //   taskType: 'material-search',
+//   //   resource: 3
+//   // },
+//   // {
+//   //   start: '2023-12-04T14:00',
+//   //   end: '2023-12-04T19:00',
+//   //   title: 'Car painting',
+//   //   color: '#50789d',
+//   //   taskType: 'material-format-paint',
+//   //   resource: 2
+//   // }
+// ]);
+
+// function generateEvents() {
+//   const events = [];
+//   for (let i = 0; i < 5; i++) {
+//     events.push({
+//       start: `2023-12-05T${10 + i}:00`,
+//       end: `2023-12-05T${11 + i}:30`,
+//       title: `Event ${i + 2}`,
+//       color: '#abcdef',
+//       taskType: 'custom-task',
+//       resource: 2
+//     });
+//   }
+//   return events;
+// };
+
+// const myResources = ref([
+//   {
+//     id: 1,
+//     name: 'Ryan',
+//     color: '#239a21'
+//   },
+//   {
+//     id: 2,
+//     name: 'Kate',
+//     color: '#01adff'
+//   },
+//   {
+//     id: 3,
+//     name: 'John',
+//     color: '#ff0101'
+//   },
+//     {
+//     id: 4,
+//     name: 'Amy',
+//     color: '#01adff'
+//   },
+//     {
+//     id: 5,
+//     name: 'Johnny',
+//     color: '#239a21'
+//   }
+// ])
 
 function myDefaultEvent() {
   return {

@@ -5,35 +5,36 @@
             <thead>
                 <tr>
                 <th>회의실</th>
-                <th>시간</th>
+                <th>
+                    시간
+                </th>
                 </tr>
+                <!-- <tr>
+                    <th></th>
+                    <th>
+                        <div class="time-container">
+                            <div v-for="time in times" :key="time">{{ time }}</div>
+                        </div>
+                    </th>
+                </tr> -->
             </thead>
 
             <tbody>
                 <MeetingRoomItem 
                     :mr="mr"
+                    :date="currentDate()"
                     v-if="meetingroomlist"
                     v-for="mr in meetingroomlist" 
                     v-bind:key="mr.id"
                     @click="clickMeetingRoomReservation()"
                 />
-                <!-- <tr v-for="(room, index) in meetingroomreslist.content" :key="room.id">
-                <td>{{ room.name }}</td>
-                <td v-for="time in times" :key="`${mr.id}_${time}`">
-                     <MeetingRoomItem 
-                    :mr="mr"
-                    v-if="meetingroomlist"
-                    v-for="mr in meetingroomlist" 
-                    v-bind:key="mr.id"
-                    @click="clickMeetingRoomReservation()"
-                    />
-                </td> -->
             </tbody>
         </table>
     </div>
 </template>
 <script>
 import MeetingRoomItem from '@/pages/meetingroom/MeetingRoomItem.vue'
+// import MeetingRoomTimeline from '@/pages/meetingroom/MeetingRoomTimeline.vue'
 import axios from 'axios'
 
 export default {
@@ -50,7 +51,7 @@ export default {
         currentDate() {
             const current = new Date();
             const date = current.getFullYear()+'-'+(current.getMonth()+1)+'-'+current.getDate();
-            return date;
+            return '2023-12-07'; //date;
         },
 
         generateTimeSlots() {
@@ -66,6 +67,20 @@ export default {
             }
 
             return times;
+        },
+
+        //예약 있는지 여부 확인하는 로직
+        isReserved(mr, time) {
+            // mr.reservation 배열을 순회하면서 해당 시간에 예약이 있는지 확인
+            return (
+                mr.reservation &&
+                mr.reservation.some(
+                (reservation) =>
+                    reservation.meetingDate === this.currentDate() &&
+                    reservation.startTime <= time &&
+                    reservation.endTime >= time
+                )
+            );
         },
 
         //----예약하기 클릭했을 때 할 일 START----
@@ -100,7 +115,7 @@ export default {
         const tempdate = '2023-11-30';
         console.log(tempdate)
 
-        const url = `${this.backURL}/meetingroom?meetingDate='${tempdate}'`
+        const url = `${this.backURL}/meetingroom?meetingDate=${tempdate}`
         axios.get(url)
         .then(response=>{
             this.meetingroomlist = response.data;
@@ -112,15 +127,6 @@ export default {
 }
 </script>
 <style scoped>
-/* .scrollable-table {
-  width: 50%;
-  overflow-x: scroll;
-}
-
-.scrollable-table th {
-  min-width: 100px; 
-  white-space: nowrap; 
-} */
 
 div.date {
     margin-left: 200px;
@@ -129,18 +135,58 @@ div.date {
     margin-bottom: 0px;
 }
 
-table {
+.scrollable-table {
+    width: 80%;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 50px;
+    margin-bottom: 200px;
+
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.scrollable-table th,
+.scrollable-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.time-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px; /* 원하는 간격으로 조절하세요. */
+    overflow-x: auto; /* 가로 스크롤을 허용합니다. */
+}
+
+.time {
+    /* 추가된 스타일 */
+    min-width: 60px; /* 최소 너비를 지정하세요. */
+    text-align: center;
+    /* 추가된 스타일 (선택 사항) */
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+.time-container > div {
+    padding:10px;
+}
+
+/* table {
   border-collapse: collapse;
   width: 1000px;
 
   margin-left: 200px;
   margin-right: auto;
   margin-top: 50px;
-}
+} */
 
 /* 테이블 행 */
 th{
   padding: 8px;
+  width: 500px;
   height: 80px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -151,6 +197,7 @@ th {
   background-color: var(--dark);
   color: #ddd;
 }
+
 
 /* 테이블 올렸을 때 */
 tbody tr:hover {
