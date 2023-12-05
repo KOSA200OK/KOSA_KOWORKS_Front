@@ -1,13 +1,13 @@
 <template>
 	<main class="home-page">
 		<div class="container">
-			<div class="item-1"> <!-- 찬석 -->
+			<div class="item"> <!-- 찬석 -->
 				<button @click="attendanceHandler"> 출근 </button>
 				<button @click="attendance2Handler">퇴근</button>
 			</div>
-			<div class="item-2">B</div>
-			<div class="item-3">C</div>
-			<div class="item-4">D</div>
+			<div class="item">B</div>
+			<div class="item">C</div>
+			<div class="item">D</div>
 		</div>
 
 		<!-- <div>
@@ -82,5 +82,10 @@ export default {
 	column-gap: 20px;
 	
 } 
+
+.item{
+	border-radius: 30px;
+	background-color: bisque;
+}
 
 </style>
