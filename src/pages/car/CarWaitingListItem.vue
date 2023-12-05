@@ -5,7 +5,7 @@
         <td>{{w.member.name}}</td>
         <td>{{w.car.carNo}}</td>
         <td>{{w.startDate}} ~ {{w.endDate}}</td>
-        <td><button class="approvebutton">승인</button><button class="rejectbutton" @click="openModal">반려</button></td>
+        <td><button class="approvebutton" @click="approve">승인</button><button class="rejectbutton" @click="openModal">반려</button></td>
     </tr>
     
 </template>
@@ -23,6 +23,19 @@ export default {
         openModal() {
             this.modalCheck = !this.modalCheck
         },
+        approve(){
+            const url = `${this.backURL}/carrent/approve?id=${this.w.id}&status=2`
+            axios.get(url)
+            .then(response=>{
+                if(response.status==200){
+                    alert('승인되었습니다.')
+                    window.location.reload()
+                }
+            })
+            .catch((Error)=>{
+                console.log(Error)
+            })
+        }
         
     }
 }
