@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="login-container">
 		<h2 v-if="!isLoggedIn">Login</h2>
 		<form v-if="!isLoggedIn" @submit.prevent="login">
 			<label for="id">사원번호: </label>
@@ -48,7 +48,7 @@ export default {
 				// SSE 구독 시작 ==
 				this.startSSE();
 
-				this.$router.push("/");
+				this.$router.push("/home");
 				this.$data.user = response.data;
 			} catch (error) {
 				console.error("로그인 실패:", error);
@@ -125,3 +125,8 @@ export default {
 	},
 };
 </script>
+<style>
+.login-container{
+	width: 100vw;
+}
+</style>

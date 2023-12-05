@@ -40,7 +40,7 @@ button {
 
 .app {
   display: flex;
-
+  width: 100vw;
   main {
     flex: 1 1 0;
     padding: 2rem;
