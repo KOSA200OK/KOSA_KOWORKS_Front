@@ -1,12 +1,12 @@
 <template>
   <!--is_expanded가 참이라면 문자열 'is-expanded'`이 포함되고, 그렇지 않으면 포함되지 않게 함-->
-  <aside :class="`${is_expanded && 'is-expanded'}`">
+  <aside :class="getClassObject">
     <div class="logo">
       <img src="../../public/images/logo.png" alt="vue" />
     </div>
 
     <div class="menu-toggle-wrap">
-      <button class="menu-toggle" @click="ToggleMenu">
+      <button class="menu-toggle" @click="toggleMenu">
         <span class="material-icons">keyboard_double_arrow_right</span>
       </button>
     </div>
@@ -74,17 +74,30 @@
     </div>
   </aside>
 </template>
-<script setup>
+
+<script>
 import { ref } from "vue";
 
-const is_expanded = ref(localStorage.getItem("is_expanded") === "true");
-
-const ToggleMenu = () => {
-  is_expanded.value = !is_expanded.value;
-
-  localStorage.setItem("is_expanded", is_expanded.value);
+export default {
+  data() {
+    return {
+      is_expanded: localStorage.getItem("is_expanded") === "true",
+    };
+  },
+  methods: {
+    toggleMenu() {
+      this.is_expanded = !this.is_expanded;
+      localStorage.setItem("is_expanded", this.is_expanded);
+    },
+  },
+  computed: {
+    getClassObject() {
+      return { 'is-expanded': this.is_expanded };
+    },
+  },
 };
 </script>
+
 <style lang="scss" scoped>
 aside {
   display: flex;
@@ -199,6 +212,7 @@ aside {
 
     .menu-toggle-wrap {
       top: -3rem;
+
       .menu-toggle {
         transform: rotate(-180deg);
       }
@@ -207,6 +221,7 @@ aside {
       .button .text {
         opacity: 1;
       }
+
       .button {
         .material-icons {
           margin-right: 1rem;
