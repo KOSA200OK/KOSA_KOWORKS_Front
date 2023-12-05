@@ -84,13 +84,15 @@ export default {
 </script>
 <style scoped>
 .carmanagelist{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin-left : 400px;
+    /* position: absolute; */
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
     /* width: 90%; */
-    text-align: center;
-    margin-left:45px;
+    /* margin-left:45px; */
+    /* height: 100vh; */
+    /* overflow: scroll; */
 }
 .carmanagelist>table{
     width : 1000px;
@@ -99,7 +101,7 @@ export default {
 }
 .optionbuttons{
     margin-left : 20%;
-    margin-top : 500px;
+    margin-top : 30px;
 }
 .waiting, .renting, .noreturn{
     text-align: center;
