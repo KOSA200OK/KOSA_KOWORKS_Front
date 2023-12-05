@@ -12,6 +12,7 @@ import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import ChatRoomList from "@/pages/chat/ChatRoomList.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue"
+import StuffReq from "@/pages/stuff/StuffReq.vue"
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -38,6 +39,7 @@ const router = createRouter({
     { path: "/notice/:id", component: NoticeInfo },
     { path: '/meetingroom', component: MeetingRoomList },
     { path: '/meetingroom/myreservation', component: MeetingRoomResList},
+    { path: "/stuff/request", component: StuffReq },
   ],
 });
 
