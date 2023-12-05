@@ -20,7 +20,7 @@
         </table>
         <PageGroup
             v-if="waitinglist" 
-            :path="'/carrent/carwaitinglist/'"
+            :path="'/carrent/waitinglist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
             :totalPage="waitinglist.totalPages"
             :cntPerPage="waitinglist.size"

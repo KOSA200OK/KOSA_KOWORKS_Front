@@ -1,13 +1,14 @@
 <template lang="">
     <tr>
-        <td>{{w.reqDate}}</td>
-        <td>{{w.member.department.name}}</td>
-        <td>{{w.member.name}}</td>
-        <td>{{w.car.carNo}}</td>
-        <td>{{w.startDate}} ~ {{w.endDate}}</td>
-        <td><button class="approvebutton" @click="approve">승인</button><button class="rejectbutton" @click="openModal">반려</button></td>
+        <td @click="openApproveModal">{{w.reqDate}}</td>
+        <td @click="openApproveModal">{{w.member.department.name}}</td>
+        <td @click="openApproveModal">{{w.member.name}}</td>
+        <td @click="openApproveModal">{{w.car.carNo}}</td>
+        <td @click="openApproveModal">{{w.startDate}} ~ {{w.endDate}}</td>
+        <td><button class="approvebutton" @click="approve">승인</button>
+            <button class="rejectbutton" @click="openRejectModal">반려</button></td>
     </tr>
-    <div class="modal-wrap" v-show="modalCheck" >
+    <div class="modal-wrap" v-show="rejectModalCheck" >
         <div class="modal-container">
             <div class="rejectdetail">
                 <h3>반려사유</h3>
@@ -20,9 +21,25 @@
                             required>
                     <div class="modal-btn">
                         <button type="submit" class="ok">완료</button>
-                        <button class="cancel" @click="openModal">취소</button>
+                        <button class="cancel" @click="openRejectModal">취소</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-wrap" v-show="approveModalCheck" >
+        <div class="modal-container">
+            <div class="approvedetail">
+                <label>신청자 : {{w.member.name}}</label><br><br>
+                <label>부서명 : {{w.member.department.name}}</label><br><br>
+                <label>차량번호 : {{w.car.carNo}}</label><br><br>
+                <label>차종 : {{w.car.carType}}</label><br><br><br>
+                <label>대여기간 : {{w.startDate}} ~ {{w.endDate}}</label><br><br><br>
+                <label>대여목적 : {{w.purpose}}</label>
+                <div class="modal-btn">
+                    <button type="submit" class="ok" @click="approve">승인</button>
+                    <button class="cancel" @click="openApproveModal">취소</button>
+                </div>
             </div>
         </div>
     </div>
@@ -34,7 +51,8 @@ export default {
     props:["w"],
     data(){
         return {
-            modalCheck:false,
+            rejectModalCheck:false,
+            approveModalCheck:false,
             reject: '',
             formData: {
                 id: this.w.id,
@@ -43,8 +61,11 @@ export default {
         }
     },
     methods: {
-        openModal() {
-            this.modalCheck = !this.modalCheck
+        openRejectModal() {
+            this.rejectModalCheck = !this.rejectModalCheck
+        },
+        openApproveModal() {
+            this.approveModalCheck = !this.approveModalCheck
         },
         approve(){
             const url = `${this.backURL}/carrent/approve?id=${this.w.id}`
@@ -85,6 +106,7 @@ td{
     border-top : dotted 2px;
     border-color : #dfdfdf;
     text-align: center;
+    cursor: pointer;
 }
 .rejectbutton{
     margin-left:10px;
