@@ -36,7 +36,7 @@
         <span class="material-icons">group</span>
         <span class="text">주소록</span>
       </router-link>
-      <router-link class="button" to="/chat/list">
+      <router-link class="button" to="/chat/roomlist">
         <span class="material-icons">chat</span>
         <span class="text">채팅</span>
       </router-link>
@@ -50,7 +50,7 @@
       </router-link>
       <router-link class="button" to="/carrent/carlist">
         <span class="material-icons">no_crash</span>
-        <span class="text">차량 예약</span><br>
+        <span class="text">차량 예약</span><br />
       </router-link>
       <!-- <router-link class="button" to="/carrent/carlist">
         <span class="material-icons">car_rental</span>

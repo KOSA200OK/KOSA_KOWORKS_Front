@@ -53,7 +53,6 @@ export default {
     },
 
     async findSession() {
-      //----
       // 브라우저 스토리지에서 로그인 상태 확인
       const storedLoggedIn = localStorage.getItem("isLoggedIn");
       this.isLoggedIn = storedLoggedIn === "true";
