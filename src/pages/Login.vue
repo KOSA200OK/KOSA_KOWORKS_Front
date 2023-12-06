@@ -44,7 +44,8 @@ export default {
 				this.isLoggedIn = true;
 				// 브라우저 스토리지에 로그인 상태 저장
 				localStorage.setItem("isLoggedIn", "true");
-
+        //localStorage에 memberId로 id저장
+        localStorage.setItem("memberId", this.id);
 				// SSE 구독 시작 ==
 				this.startSSE();
 
@@ -95,7 +96,8 @@ export default {
 			this.isLoggedIn = storedLoggedIn === "true";
 
 			if (this.isLoggedIn) {
-				console.log("로그인 상태입니다. id: ");
+				const storedMemberId = localStorage.getItem("memberId");
+        console.log("로그인 상태입니다. id: ", storedMemberId);
 			} else {
 				console.log("로그인하지 않은 상태입니다.");
 			}
@@ -116,7 +118,8 @@ export default {
 
 				// 브라우저 스토리지에서 로그인 상태 제거
 				localStorage.removeItem("isLoggedIn");
-
+        // localStorage에서 memberId 제거
+        localStorage.removeItem("memberId");
 				this.$router.push("/");
 			} catch (error) {
 				console.error("로그아웃 실패:", error);
