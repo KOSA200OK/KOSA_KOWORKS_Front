@@ -1,8 +1,9 @@
 <template lang="">
     <div class="carmanagelist">
         <div class="optionbuttons">
-            <router-link class="waiting" to="/carrent/carwaitinglist">승인대기</router-link>
-            <div class="renting">대여중</div><div class="noreturn">미반납</div>
+            <router-link class="waiting" to="/carrent/waitinglist">승인대기</router-link>
+            <router-link class="renting" to="/carrent/rentlist">대여중</router-link>
+            <router-link class="noreturn" to="/carrent/noreturnlist">미반납</router-link>
         </div>
         <CarsMap/>
         <table>
@@ -48,7 +49,7 @@ export default {
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/carrent/carmanagelist/${this.currentPage}`
+            const url = `${this.backURL}/carrent/managelist/${this.currentPage}`
             axios.get(url)
             .then(response=>{
                 this.carlist = response.data
