@@ -322,5 +322,4 @@ aside {
     background-color: var(--dark); /* 스크롤바 트랙 색상 */
     border-radius: 4px; /* 스크롤바 트랙 모양 */
 }
-
 </style>
