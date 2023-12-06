@@ -16,7 +16,7 @@ import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
 import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
 
-import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue"
+
 import StuffReq from "@/pages/stuff/StuffReq.vue"
 const router = createRouter({
   history: createWebHistory(),

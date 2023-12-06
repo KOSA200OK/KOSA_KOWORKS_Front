@@ -39,9 +39,9 @@
   </div>
 </template>
 <script setup>
-import '@mobiscroll/vue/dist/css/mobiscroll.min.css'
+// import '@mobiscroll/vue/dist/css/mobiscroll.min.css'
 import { ref } from 'vue'
-import { MbscEventcalendar, setOptions, localeKo } from '@mobiscroll/vue'
+// import { MbscEventcalendar, setOptions, localeKo } from '@mobiscroll/vue'
 import MeetingRoomItem from '@/pages/meetingroom/MeetingRoomItem.vue'
 
 setOptions({
