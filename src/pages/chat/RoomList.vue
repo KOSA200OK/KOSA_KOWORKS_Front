@@ -74,7 +74,7 @@ export default {
         params.append("name", this.room_name);
 
         const response = await axios.post(
-          `http://localhost:8880/chat/room`,
+          "http://localhost:8880/chat/room",
           params
         );
 
@@ -97,7 +97,7 @@ export default {
         //---추가 시작
         this.$router.push(`/chat/room/enter/${roomId}`);
         //--추가 끝
-        location.href = `http://localhost:5173/chat/room/enter/${roomId}`;
+        // location.href = "http://localhost:8880/chat/room/enter/" + roomId;
       }
     },
   },

@@ -59,7 +59,7 @@ export default {
     findRoom() {
       axios
         .get(
-          `http://localhost:8880/chat/room/${this.roomId}`,
+          `http://localhost:8880/pub/chat/room/${this.roomId}`,
           {},
           {
             "Access-Control-Allow-Origin": `http://localhost:5173`,
@@ -74,8 +74,8 @@ export default {
     sendMessage() {
       // /pub: pub 설정 uri, /chat/message: @MessageMapping uri
       this.ws.send(
-        `/pub/chat/message`,
-        // `http://localhost:8880/pub/chat/message`,
+        // `http://localhost:8880/chat/message`,
+        `http://localhost:8880/pub/chat/message`,
         {},
         JSON.stringify({
           type: "TALK",
@@ -99,21 +99,21 @@ export default {
       // 메시지 수신 시 채팅 내역 저장
       this.saveChatHistory();
     },
+
     loadChatHistory() {
       const chatHistory = localStorage.getItem("wschat.chatHistory");
-      console.log("chatHistory " + chatHistory);
+      console.log(chatHistory);
       if (chatHistory) {
-        this.messages = JSON.parse(chatHistory).reverse();
+        this.messages = JSON.parse(chatHistory);
       }
     },
+
     saveChatHistory() {
-      console.log("saveChatHistory " + this.messages);
-      localStorage.setItem(
-        "wschat.chatHistory",
-        JSON.stringify(this.messages.reverse())
-      );
+      console.log(this.messages);
+      localStorage.setItem("wschat.chatHistory", JSON.stringify(this.messages));
       this.loadChatHistory();
     },
+
     // WebSocket 설정
     setupWebSocket() {
       this.sock = new SockJS("http://localhost:8880/ws-stomp");
@@ -155,12 +155,14 @@ export default {
         }
       );
     },
+
     enterRoom(roomId) {
       axios
-        .get(`http://localhost:8880/chat/room/enter/${roomId}`)
+        .get(`http://localhost:8880/pub/chat/room/enter/${roomId}`)
         .then((response) => {
           console.log(response.data);
           this.room = response.data;
+
           const sender = prompt("대화명을 입력하세요.");
           if (sender !== "") {
             localStorage.setItem("wschat.sender", sender);
