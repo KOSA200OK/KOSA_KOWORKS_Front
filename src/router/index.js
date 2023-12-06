@@ -7,11 +7,17 @@ import CarList from "@/pages/car/CarList.vue";
 import CarMyRentList from '@/pages/car/CarMyRentList.vue'
 import CarManageList from '@/pages/car/CarManageList.vue'
 import CarWaitingList from '@/pages/car/CarWaitingList.vue'
+import CarRentList from '@/pages/car/CarRentList.vue'
+import CarNoReturnList from '@/pages/car/CarNoReturnList.vue'
 import NoticeList from "@/pages/notice/NoticeList.vue";
 import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import ChatRoomList from "@/pages/chat/ChatRoomList.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
+import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
+import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
+
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue"
+import StuffReq from "@/pages/stuff/StuffReq.vue"
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -27,10 +33,14 @@ const router = createRouter({
     { path: "/carrent/carlist/:currentPage", component: CarList },
     { path: '/carrent/myrentlist', component: CarMyRentList },
     { path: '/carrent/myrentlist/:currentPage', component: CarMyRentList },
-    { path: '/carrent/carmanagelist', component: CarManageList },
-    { path: "/carrent/carmanagelist/:currentPage", component: CarManageList },
-    { path: '/carrent/carwaitinglist', component: CarWaitingList },
-    { path: "/carrent/carwaitinglist/:currentPage", component: CarWaitingList },
+    { path: '/carrent/managelist', component: CarManageList },
+    { path: "/carrent/managelist/:currentPage", component: CarManageList },
+    { path: '/carrent/waitinglist', component: CarWaitingList },
+    { path: "/carrent/waitinglist/:currentPage", component: CarWaitingList },
+    { path: '/carrent/rentlist', component: CarRentList },
+    { path: "/carrent/rentlist/:currentPage", component: CarRentList },
+    { path: '/carrent/noreturnlist', component: CarNoReturnList },
+    { path: "/carrent/noreturnlist/:currentPage", component: CarNoReturnList },
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },
     { path: "/notice/noticelist/", component: NoticeList },
@@ -38,6 +48,8 @@ const router = createRouter({
     { path: "/notice/:id", component: NoticeInfo },
     { path: '/meetingroom', component: MeetingRoomList },
     { path: '/meetingroom/myreservation', component: MeetingRoomResList},
+    { path: '/meetingroom/timeline', component: MeetingRoomTimeline },
+    { path: "/stuff/request", component: StuffReq },
   ],
 });
 
