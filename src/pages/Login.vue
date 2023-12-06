@@ -13,9 +13,19 @@
 		<form v-if="isLoggedIn" @submit.prevent="logout">
 			<button type="submit">Logout</button>
 		</form>
+		<!-- 찬석 -->
+		<div class="notify_bar"
+			v-if="notifyMessage"
+			@click="handleNotificationClick">
+			{{ notifyMessage }}
+		</div>
 
 		<router-view v-if="isLoggedIn"></router-view>
 	</div>
+
+	<!-- <div class="gg">
+		login
+	</div> -->
 </template>
 
 <script>
@@ -27,6 +37,9 @@ export default {
 			id: "",
 			password: "",
 			isLoggedIn: false,
+			// 찬석
+			notifyMessage: "",
+			notificationTimer: null,
 		};
 	},
 	// component 생성되자마자 호출, 새로고침 할 때마다 호출
@@ -37,7 +50,7 @@ export default {
 	methods: {
 		async login() {
 			try {
-				const response = await axios.post("http://localhost:8880/login", {
+				const response = await axios.post(`${this.backURL}/login`, {
 					id: this.id,
 					password: this.password,
 				});
@@ -63,29 +76,35 @@ export default {
 
 				this.eventSource.addEventListener("sse", (event) => {
 					console.log(event.data);
+					console.log(event);
 
 					const data = JSON.parse(event.data);
 
 					// 브라우저의 알림 표시
 					this.showNotification(data);
+					// this.showNotification(event.data);
 				});
 			}
 		},
 		// 찬석
 		async showNotification(data) {
+
 			// 브라우저 알림
 			const notification = new Notification("제목", {
 				body: data.content,
 			});
 
-			setTimeout(() => {
-				notification.close();
-			}, 10*1000);
+			this.notifyMessage = data.content;
 
 			// 브라우저의 알림이 클릭 되었을 때 
 			notification.addEventListener("click", ()=> {
 				window.open(data.url, "_blank");
 			})
+
+			// 타이머를 설정하여 10초 후에 알림을 숨김
+			this.notificationTimer = setTimeout(() => {
+				this.notifyMessage = '';
+			}, 10 * 1000);
 		},
 
 		async findSession() {
@@ -111,7 +130,7 @@ export default {
 				}
 				// =============
 
-				await axios.get("http://localhost:8880/logout", {});
+				await axios.get(`${this.backURL}/logout`, {});
 				this.isLoggedIn = false;
 
 				// 브라우저 스토리지에서 로그인 상태 제거
@@ -128,5 +147,19 @@ export default {
 <style>
 .login-container{
 	width: 100vw;
+}
+.notify_bar {
+	margin-top: 850px;
+	margin-left: 1350px;
+	width: 300px;
+	padding: 10px; /* 알림 내용과의 간격 조정을 위한 패딩 */
+    background-color: #f3f3f3; /* 배경색 지정 */
+    border: 2px solid #ccc; /* 테두리 설정 */
+    border-radius: 5px; /* 둥근 테두리를 위한 속성 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    font-family: Arial, sans-serif; /* 폰트 설정 */
+    color: #333; /* 텍스트 색상 */
+	position: absolute;
 }
 </style>
