@@ -59,7 +59,7 @@ export default {
 				memberId: memberId,
 				currentTime: currentTime,
 				member: {
-					id: '0001' // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+					id: '1' // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
 				},
 			};
 
