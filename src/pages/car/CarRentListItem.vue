@@ -1,12 +1,26 @@
 <template lang="">
-    <tr>
+    <tr @click = "openModal">
         <td>{{r.reqDate}}</td>
         <td>{{r.member.department.name}}</td>
         <td>{{r.member.name}}</td>
         <td>{{r.car.carNo}}</td>
         <td>{{r.startDate}} ~ {{r.endDate}}</td>
     </tr>
-    
+    <div class="modal-wrap" v-show="modalCheck" >
+        <div class="modal-container">
+            <div class="rentdetail">
+                <label>신청자 : {{r.member.name}}</label><br><br>
+                <label>부서명 : {{r.member.department.name}}</label><br><br>
+                <label>차량번호 : {{r.car.carNo}}</label><br><br>
+                <label>차종 : {{r.car.carType}}</label><br><br><br>
+                <label>대여기간 : {{r.startDate}} ~ {{r.endDate}}</label><br><br><br>
+                <label>대여목적 : {{r.purpose}}</label>
+            </div>
+                <div class="modal-btn">
+                    <button class="cancel" @click="openModal">취소</button>
+                </div>
+        </div>
+    </div>
 </template>
 <script>
 import axios from 'axios'
@@ -33,6 +47,7 @@ td{
     border-top : dotted 2px;
     border-color : #dfdfdf;
     text-align: center;
+    cursor : pointer;
 }
 .purpose {
     cursor : pointer;
