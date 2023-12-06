@@ -57,7 +57,7 @@
                         minutes-increment="30"
                         minutes-grid-increment="30"
                         time-picker disable-time-range-validation
-                        :min-time="`${startTime}`"
+                        :min-time="`${starttime}`"
                         :max-time="{ hours: 20, minutes: 0 }"
                         :format="format"
                         :input-props="{ placeholder: 'Select End Time' }"
