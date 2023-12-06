@@ -33,7 +33,6 @@
 import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-
 export default {
   data() {
     return {
@@ -47,7 +46,6 @@ export default {
       reconnectAttempts: 0, // 재시도 횟수를 데이터에 추가
     };
   },
-
   created() {
     //어차피 DB에 id들어가있는걸 그대로 local에 저장해놓은거라, 아니면 파라미터로 넘겨도 됨
     this.roomId = localStorage.getItem("wschat.roomId");
@@ -56,7 +54,6 @@ export default {
     this.loadChatHistory(); // 페이지 초기화 시 채팅 내역 불러오기
     this.setupWebSocket(); // WebSocket 설정 메소드 호출
   },
-
   methods: {
     // 시작하자마자 방 찾기
     findRoom() {
@@ -73,7 +70,6 @@ export default {
           this.room = response.data;
         });
     },
-
     // 메시지 송신 처리
     sendMessage() {
       // /pub: pub 설정 uri, /chat/message: @MessageMapping uri
@@ -92,7 +88,6 @@ export default {
       // 메시지 전송 시 채팅 내역 저장
       this.saveChatHistory();
     },
-
     // 메시지 수신 처리
     recvMessage(recv) {
       alert(1);
@@ -125,7 +120,6 @@ export default {
       this.ws = Stomp.over(this.sock);
       this.connectWebSocket();
     },
-
     // WebSocket 연결
     connectWebSocket() {
       this.ws.connect(

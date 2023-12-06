@@ -1,3 +1,7 @@
+if (typeof global === "undefined") {
+  window.global = window;
+}
+
 import { createApp } from "vue";
 import App from "./App.vue";
 
@@ -10,5 +14,5 @@ const app = createApp(App);
 app.use(router);
 
 //전역변수 선언
-app.config.globalProperties.backURL='http://localhost:8880'
-app.mount('#app')
+app.config.globalProperties.backURL = "http://localhost:8880";
+app.mount("#app");

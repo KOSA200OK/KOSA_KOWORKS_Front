@@ -1,6 +1,4 @@
-<template lang="">
-  <div></div>
-</template>
+<template lang=""><div></div></template>
 <script>
 export default {};
 </script>
