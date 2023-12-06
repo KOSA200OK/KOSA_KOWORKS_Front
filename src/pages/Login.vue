@@ -42,8 +42,10 @@ export default {
           password: this.password,
         });
         this.isLoggedIn = true;
-        // 브라우저 스토리지에 로그인 상태 저장
+        // localStorage에 로그인 상태 저장
         localStorage.setItem("isLoggedIn", "true");
+        //localStorage에 memberId로 id저장
+        localStorage.setItem("memberId", this.id);
 
         this.$router.push("/");
         this.$data.user = response.data;
@@ -58,7 +60,9 @@ export default {
       this.isLoggedIn = storedLoggedIn === "true";
 
       if (this.isLoggedIn) {
-        console.log("로그인 상태입니다. id: ");
+        // 브라우저 로컬 스토리지에서 사용자 정보 가져오기
+        const storedMemberId = localStorage.getItem("memberId");
+        console.log("로그인 상태입니다. id: ", storedMemberId);
       } else {
         console.log("로그인하지 않은 상태입니다.");
       }
@@ -69,9 +73,10 @@ export default {
         await axios.get("http://localhost:8880/logout", {});
         this.isLoggedIn = false;
 
-        // 브라우저 스토리지에서 로그인 상태 제거
+        // localStorage에서 로그인 상태 제거
         localStorage.removeItem("isLoggedIn");
-
+        // localStorage에서 memberId 제거
+        localStorage.removeItem("memberId");
         this.$router.push("/");
       } catch (error) {
         console.error("로그아웃 실패:", error);

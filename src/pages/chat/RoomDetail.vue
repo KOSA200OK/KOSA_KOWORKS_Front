@@ -61,7 +61,14 @@ export default {
     // 시작하자마자 방 찾기
     findRoom() {
       axios
-        .get(`http://localhost:8880/chat/room/${this.roomId}`)
+        .get(
+          `http://localhost:8880/pub/chat/room/${this.roomId}`,
+          {},
+          {
+            "Access-Control-Allow-Origin": `http://localhost:5173`,
+            "Access-Control-Allow-Credentials": "true",
+          }
+        )
         .then((response) => {
           this.room = response.data;
         });
@@ -71,9 +78,8 @@ export default {
     sendMessage() {
       // /pub: pub 설정 uri, /chat/message: @MessageMapping uri
       this.ws.send(
-        // `http://localhost:8880/pub/chat/message${this.roomId}`,
-        // `http://localhost:8880/pub/chat/message`,
-        `/pub/chat/message/${this.roomId}`,
+        // `http://localhost:8880/chat/message`,
+        `http://localhost:8880/pub/chat/message`,
         {},
         JSON.stringify({
           type: "TALK",
@@ -89,6 +95,7 @@ export default {
 
     // 메시지 수신 처리
     recvMessage(recv) {
+      alert(1);
       this.messages.unshift({
         type: recv.type,
         sender: recv.type === "ENTER" ? "[알림]" : recv.sender,
@@ -100,18 +107,21 @@ export default {
 
     loadChatHistory() {
       const chatHistory = localStorage.getItem("wschat.chatHistory");
+      console.log(chatHistory);
       if (chatHistory) {
         this.messages = JSON.parse(chatHistory);
       }
     },
 
     saveChatHistory() {
+      console.log(this.messages);
       localStorage.setItem("wschat.chatHistory", JSON.stringify(this.messages));
+      this.loadChatHistory();
     },
 
     // WebSocket 설정
     setupWebSocket() {
-      this.sock = new SockJS("/ws-stomp");
+      this.sock = new SockJS("http://localhost:8880/ws-stomp");
       this.ws = Stomp.over(this.sock);
       this.connectWebSocket();
     },
@@ -122,12 +132,17 @@ export default {
         {},
         (frame) => {
           // 연결 성공 시 실행되는 부분
-          this.ws.subscribe(`/sub/chat/room/${this.roomId}`, (message) => {
-            const recv = JSON.parse(message.body);
-            this.recvMessage(recv);
-          });
+          this.ws.subscribe(
+            `http://localhost:8880/sub/chat/room/${this.roomId}`,
+            (message) => {
+              alert(1);
+              const recv = JSON.parse(message.body);
+              this.recvMessage(recv);
+            }
+          );
           this.ws.send(
-            `/pub/chat/message/${this.roomId}`,
+            // `http://localhost:8880/chat/message`,
+            `http://localhost:8880/pub/chat/message`,
             {},
             JSON.stringify({
               type: "ENTER",
@@ -149,7 +164,7 @@ export default {
 
     enterRoom(roomId) {
       axios
-        .get(`http://localhost:8880/chat/room/enter/${roomId}`)
+        .get(`http://localhost:8880/pub/chat/room/enter/${roomId}`)
         .then((response) => {
           console.log(response.data);
           this.room = response.data;
