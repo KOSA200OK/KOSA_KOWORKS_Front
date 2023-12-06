@@ -31,8 +31,8 @@
 
 <script>
 import axios from "axios";
-// import SockJS from "sockjs-client";
-// import Stomp from "stompjs";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 export default {
   data() {
     return {
