@@ -5,9 +5,7 @@
             <thead>
                 <tr>
                 <th>회의실</th>
-                <th>
-                    시간
-                </th>
+                <th>시간</th>
                 </tr>
             </thead>
 
@@ -181,13 +179,6 @@ th {
   color: #ddd;
 }
 
-
-/* 테이블 올렸을 때 */
-tbody tr:hover {
-  background-color: #d3d3d3;
-  opacity: 0.9;
-  cursor: pointer;
-}
 
 /* 테이블 비율 */
 th:nth-child(1),
