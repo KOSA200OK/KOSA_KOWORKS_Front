@@ -3,7 +3,10 @@
         <td>
             <img :src="`../../images/${mr.name}.jpg`" :alt="mr.name">
             <div class="roomname">{{mr.name}}</div>
-            <button class="resbutton"><span><b>예약하기</b></span></button>
+            <button class="resbutton" @click="openModal">
+                <span><b>예약하기</b></span>
+            </button>
+            <Modal :show="showModal" @close="closeModal"/>
         </td>
         <td>
             <div class="flex-container">
@@ -21,12 +24,17 @@
     </tr>
 </template>
 <script>
+import Modal from "@/pages/meetingroom/ReservationModal.vue";
 export default {
     name: 'MeetingRoomItem',
     props:['mr', 'date'],
+    components: {
+        Modal,
+    },
     data(){
         return {
             times: this.generateTimeSlots(),
+            showModal: false,
         }
     },
     methods: {
@@ -48,6 +56,12 @@ export default {
             }
 
             return times;
+        },
+        openModal() {
+            this.showModal = true;
+        },
+        closeModal() {
+            this.showModal = false;
         },
     }
 }
@@ -86,7 +100,8 @@ td {
   padding: 5px;
   width: 100px;
   height: 35px;
-  vertical-align: center;
+  vertical-align: middle;
+  align-items: center;
 
   transition: all 0.5s;
   cursor: pointer;
@@ -99,6 +114,8 @@ td {
   display: inline-block;
   position: relative;
   transition: 0.5s;
+  vertical-align: middle;
+  align-items: center;
 }
 
 .resbutton span:after {
