@@ -16,8 +16,9 @@ import RoomDetail from "@/pages/chat/RoomDetail.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
 import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
-import RoomList from "@/pages/chat/RoomList.vue";
-import RoomDetail from "@/pages/chat/RoomDetail.vue";
+
+
+
 
 import StuffReq from "@/pages/stuff/StuffReq.vue";
 const router = createRouter({
@@ -26,7 +27,7 @@ const router = createRouter({
     { path: "/home", component: Home },
     // { path: '/attendancelist', component: AttendanceList },
     { path: "/address/members", component: Address },
-    { path: "/chat/list", component: ChatRoomList },
+    // { path: "/chat/list", component: ChatRoomList },
     { path: "/chat/roomlist", component: RoomList },
     { path: "/chat/room/enter/:roomid", component: RoomDetail },
     // { path: '/calendar/list', component: Attendance },
