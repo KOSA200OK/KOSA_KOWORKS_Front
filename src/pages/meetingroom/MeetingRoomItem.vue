@@ -6,7 +6,10 @@
             <button class="resbutton" @click="openModal">
                 <span><b>예약하기</b></span>
             </button>
-            <Modal :show="showModal" @close="closeModal"/>
+            <Modal 
+            :show="showModal"
+            :mr = "mr"
+            @close="closeModal"/>
         </td>
         <td>
             <div class="flex-container">

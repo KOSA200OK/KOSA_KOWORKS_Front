@@ -11,6 +11,7 @@ import NoticeList from "@/pages/notice/NoticeList.vue";
 import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import ChatRoomList from "@/pages/chat/ChatRoomList.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
+import ReservationModal from "@/pages/meetingroom/ReservationModal.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
 import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
 
@@ -40,6 +41,7 @@ const router = createRouter({
     { path: "/notice/noticelist/:currentPage", component: NoticeList },
     { path: "/notice/:id", component: NoticeInfo },
     { path: '/meetingroom', component: MeetingRoomList },
+    { path: '/meetingroom/:id', component: ReservationModal },
     { path: '/meetingroom/myreservation', component: MeetingRoomResList},
     { path: '/meetingroom/timeline', component: MeetingRoomTimeline },
     { path: "/stuff/request", component: StuffReq },

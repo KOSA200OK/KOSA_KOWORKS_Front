@@ -1,6 +1,15 @@
 <template>
     <div class="meetingroomlist">
-        <div class="date"><h2>{{currentDate()}}</h2></div>
+        <VueDatePicker 
+        :model-value="date" 
+        :enable-time-picker="false"
+        class="calender"
+        @update:model-value="updateList"
+        />
+        <div class="date">
+            <h2>회의실 예약 내역</h2><br>
+            <h3>{{FormattedDate()}}</h3>
+        </div>
         <table class="scrollable-table">
             <thead>
                 <tr>
@@ -12,7 +21,7 @@
             <tbody>
                 <MeetingRoomItem 
                     :mr="mr"
-                    :date="currentDate()"
+                    :date="date"
                     v-if="meetingroomlist"
                     v-for="mr in meetingroomlist" 
                     v-bind:key="mr.id"
@@ -34,29 +43,46 @@ export default {
         return {
             meetingroomlist : [],
             date: '',
-            times: this.generateTimeSlots(),
         }
     }, 
     methods: {
         currentDate() {
             const current = new Date();
             const date = current.getFullYear()+'-'+(current.getMonth()+1)+'-'+current.getDate();
-            return '2023-12-07'; //date;
+            return date;
         },
 
-        generateTimeSlots() {
-            // 30분 간격으로 시간 생성
-            const times = [];
-            const startTime = 8 * 60; // 8:00 시작 (8시 * 60분)
-            const endTime = 20 * 60; // 20:00 종료 (20시 * 60분)
-
-            for (let i = startTime; i <= endTime; i += 30) {
-                const hours = Math.floor(i / 60);
-                const minutes = i % 60;
-                times.push(`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`);
+        FormattedDate() {
+            // 선택한 날짜를 YYYY-MM-DD 형식으로 변경하여 저장
+            if (this.date) {
+                const selectedDate = new Date(this.date);
+                const year = selectedDate.getFullYear();
+                const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                const day = String(selectedDate.getDate()).padStart(2, '0');
+                this.date = `${year}-${month}-${day}`
+                return this.date;
             }
+            return '';
+        },
 
-            return times;
+        updateList(selectedDate) {
+            this.date = selectedDate;
+
+            const date = new Date(this.date);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            this.date = `${year}-${month}-${day}`
+
+            const url = `${this.backURL}/meetingroom?meetingDate=${this.date}`
+            axios.get(url)
+                .then(response=>{
+                    this.meetingroomlist = response.data;
+                    console.log(this.date)
+                })
+                .catch((error) =>{
+                    console.log(error)
+                })
         },
 
         //예약 있는지 여부 확인하는 로직
@@ -85,34 +111,24 @@ export default {
         //----라우터값이 변경되었을 때 할 일 START----
         $route(newRoute, oldRoute) {
             console.log("라우터값이 변경" + newRoute.path + "," + oldRoute.path)
-            if (newRoute.params.currentPage) {
-                this.currentPage = newRoute.params.currentPage
+            if (newRoute.params.date) {
+                this.date = newRoute.params.date
             } else {
-                this.currentPage = 1
+                this.date = ''
             }
-            this.axiosHandler(this.currentPage)
-        }
+            this.updateList(this.date)
+        },
         //----라우터값이 변경되었을 때 할 일 END----
     },
     created() {
         //오늘 날짜 가져오기
-        const currentDate = new Date();
+        const currentdate = new Date();
         // 날짜를 'yyyy-mm-dd' 형식으로 변환
-        const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
-        console.log(formattedDate)
-        //------> 바꾸기>> 클릭한 날짜값을 가져와야함
+        const date = currentdate.getFullYear()+'-'+(currentdate.getMonth()+1)+'-'+currentdate.getDate();
+        this.date = date;
+        // console.log(this.date);
 
-        const tempdate = '2023-11-30';
-        console.log(tempdate)
-
-        const url = `${this.backURL}/meetingroom?meetingDate=${tempdate}`
-        axios.get(url)
-        .then(response=>{
-            this.meetingroomlist = response.data;
-        })
-        .catch((error) =>{
-            console.log(error)
-        })
+        this.updateList(this.date);
     },
 }
 </script>
@@ -121,8 +137,10 @@ export default {
 div.date {
     margin-left: 200px;
     margin-right: auto;
-    margin-top: 100px;
+    margin-top: 10px;
     margin-bottom: 0px;
+    
+    text-align: center;
 }
 
 .scrollable-table {
@@ -141,6 +159,15 @@ div.date {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
+}
+
+.calender {
+    width: 150px;
+
+    margin-left: 200px;
+    margin-right: auto;
+    margin-top: 100px;
+    margin-bottom: 0px;
 }
 
 .time-container {
