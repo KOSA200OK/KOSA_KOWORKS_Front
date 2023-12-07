@@ -6,31 +6,22 @@
             <router-link class="renting" to="/carrent/rentlist">대여중</router-link>
             <router-link class="noreturn" to="/carrent/noreturnlist">미반납</router-link>
         </div>
-        <CarsMap/>
+        <CarsMap :c="carlist"/>
         <table>
             <thead>
                 <tr>
                     <th>차대번호</th>
                     <th>차량번호</th>
                     <th>차종</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <CarManageListItem :c="c"
                             v-if="carlist"
-                            v-for="c in carlist.content"
+                            v-for="c in carlist"
                             :key="c.id"/>
             </tbody>
         </table>
-        <PageGroup
-            v-if="carlist" 
-            :path="'/carrent/managelist/'"
-            :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-            :totalPage="carlist.totalPages"
-            :startPage="startPage"
-            :endPage="endPage"
-        />
     </div>
 </template>
 <script>
@@ -52,18 +43,10 @@ export default {
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/carrent/managelist/${this.currentPage}`
+            const url = `${this.backURL}/carrent/managelist`
             axios.get(url)
             .then(response=>{
                 this.carlist = response.data
-                if(this.currentPage <=  this.carlist.totalPages){
-                    this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
-                    this.endPage = this.startPage + 5 - 1
-
-                    if(this.endPage>this.carlist.totalPages){
-                        this.endPage =this.carlist.totalPages
-                    }
-                }
             })
             .catch((Error)=>{
                 console.log(Error)
@@ -72,24 +55,8 @@ export default {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
 
     },
-    watch: {
-        //----라우터값이 변경되었을 때 할 일 START----
-        $route(newRoute, oldRoute) {
-            console.log("라우터값이 변경" + newRoute.path + "," + oldRoute.path)
-            if (newRoute.params.currentPage) {
-                this.currentPage = newRoute.params.currentPage
-            } else {
-                this.currentPage = 1
-            }
-            this.axiosHandler(this.currentPage)
-        }
-        //----라우터값이 변경되었을 때 할 일 END----     
-    },
     created() {
         console.log('created carmanagelist')
-        if (this.$route.params.currentPage) {
-            this.currentPage = this.$route.params.currentPage
-        }
         this.axiosHandler(this.currentPage)
     }
 }

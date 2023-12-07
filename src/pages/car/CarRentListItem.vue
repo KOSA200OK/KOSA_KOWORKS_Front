@@ -29,7 +29,6 @@ export default {
     props:["r"],
     data(){
         return {
-            reqDate : '',
             modalCheck : false
         }
     },
