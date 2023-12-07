@@ -101,7 +101,7 @@ export default {
                 }
 
                 this.infowindow = new kakao.maps.InfoWindow({
-                    content:title
+                    content: `<div class="custom-infowindow">${title}</div>`
                 }); 
                 this.infowindow.open(this.map, marker)
 
@@ -113,10 +113,16 @@ export default {
 </script>
 <style scoped>
  #map{
-    width:700px;
+    width:800px;
     height:400px;
     margin-left : 15%;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     border-radius: 20px;
+    border : solid 2px #50798b34;
+    box-shadow: 0 5px 30px #d3d1d1;
+ }
+ .custom-infowindow{
+    border : solid 1px #009EA8;
+    padding : 10px;
  }
 </style>

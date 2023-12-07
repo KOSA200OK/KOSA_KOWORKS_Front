@@ -107,7 +107,7 @@ aside {
   overflow: hidden;
   padding: 1rem;
 
-  background-color: var(--dark); //var()는 사용자 지정 속성
+  background-color: #00748D;//var(--dark); //var()는 사용자 지정 속성
   color: var(--light);
 
   transition: 0.2s ease-out; //토글 속도

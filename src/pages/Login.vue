@@ -127,6 +127,7 @@ export default {
 </script>
 <style>
 .login-container{
+	background-color: white;
 	width: 100vw;
 }
 </style>
