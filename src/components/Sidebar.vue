@@ -13,7 +13,7 @@
 
 		<div class="menu">
 			<button class="button">
-				<span class="material-icons">notifications</span>
+				<span class="material-icons" :class="{ 'bell-has-content' : hasContent }" >notifications</span>
 				<button @click="toggleOnOff" class="text">Bell</button>
 				<!-- <span class="text">Bell</span> -->
 			</button>
@@ -103,7 +103,8 @@ export default {
 			//찬석
 			isStatusOn: false,
 			notificationList: { content: [] },
-			scrollPostion: 0
+			scrollPostion: 0,
+			hasContent: false, // 종 색깔
 		};
 	},
 	methods: {
@@ -116,16 +117,6 @@ export default {
     	this.isStatusOn = !this.isStatusOn;
 		console.log('isStatusOn 값:', this.isStatusOn);
   		},
-		// handleScroll(e){
-		// 	this.scrollPostion = e.target.scrollTop;
-
-		// 	if(this.scrollPosition > 100){
-		// 		console.log("UP")
-		// 	} else {
-		// 		console.log("DOWN")
-		// 	}
-		// },
-
 	},
 	computed: {
 		getClassObject() {
@@ -134,20 +125,31 @@ export default {
 	},
 	// 찬석
 	created() {
-		// const id = this.$session.get('memberId');
-		const id = 1;
-		console.log("session memberId : ", id);
+		const id = window.localStorage.getItem("memberId");
+		// const id = 1;
+		console.log("localStorage memberId : ", id);
 		const url = `${this.backURL}/subscribe?memberId=${id}`
 
 		axios.get(url)
 			.then(response=> {
-				// this.notificationList = response.data
-				this.notificationList.content = response.data;
-				// this.notificationList = { content: response.data }; // 객체 내에 content 속성으로 데이터 할당
-      			const contentList = this.notificationList.content.map(item => item.content);
 
-				console.log(this.notificationList);
-				console.log("list : ", contentList);
+				if(response.data && response.data.length > 0) {
+					// this.notificationList = response.data
+					this.notificationList.content = response.data;
+					// this.notificationList = { content: response.data }; // 객체 내에 content 속성으로 데이터 할당
+					  const contentList = this.notificationList.content.map(item => item.content);
+	
+					console.log(this.notificationList);
+					console.log("list : ", contentList);
+
+					this.hasContent = true;
+				} else {
+					console.log("최근 알림이 없습니다");
+
+					this.notificationList.content = [];
+					this.notificationList.content.push({ content: " 최근 알림이 없습니다 ㅠ " })
+					this.hasContent = false;
+				}
 			})
 			.catch(error => {
 				console.error('에러발생');
@@ -296,7 +298,6 @@ aside {
 }
 	// 찬석
 	.notify {
-		
 		position: absolute;
 		width: 400px;
 		margin-left: 245px;
@@ -309,17 +310,22 @@ aside {
 		overflow-y: auto; 
 	}
 	/* 스크롤바 스타일링 */
-.notify::-webkit-scrollbar {
-    width: 8px; /* 스크롤바 너비 */
-}
+	.notify::-webkit-scrollbar {
+		width: 8px;
+	}
 
-.notify::-webkit-scrollbar-thumb {
-    background-color: var(--light); /* 스크롤바 색상 */
-    border-radius: 4px; /* 스크롤바 모양 */
-}
+	.notify::-webkit-scrollbar-thumb {
+		background-color: var(--light); /* 스크롤바 색상 */
+		border-radius: 4px; /* 스크롤바 모양 */
+	}
 
-.notify::-webkit-scrollbar-track {
-    background-color: var(--dark); /* 스크롤바 트랙 색상 */
-    border-radius: 4px; /* 스크롤바 트랙 모양 */
-}
+	.notify::-webkit-scrollbar-track {
+		background-color: var(--dark); /* 스크롤바 트랙 색상 */
+		border-radius: 4px; /* 스크롤바 트랙 모양 */
+	}
+	/* contentList가 null이 아니면 종 이모티콘 색상 변경 */
+	.material-icons.bell-has-content {
+	color: yellow !important;
+	}
+
 </style>
