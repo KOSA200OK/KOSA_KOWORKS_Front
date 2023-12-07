@@ -17,7 +17,7 @@
 				<button @click="toggleOnOff" class="text">Bell</button>
 				<!-- <span class="text">Bell</span> -->
 			</button>
-			<!-- 찬석 -->
+			<!-- 찬석  -->
 			<div v-if="isStatusOn" class="notify">
 				<notificationItem :n="n"
 									v-for="n in this.notificationList.content"
