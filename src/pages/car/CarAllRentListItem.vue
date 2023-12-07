@@ -5,6 +5,7 @@
         <td>{{r.member.name}}</td>
         <td>{{r.car.carNo}}</td>
         <td>{{r.startDate}} ~ {{r.endDate}}</td>
+        <td><span v-if="r.status==1">반려</span></td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck" >
         <div class="modal-container">

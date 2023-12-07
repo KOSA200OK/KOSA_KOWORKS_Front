@@ -21,8 +21,8 @@
             :path="'/carrent/myrentlist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
             :totalPage="myrentlist.totalPages"
-            :cntPerPage="myrentlist.size"
-            :totalCnt="myrentlist.totalElements"
+            :startPage="startPage"
+            :endPage="endPage"
         />
     </div>
 </template>
@@ -37,7 +37,9 @@ export default {
         return {
             currentPage: 1,
             myrentlist: null,
-            modalCheck : false
+            modalCheck : false,
+            startPage: 1,
+            endPage : 1
         }
     },
     methods: {
@@ -48,6 +50,14 @@ export default {
             axios.get(url)
             .then(response=>{
                 this.myrentlist = response.data
+                if(this.currentPage <=  this.myrentlist.totalPages){
+                    this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
+                    this.endPage = this.startPage + 5 - 1
+
+                    if(this.endPage>this.myrentlist.totalPages){
+                        this.endPage =this.myrentlist.totalPages
+                    }
+                }
                 // this.myrentlist.content.reqDate = this.formatToYYYYMMDD(this.myrentlist.content.reqDate)
                 // this.myrentlist.content.startDate = this.formatToYYYYMMDD(this.myrentlist.content.startDate)
                 // this.myrentlist.content.endDate = this.formatToYYYYMMDD(this.myrentlist.content.endDate)

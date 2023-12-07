@@ -28,8 +28,8 @@
             :path="'/carrent/managelist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
             :totalPage="carlist.totalPages"
-            :cntPerPage="carlist.size"
-            :totalCnt="carlist.totalElements"
+            :startPage="startPage"
+            :endPage="endPage"
         />
     </div>
 </template>
@@ -44,7 +44,9 @@ export default {
     data() {
         return {
             currentPage: 1,
-            carlist: null
+            carlist: null,
+            startPage : 1,
+            endPage : 1
         }
     },
     methods: {
@@ -54,6 +56,14 @@ export default {
             axios.get(url)
             .then(response=>{
                 this.carlist = response.data
+                if(this.currentPage <=  this.carlist.totalPages){
+                    this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
+                    this.endPage = this.startPage + 5 - 1
+
+                    if(this.endPage>this.carlist.totalPages){
+                        this.endPage =this.carlist.totalPages
+                    }
+                }
             })
             .catch((Error)=>{
                 console.log(Error)

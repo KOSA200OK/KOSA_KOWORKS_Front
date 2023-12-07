@@ -8,6 +8,7 @@
                     <th>예약자</th>
                     <th>차량번호</th>
                     <th>대여기간</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -21,9 +22,8 @@
             v-if="allrentlist" 
             :path="'/carrent/allrentlist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-            :totalPage="allrentlist.totalPages"
-            :cntPerPage="allrentlist.size"
-            :totalCnt="allrentlist.totalElements"
+            :startPage="startPage"
+            :endPage="endPage"
         />
     </div>
 </template>
@@ -38,7 +38,9 @@ export default {
         return {
             currentPage: 1,
             allrentlist: null,
-            modalCheck : false
+            modalCheck : false,
+            startPage : 1,
+            endPage : 1
         }
     },
     methods: {
@@ -49,6 +51,15 @@ export default {
             .then(response=>{
                 this.allrentlist = response.data
                 console.log(this.allrentlist)
+                if(this.currentPage <=  this.allrentlist.totalPages){
+                    this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
+                    this.endPage = this.startPage + 5 - 1
+
+                    if(this.endPage>this.allrentlist.totalPages){
+                        this.endPage =this.allrentlist.totalPages
+                    }
+                }
+                console.log(startPage+' '+endPage)
             })
             .catch((Error)=>{
                 console.log(Error)
@@ -65,7 +76,7 @@ export default {
             } else {
                 this.currentPage = 1
             }
-            this.axiosHandler(this.currentPage)
+            this.axiosHandler()
         }
         //----라우터값이 변경되었을 때 할 일 END----     
     },
@@ -74,7 +85,7 @@ export default {
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
-        this.axiosHandler(this.currentPage)
+        this.axiosHandler()
     }
 }
 </script>

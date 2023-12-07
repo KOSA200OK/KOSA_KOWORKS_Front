@@ -44,13 +44,21 @@ export default {
     props: ["path", "currentPage", "totalPage", "startPage", "endPage"],
     data() {
         return {
-
+            // startPage:0,
+            // endPage:0
         }
     },
     methods: {
     },
     created(){
+        // if(this.currentPage <=  this.totalPage){
+        //     this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
+        //     this.endPage = this.startPage + 5 - 1
 
+        //     if(this.endPage>this.totalPage){
+        //         this.endPage =this.totalPage
+        //     }
+        // }
     }
 }
 </script>

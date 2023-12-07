@@ -21,9 +21,9 @@
             v-if="rentlist" 
             :path="'/carrent/rentlist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
+            :startPage="startPage"
+            :endPage="endPage"
             :totalPage="rentlist.totalPages"
-            :cntPerPage="rentlist.size"
-            :totalCnt="rentlist.totalElements"
         />
     </div>
 </template>
@@ -38,7 +38,9 @@ export default {
         return {
             currentPage: 1,
             rentlist: null,
-            modalCheck : false
+            modalCheck : false,
+            startPage : 1,
+            endPage : 1
         }
     },
     methods: {
@@ -49,6 +51,14 @@ export default {
             .then(response=>{
                 this.rentlist = response.data
                 console.log(this.rentlist)
+                if(this.currentPage <=  this.rentlist.totalPages){
+                    this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
+                    this.endPage = this.startPage + 5 - 1
+
+                    if(this.endPage>this.rentlist.totalPages){
+                        this.endPage =this.rentlist.totalPages
+                    }
+                }
             })
             .catch((Error)=>{
                 console.log(Error)
@@ -65,7 +75,7 @@ export default {
             } else {
                 this.currentPage = 1
             }
-            this.axiosHandler(this.currentPage)
+            this.axiosHandler()
         }
         //----라우터값이 변경되었을 때 할 일 END----     
     },
@@ -74,7 +84,7 @@ export default {
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
-        this.axiosHandler(this.currentPage)
+        this.axiosHandler()
     }
 }
 </script>
