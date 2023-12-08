@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="rentlist">
+    <div class="allrentlist">
         <table>
             <thead>
                 <tr>
@@ -8,36 +8,36 @@
                     <th>예약자</th>
                     <th>차량번호</th>
                     <th>대여기간</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <CarRentListItem :r="r"
-                            v-if="rentlist"
-                            v-for="r in rentlist.content"
+                <CarAllRentListItem :r="r"
+                            v-if="allrentlist"
+                            v-for="r in allrentlist.content"
                             :key="r.id"/>
             </tbody>
         </table>
         <PageGroup
-            v-if="rentlist" 
-            :path="'/carrent/rentlist/'"
+            v-if="allrentlist" 
+            :path="'/carrent/allrentlist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
             :startPage="startPage"
             :endPage="endPage"
-            :totalPage="rentlist.totalPages"
         />
     </div>
 </template>
 <script>
-import CarRentListItem from '@/pages/car/CarRentListItem.vue'
+import CarAllRentListItem from '@/pages/car/CarAllRentListItem.vue'
 import PageGroup from '@/components/PageGroup.vue'
 import axios from 'axios'
 export default {
-    name: 'CarRentList',
-    components: { CarRentListItem, PageGroup},
+    name: 'CarAllRentList',
+    components: { CarAllRentListItem, PageGroup},
     data() {
         return {
             currentPage: 1,
-            rentlist: null,
+            allrentlist: null,
             modalCheck : false,
             startPage : 1,
             endPage : 1
@@ -46,19 +46,20 @@ export default {
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/carrent/rentlist/${this.currentPage}`
+            const url = `${this.backURL}/carrent/allrentlist/${this.currentPage}`
             axios.get(url)
             .then(response=>{
-                this.rentlist = response.data
-                console.log(this.rentlist)
-                if(this.currentPage <=  this.rentlist.totalPages){
+                this.allrentlist = response.data
+                console.log(this.allrentlist)
+                if(this.currentPage <=  this.allrentlist.totalPages){
                     this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
                     this.endPage = this.startPage + 5 - 1
 
-                    if(this.endPage>this.rentlist.totalPages){
-                        this.endPage =this.rentlist.totalPages
+                    if(this.endPage>this.allrentlist.totalPages){
+                        this.endPage =this.allrentlist.totalPages
                     }
                 }
+                console.log(startPage+' '+endPage)
             })
             .catch((Error)=>{
                 console.log(Error)
@@ -80,7 +81,7 @@ export default {
         //----라우터값이 변경되었을 때 할 일 END----     
     },
     created() {
-        console.log('created rentlist')
+        console.log('created allrentlist')
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
@@ -89,13 +90,13 @@ export default {
 }
 </script>
 <style scoped>
-.rentlist{
+.allrentlist{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-.rentlist>table{
+.allrentlist>table{
     width : 1000px;
     border-top:solid 3px #363840;
     border-bottom:solid 3px #363840;

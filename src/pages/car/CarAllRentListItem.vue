@@ -1,57 +1,54 @@
 <template lang="">
-    <tr @click="openModal">
-        <td>{{n.reqDate}}</td>
-        <td>{{n.member.department.name}}</td>
-        <td>{{n.member.name}}</td>
-        <td>{{n.car.carNo}}</td>
-        <td>{{n.startDate}} ~ {{n.endDate}}</td>
+    <tr @click = "openModal">
+        <td>{{r.reqDate}}</td>
+        <td>{{r.member.department.name}}</td>
+        <td>{{r.member.name}}</td>
+        <td>{{r.car.carNo}}</td>
+        <td>{{r.startDate}} ~ {{r.endDate}}</td>
+        <td><span v-if="r.status==1">반려</span></td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck" >
         <div class="modal-container">
-            <div class="noreturndetail">
-                <span>예약자 : {{n.member.name}}</span><br><br>
-                <span>소속부서 : {{n.member.department.name}}</span><br><br>
-                <span>신청날짜 : {{n.reqDate}}</span><br><br><br>
-                <span>차량번호 : {{n.car.carNo}}</span><br><br><br>
-                <span>차종 : {{n.car.carType}}</span><br><br><br>
-                <span>대여기간 : {{n.startDate}} ~ {{n.endDate}}</span><br><br><br>
-                <span>대여목적 : {{n.purpose}}</span><br><br><br>
+            <div class="rentdetail">
+                <label>신청자 : {{r.member.name}}</label><br><br>
+                <label>부서명 : {{r.member.department.name}}</label><br><br>
+                <label>차량번호 : {{r.car.carNo}}</label><br><br>
+                <label>차종 : {{r.car.carType}}</label><br><br><br>
+                <label>대여기간 : {{r.startDate}} ~ {{r.endDate}}</label><br><br><br>
+                <label>대여목적 : {{r.purpose}}</label>
+            </div>
                 <div class="modal-btn">
                     <button class="cancel" @click="openModal">취소</button>
                 </div>
-            </div>
         </div>
     </div>
 </template>
 <script>
 import axios from 'axios'
 export default {
-    name: 'CarNoReturnListItem',
-    props:["n"],
+    name: 'CarAllRentListItem',
+    props:["r"],
     data(){
         return {
+            reqDate : '',
             modalCheck : false
         }
     },
     methods: {
         openModal() {
             this.modalCheck = !this.modalCheck
-            const today = new Date()
-            console.log(today)
         }
     }
 }
 </script>
 <style scoped>
-tr{
-    cursor : pointer;
-}
 td{
     padding : 25px;
     font-size: 15px;
     border-top : dotted 2px;
     border-color : #dfdfdf;
     text-align: center;
+    cursor : pointer;
 }
 .purpose {
     cursor : pointer;
