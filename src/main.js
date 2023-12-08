@@ -1,3 +1,9 @@
+// ---이 부분 추가
+if (typeof global === "undefined") {
+    window.global = window;
+  }
+  // ---
+
 import { createApp } from "vue";
 import App from "./App.vue";
 
