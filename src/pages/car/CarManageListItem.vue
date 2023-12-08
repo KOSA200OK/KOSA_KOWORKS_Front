@@ -23,9 +23,9 @@ export default {
 </script>
 <style scoped>
 td{
-    padding : 25px;
-    font-size: 15px;
-    border-top : dotted 2px;
+    padding : 15px;
+    font-size: 13px;
+    border-top : solid 1px #ebe9e9;
     border-color : #dfdfdf;
     text-align: center;
 }

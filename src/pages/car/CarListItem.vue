@@ -3,7 +3,7 @@
         <td>{{c.id}}</td>
         <td>{{c.carNo}}</td>
         <td>{{c.carType}}</td>
-        <td><button v-if="c.status==0" @click="openModal">신청</button></td>
+        <td><button @click="openModal">신청</button></td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck" >
         <div class="modal-container">
@@ -12,18 +12,7 @@
                 <label>부서명 : </label><br><br>
                 <label>차량번호 : {{c.carNo}}</label><br><br>
                 <label>차종 : {{c.carType}}</label><br><br><br>
-                <label>대여기간 : </label><input type="date" 
-                                    name="startDate" 
-                                    v-model="startDate"
-                                    :min="minStartDate" 
-                                    @input="inputHandler" 
-                                    required>
-                                     ~ <input type="date" 
-                                                name="endDate" 
-                                                v-model="endDate" 
-                                                :min="minEndDate" 
-                                                @input="inputHandler" 
-                                                required><br><br><br>
+                <label>대여기간 : {{d.startDate}} ~ {{d.endDate}}</label><br><br><br>
                 <label>대여목적 : </label><input type="text" 
                                         name="purpose" 
                                         v-model="purpose" 
@@ -42,7 +31,7 @@
 import axios from 'axios'
 export default {
     name: 'CarListItem',
-    props:["c"],
+    props:["c", "d"],
     data(){
         return {
             startDate: "",
@@ -90,8 +79,10 @@ export default {
             this.formData.purpose = this.purpose
         },
         reserveHandler(){
-            this.formData.startDate = this.formatToYYMMDD(new Date(this.startDate));
-            this.formData.endDate = this.formatToYYMMDD(new Date(this.endDate));
+            // this.formData.startDate = this.formatToYYMMDD(new Date(this.startDate));
+            // this.formData.endDate = this.formatToYYMMDD(new Date(this.endDate));
+            this.formData.startDate = this.d.startDate
+            this.formData.endDate = this.d.endDate
 
             if(this.formData.endDate<this.formData.startDate){
                 alert("올바른 날짜 기입이 아닙니다. 대여기간을 다시 확인하세요.")
