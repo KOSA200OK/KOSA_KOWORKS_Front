@@ -1,8 +1,11 @@
 <template lang="">
-  <Header />
+  <!-- <Header />
   <Section />
   <Footer />
-  <router-view />
+  <router-view /> -->
+  <div class="gg">
+		알림공간 Main
+	</div>
 </template>
 <script>
 import Header from "./Header.vue";
@@ -14,4 +17,6 @@ export default {
   components: { Header, Section, Footer },
 };
 </script>
-<style></style>
+<style>
+
+</style>
