@@ -44,7 +44,8 @@ export default {
 				this.isLoggedIn = true;
 				// 브라우저 스토리지에 로그인 상태 저장
 				localStorage.setItem("isLoggedIn", "true");
-
+				//localStorage에 memberId로 id저장
+				localStorage.setItem("memberId", this.id);
 				// SSE 구독 시작 ==
 				this.startSSE();
 
@@ -57,7 +58,7 @@ export default {
 
 		// 찬석
 		async startSSE() {
-			if(this.isLoggedIn) {
+			if (this.isLoggedIn) {
 				// EventSource를 이용해 SSE 구독 시작
 				this.eventSource = new EventSource(`${this.backURL}/subscribe/${this.id}`);
 
@@ -80,10 +81,10 @@ export default {
 
 			setTimeout(() => {
 				notification.close();
-			}, 10*1000);
+			}, 10 * 1000);
 
 			// 브라우저의 알림이 클릭 되었을 때 
-			notification.addEventListener("click", ()=> {
+			notification.addEventListener("click", () => {
 				window.open(data.url, "_blank");
 			})
 		},
@@ -105,7 +106,7 @@ export default {
 			try {
 
 				// SSE 연결 해제
-				if(this.eventSource) {
+				if (this.eventSource) {
 					this.eventSource.close();
 					this.eventSource = null;
 				}
@@ -116,6 +117,8 @@ export default {
 
 				// 브라우저 스토리지에서 로그인 상태 제거
 				localStorage.removeItem("isLoggedIn");
+				// localStorage에서 memberId 제거
+				localStorage.removeItem("memberId");
 
 				this.$router.push("/");
 			} catch (error) {
@@ -126,7 +129,7 @@ export default {
 };
 </script>
 <style>
-.login-container{
+.login-container {
 	width: 100vw;
 }
 </style>

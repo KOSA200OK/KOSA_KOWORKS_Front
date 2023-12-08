@@ -1,27 +1,47 @@
 <template>
     <main>
         <h3 class="title">비품 요청</h3>
-        <label for="startDatePicker">시작 날짜 : </label>
-        <input type="date" id="startDatePicker" v-model="startDate" />
-        <label for="endDatePicker">종료 날짜 : </label>
-        <input type="date" id="endDatePicker" v-model="endDate" />
-        <!-- Status 선택 -->
-        <label for="statusSelect">요청상태 : </label>
-        <select id="statusSelect" v-model="status">
-            <option value="0">승인대기</option>
-            <option value="1">승인</option>
-            <option value="2">반려</option>
-            <option value="3">전체선택</option>
-        </select>
+        <div class="form-container">
+            <div class="form-group">
+                <label for="startDatePicker">시작 날짜:</label>
+                <input type="date" id="startDatePicker" v-model="startDate" />
+            </div>
+            <div class="form-group">
+                <label for="endDatePicker">종료 날짜:</label>
+                <input type="date" id="endDatePicker" v-model="endDate" />
+            </div>
+            <div class="form-group">
+                <label for="statusSelect">요청상태:</label>
+                <select id="statusSelect" v-model="status">
+                    <option value="0">승인대기</option>
+                    <option value="1">승인</option>
+                    <option value="2">반려</option>
+                    <option value="3">전체선택</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="categorySelect">대분류:</label>
+                <select id="categorySelect" v-model="category">
+                    <option value="default">선택안함</option>
+                    <option value="S">문구류</option>
+                    <option value="F">가구류</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="subcategorySelect">소분류:</label>
+                <select id="subcategorySelect" v-model="subcategory">
+                    <option v-if="category === 'S'" value="S0001">A4</option>
+                    <option v-if="category === 'S'" value="S0002">B4</option>
+                    <option v-if="category === 'S'" value="S0003">볼펜</option>
+                    <option v-if="category === 'S'" value="S0004">클립</option>
+                    <option v-if="category === 'F'" value="F0001">책상</option>
+                    <option v-if="category === 'F'" value="F0002">의자</option>
+                    <option v-if="category === 'F'" value="F0003">파티션</option>
+                </select>
+            </div>
+            <button @click="loadData" class="load-button">목록 로드</button>
+        </div>
 
-        <!-- StuffId 선택 -->
-        <label for="stuffIdSelect">비품분류 : </label>
-        <select id="stuffIdSelect" v-model="stuffId">
-            <option value="default">선택안함</option>
-            <option value="S0001">A4</option>
-            <option value="stuff2">Stuff 2</option>
-        </select>
-        <button @click="loadData">목록 로드</button>
         <div class="table-container">
             <table>
                 <thead>
@@ -37,7 +57,7 @@
                 </thead>
                 <tbody>
                     <!-- 비품 데이터를 반복하여 출력 -->
-                    <tr v-for="(reqList, index) in items" :key="index">
+                    <tr v-for="(reqList, index) in reqList" :key="index">
                         <td>{{ reqList.reqDate }}</td>
                         <td>{{ reqList.stuff.id }}</td>
                         <td>{{ reqList.stuff.name }}</td>
@@ -45,21 +65,27 @@
                         <td>{{ reqList.quantity }}</td>
                         <td>{{ reqList.purpose }}</td>
                         <td
-                            :class="{ 'processing': reqList.processStatus === '처리중', 'completed': item.processStatus === '처리완료' }">
-                            {{ reqList.processStatus }}
+                            :class="{ 'processing': reqList.status === 0, 'completed': reqList.status === 1, 'rejected': reqList.status === 2 }">
+                            {{ reqList.status === 0 ? '처리대기' : reqList.status === 1 ? '승인완료' : '승인반려' }}
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <div>
+
+        </div>
     </main>
 </template>
   
 <script>
+import axios from 'axios'
 export default {
     name: 'StuffReq',
     data() {
         return {
+            category: 'default', // 대분류 선택값
+            subcategory: '', // 소분류 선택값
             memberId: null,
             status: 3,
             stuffId: 'default',
@@ -94,10 +120,37 @@ export default {
             ],
         };
     },
+    created() {
+        const memberIdValue = localStorage.getItem('memberId');
+
+        if (memberIdValue !== null) {
+            console.log('memberId의 값:', memberIdValue);
+
+            this.memberId = memberIdValue;
+        } else {
+            console.log('로컬 스토리지에 memberId에 해당하는 값이 없습니다.');
+        }
+    },
     methods: {
         loadData() {
-            const url = `${this.backURL}/requestlist/case`;
-            axios.get(url)
+            const url = `${this.backURL}/stuff/requestlist/case`;
+
+            const params = {
+                memberId: this.memberId,
+                status: this.status,
+                stuffId: this.stuffId,
+                startDate: this.startDate,
+                endDate: this.endDate
+            };
+            // 소분류가 선택된 경우
+            if (this.category !== 'default') {
+                params.stuffId = this.subcategory;
+            }
+
+            axios.get(url, {
+                params: params,
+                withCredentials: true
+            })
                 .then(response => {
                     this.reqList = response.data;
                 })
@@ -112,6 +165,7 @@ export default {
 <style scoped>
 .table-container {
     max-height: 300px;
+    /* max-height: 50%; */
     /* 최대 높이 설정 */
     overflow-y: auto;
     /* 세로 스크롤 허용 */
@@ -137,11 +191,15 @@ th {
     color: #333;
 }
 
+td {
+    background-color: #ffffff;
+}
+
 /* 처리현황에 따른 스타일링 */
 .processing,
-.completed {
+.completed,
+.rejected {
     font-weight: bold;
-    color: #fff;
     text-align: center;
     padding: 8px;
 }
@@ -153,6 +211,47 @@ th {
 
 .completed {
     background-color: rgba(0, 128, 0, 0.7);
-    /* 투명한 초록색 */
 }
+
+.rejected {
+    background-color: rgba(255, 0, 0, 0.7);
+}
+
+ .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-right: 8px;
+    }
+
+    input,
+    select {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-right: 8px;
+    }
+
+    .load-button {
+        height: 35px;
+        background-color: #58d3e9;
+        border: none;
+        color: white;
+        padding: 5px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
 </style>
