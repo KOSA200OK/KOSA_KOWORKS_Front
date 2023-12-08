@@ -51,6 +51,9 @@ const router = createRouter({
     { path: "/carrent/allrentlist/:currentPage", component: CarAllRentList },
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },
+    { path: "/attendance/date/:currentPage", component: Attendance },
+    // /attendance/date/:currentPage
+    // { path: "/attendance/:page", component: Attendance },
     { path: "/notice/noticelist/", component: NoticeList },
     { path: "/notice/noticelist/:currentPage", component: NoticeList },
     { path: "/notice/:id", component: NoticeInfo },
