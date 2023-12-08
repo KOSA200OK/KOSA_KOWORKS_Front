@@ -13,6 +13,7 @@ import ChatRoomList from "@/pages/chat/ChatRoomList.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue"
 import StuffReq from "@/pages/stuff/StuffReq.vue"
+import StuffManage from "@/pages/stuff/StuffManage.vue"
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -40,6 +41,7 @@ const router = createRouter({
     { path: '/meetingroom', component: MeetingRoomList },
     { path: '/meetingroom/myreservation', component: MeetingRoomResList},
     { path: "/stuff/request", component: StuffReq },
+    { path: "/stuff/stuffmanage", component: StuffManage },
   ],
 });
 
