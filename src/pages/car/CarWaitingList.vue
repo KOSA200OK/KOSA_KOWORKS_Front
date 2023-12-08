@@ -23,8 +23,8 @@
             :path="'/carrent/waitinglist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
             :totalPage="waitinglist.totalPages"
-            :cntPerPage="waitinglist.size"
-            :totalCnt="waitinglist.totalElements"
+            :startPage="startPage"
+            :endPage="endPage"
         />
     </div>
 </template>
@@ -39,7 +39,9 @@ export default {
         return {
             currentPage: 1,
             waitinglist: null,
-            modalCheck : false
+            modalCheck : false,
+            startPage : 1,
+            endPage : 1
         }
     },
     methods: {
@@ -50,6 +52,14 @@ export default {
             .then(response=>{
                 this.waitinglist = response.data
                 console.log(this.waitinglist)
+                if(this.currentPage <=  this.waitinglist.totalPages){
+                    this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
+                    this.endPage = this.startPage + 5 - 1
+
+                    if(this.endPage>this.waitinglist.totalPages){
+                        this.endPage =this.waitinglist.totalPages
+                    }
+                }
             })
             .catch((Error)=>{
                 console.log(Error)
@@ -67,7 +77,7 @@ export default {
             } else {
                 this.currentPage = 1
             }
-            this.axiosHandler(this.currentPage)
+            this.axiosHandler()
         }
         //----라우터값이 변경되었을 때 할 일 END----     
     },
@@ -76,7 +86,7 @@ export default {
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
-        this.axiosHandler(this.currentPage)
+        this.axiosHandler()
     }
 }
 </script>

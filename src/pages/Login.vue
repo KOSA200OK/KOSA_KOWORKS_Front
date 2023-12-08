@@ -176,7 +176,8 @@ export default {
 </script>
 <style>
 .login-container{
-    width: 100vw;
+	background-color:white;
+	width: 100vw;
 }
 .notify_bar {
     margin-top: 850px;
