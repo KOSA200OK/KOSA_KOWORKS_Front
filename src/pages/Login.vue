@@ -74,8 +74,13 @@ export default {
         // 찬석
         async startSSE() {
             if(this.isLoggedIn) {
+
+                const id = localStorage.getItem("memberId");
+
+                // String id = localStorage.getItem
                 // EventSource를 이용해 SSE 구독 시작
-                this.eventSource = new EventSource(`${this.backURL}/subscribe/${this.id}`);
+                // this.eventSource = new EventSource(`${this.backURL}/subscribe/${this.id}`);
+                this.eventSource = new EventSource(`${this.backURL}/subscribe/${id}`);
 
                 this.eventSource.addEventListener("sse", (event) => {
                     console.log(event.data);
@@ -103,11 +108,11 @@ export default {
             notification.addEventListener("click", ()=> {
                 window.open(data.url, "_blank");
             })
-
             // 타이머를 설정하여 10초 후에 알림을 숨김
             this.notificationTimer = setTimeout(() => {
                 this.notifyMessage = '';
             }, 10 * 1000);
+            
         },
 
         async findSession() {
@@ -115,18 +120,29 @@ export default {
             // 브라우저 스토리지에서 로그인 상태 확인
             const storedLoggedIn = localStorage.getItem("isLoggedIn");
             this.isLoggedIn = storedLoggedIn === "true";
-
+            
             if (this.isLoggedIn) {
                 console.log("로그인 상태입니다. id: ");
+            
+            // 찬석
+            // 이전 SSE 구독을 중지
+            this.stopSSE();
+
+            // memberId 값이 존재할 때만 SSE 구독 시작
+            if (this.isLoggedIn) {
+                console.log("이전 로그인 정보로 SSE 구독 시작합니다.");
+                this.startSSE(this.isLoggedIn);
+            }
             } else {
                 console.log("로그인하지 않은 상태입니다.");
-            }
+            } // if-else
+
         },
 
         async logout() {
             try {
 
-                // SSE 연결 해제
+                // SSE 연결 해제 -> 찬석
                 if(this.eventSource) {
                     this.eventSource.close();
                     this.eventSource = null;
@@ -144,6 +160,15 @@ export default {
                 this.$router.push("/");
             } catch (error) {
                 console.error("로그아웃 실패:", error);
+            }
+        },
+        // ========================== 구독 중지 ============================ -> 찬석
+        async stopSSE() {
+            // 이전 SSE 구독을 중지하고 eventSource 초기화
+            if (this.eventSource) {
+                this.eventSource.close();
+                this.eventSource = null;
+                console.log("이전 SSE 구독을 중지합니다.");
             }
         },
     },
