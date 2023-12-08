@@ -129,7 +129,7 @@ export default {
  #map{
     width:800px;
     height:400px;
-    margin-left : 15%;
+    margin-left : 20%;
     margin-bottom: 5%;
     border-radius: 20px;
     border : solid 2px #50798b34;
@@ -152,9 +152,13 @@ export default {
     height:30px;
     background:#ffea00; 
     border-radius: 30px;
-    bottom: 70px;
+    bottom: 50px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    box-shadow: inset 0 0 20px #ff9500;
+    box-shadow:  inset 0 3px 8px #ff9500;
+    /* inset 0 0 20px */
+
+    animation: bubble 0.7s ease-in 0s infinite alternate; 
+    margin-top: 0;
 }
 
 .bubble:after {
@@ -166,5 +170,9 @@ export default {
     position:absolute;
     top:30px;
     left:30px;  
+}
+@keyframes bubble {
+	0% {margin-top: 0px;} /* 처음 위치 */
+	100% {margin-top: 10px;} /* 마지막 위치 */
 }
 </style>

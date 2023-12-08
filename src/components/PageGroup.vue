@@ -63,10 +63,7 @@ export default {
 }
 </script>
 <style scoped>
-    .pagegroup{
-        margin-top:50px;
-        margin-bottom:50px;
-    }
+
     ul.pagination{
         list-style-type: none;
         padding:0;

@@ -63,7 +63,7 @@
 				<span class="material-icons">no_crash</span>
 				<span class="text">차량 예약</span><br>
 			</router-link>
-			<router-link class="button" to="/carrent/managelist">
+			<router-link class="button" to="/carrent/manage">
 				<span class="material-icons">car_rental</span>
 				<span class="text">차량 관리</span>
 			</router-link>
