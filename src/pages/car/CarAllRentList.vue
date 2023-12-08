@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="waitinglist">
+    <div class="allrentlist">
         <table>
             <thead>
                 <tr>
@@ -12,33 +12,32 @@
                 </tr>
             </thead>
             <tbody>
-                <CarWaitingListItem :w="w"
-                            v-if="waitinglist"
-                            v-for="w in waitinglist.content"
-                            :key="w.id"/>
+                <CarAllRentListItem :r="r"
+                            v-if="allrentlist"
+                            v-for="r in allrentlist.content"
+                            :key="r.id"/>
             </tbody>
         </table>
         <PageGroup
-            v-if="waitinglist" 
-            :path="'/carrent/waitinglist/'"
+            v-if="allrentlist" 
+            :path="'/carrent/allrentlist/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-            :totalPage="waitinglist.totalPages"
             :startPage="startPage"
             :endPage="endPage"
         />
     </div>
 </template>
 <script>
-import CarWaitingListItem from '@/pages/car/CarWaitingListItem.vue'
+import CarAllRentListItem from '@/pages/car/CarAllRentListItem.vue'
 import PageGroup from '@/components/PageGroup.vue'
 import axios from 'axios'
 export default {
-    name: 'WaitingList',
-    components: { CarWaitingListItem, PageGroup},
+    name: 'CarAllRentList',
+    components: { CarAllRentListItem, PageGroup},
     data() {
         return {
             currentPage: 1,
-            waitinglist: null,
+            allrentlist: null,
             modalCheck : false,
             startPage : 1,
             endPage : 1
@@ -47,26 +46,26 @@ export default {
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const url = `${this.backURL}/carrent/waitinglist/${this.currentPage}`
+            const url = `${this.backURL}/carrent/allrentlist/${this.currentPage}`
             axios.get(url)
             .then(response=>{
-                this.waitinglist = response.data
-                console.log(this.waitinglist)
-                if(this.currentPage <=  this.waitinglist.totalPages){
+                this.allrentlist = response.data
+                console.log(this.allrentlist)
+                if(this.currentPage <=  this.allrentlist.totalPages){
                     this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
                     this.endPage = this.startPage + 5 - 1
 
-                    if(this.endPage>this.waitinglist.totalPages){
-                        this.endPage =this.waitinglist.totalPages
+                    if(this.endPage>this.allrentlist.totalPages){
+                        this.endPage =this.allrentlist.totalPages
                     }
                 }
+                console.log(startPage+' '+endPage)
             })
             .catch((Error)=>{
                 console.log(Error)
             })
         },
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
-
     },
     watch: {
         //----라우터값이 변경되었을 때 할 일 START----
@@ -82,7 +81,7 @@ export default {
         //----라우터값이 변경되었을 때 할 일 END----     
     },
     created() {
-        console.log('created carwaitinglist')
+        console.log('created allrentlist')
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
@@ -91,13 +90,13 @@ export default {
 }
 </script>
 <style scoped>
-.waitinglist{
+.allrentlist{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-.waitinglist>table{
+.allrentlist>table{
     width : 1000px;
     border-top:solid 3px #363840;
     border-bottom:solid 3px #363840;

@@ -19,13 +19,13 @@
                     @click="clickNoticeInfo(`${n.id}`)"/>
             </tbody>
             
-            <PageGroup 
+            <!-- <PageGroup 
             v-if="noticelist" 
             :path="'/notice/noticelist/'"
             :currentPage="$route.params.currentPage?$route.params.currentPage:1"
             :totalPage="noticelist.totalPages"
             :cntPerPage="noticelist.size"
-            :totalCnt="noticelist.totalElements" />
+            :totalCnt="noticelist.totalElements" /> -->
         </table>
     </div>
 </template>

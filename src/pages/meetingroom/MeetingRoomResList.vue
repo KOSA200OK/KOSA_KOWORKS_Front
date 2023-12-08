@@ -19,13 +19,13 @@
                 />
             </tbody>
             
-            <PageGroup 
+            <!-- <PageGroup 
             v-if="meetingroomreslist" 
             :path="'/meetingroom/myreservation/'"
             :currentPage="$route.params.currentPage?$route.params.currentPage:1"
             :totalPage="meetingroomreslist.totalPages"
             :cntPerPage="meetingroomreslist.size"
-            :totalCnt="meetingroomreslist.totalElements" />
+            :totalCnt="meetingroomreslist.totalElements" /> -->
         </table>
     </div>
 </template>

@@ -8,10 +8,22 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
+<<<<<<< HEAD
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+    
+=======
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
+>>>>>>> 297b88da82d93066d3ef2628c371f257ab424e09
   },
   define: {
     global: "window",
   },
+<<<<<<< HEAD
+  
+
+})
+=======
 });
+>>>>>>> 297b88da82d93066d3ef2628c371f257ab424e09

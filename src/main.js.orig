@@ -1,6 +1,14 @@
+<<<<<<< HEAD
+// ---이 부분 추가
+if (typeof global === "undefined") {
+    window.global = window;
+  }
+  // ---
+=======
 if (typeof global === "undefined") {
   window.global = window;
 }
+>>>>>>> 297b88da82d93066d3ef2628c371f257ab424e09
 
 import { createApp } from "vue";
 import App from "./App.vue";
