@@ -8,19 +8,19 @@
         <div class="optionbuttons">
             <div class="option-text">
                 <router-link class="waiting" to="/carrent/waitinglist">승인대기</router-link><br><br>
-                <span>0</span>
+                <span :bind="waitingcnt">{{waitingcnt}}</span>
             </div>
         </div>
         <div class="optionbuttons">
             <div class="option-text">
                 <router-link class="renting" to="/carrent/rentlist">대여중</router-link><br><br>
-                <span>0</span>
+                <span :bind="rentcnt">{{rentcnt}}</span>
             </div>
         </div>
         <div class="optionbuttons">
             <div class="option-text">
                 <router-link class="noreturn" to="/carrent/noreturnlist">미반납</router-link><br><br>
-                <span>0</span>
+                <span :bind="noreturncnt">{{noreturncnt}}</span>
             </div>
         </div>
         <CarsMap v-if="carlist"
@@ -52,17 +52,43 @@ export default {
     components: { CarManageListItem, PageGroup, CarsMap},
     data() {
         return {
-            carlist: null
+            carlist: null,
+            rentlist: null,
+            waitinglist : null,
+            noreturnlist : null,
+            rentcnt : 0,
+            waitingcnt : 0,
+            noreturncnt : 0
         }
     },
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
+            console.log('axios호출시작')
             const url = `${this.backURL}/carrent/managelist`
             axios.get(url)
             .then(response=>{
-                this.carlist = response.data
+                this.carlist = response.data.carlist
+                this.waitinglist = response.data.waitinglist
+                this.rentlist = response.data.rentlist
+                this.noreturnlist = response.data.noreturnlist
                 console.log(this.carlist)
+                console.log(this.waitinglist)
+                console.log(this.rentlist)
+                console.log(this.noreturnlist)
+                if(this.waitinglist!=null){
+                    console.log('cnt값 구하기 시작')
+                    this.waitingcnt = this.waitinglist.length
+                }
+                if(this.rentlist!=null){
+                    this.rentcnt = this.rentlist.length
+                }
+                if(this.noreturnlist!=null){
+                    this.noreturncnt = this.noreturnlist.length
+                }
+                console.log(this.waitingcnt)
+                console.log(this.noreturncnt)
+                console.log('axios호출완료')
             })
             .catch((Error)=>{
                 console.log(Error)
@@ -75,7 +101,6 @@ export default {
         console.log('created carmanagelist')
         this.axiosHandler()
     }
-    
 }
 </script>
 <style scoped>
@@ -92,16 +117,16 @@ export default {
 }
 a{
     text-decoration: none;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 1000;
-    color : rgb(20, 20, 20);
+    color : rgb(57, 97, 97);
 }
 .carmanagelist>table{
     width : 1200px;
     margin-bottom: 200px;
     border: solid 1px #ebe9e9;
     border-radius: 20px;
-    box-shadow: 0 19px 38px #f3f3f3
+    box-shadow: 0 19px 38px #f3f3f3;
 }
 .optionbuttons{
     margin-left : 20%;
@@ -129,12 +154,11 @@ a{
     text-decoration: none;
     font-size: 30px;
     font-weight: 1000;
-    color : rgb(31, 31, 31);
+    color : rgb(35, 153, 153);
 }
 th{
     padding : 20px;
     font-size: 13px;
     background-color : #f5f8f8;
-    
 }
 </style>
