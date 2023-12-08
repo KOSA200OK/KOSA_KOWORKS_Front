@@ -52,7 +52,7 @@
                     id="category" 
                     v-model="mr.name"
                     class="meetingroom"
-                    @input="updateMeetingId"
+                    @change="updateMeetingId"
                     required>
                         <option selected="">자원을 선택해주세요</option>
                         <!-- <option v-for="mrinfo in mrlist" :key="mrinfo.id" :value="mrinfo.name">
@@ -144,18 +144,13 @@ export default {
   components: { VueDatePicker },
   data() {
     return {
+        id: '',
         startTime: '', // 시작 시간
         endTime: '',   // 종료 시간
         meetingDate: '', //회의 날짜
         purpose: '', //회의 목적
         format: 'HH:mm', // 시간 형식
         formatDate: 'yyyy-MM-dd', //날짜 형식
-        mrlist: [
-          { id: 1, name: '회의실1' },
-          { id: 2, name: '회의실2' },
-          { id: 3, name: '회의실3' },
-          { id: 4, name: '회의실4' },
-        ],
 
         formData: {
           startTime: '', // 시작 시간
@@ -205,11 +200,8 @@ export default {
       this.starttime = "{ hours: 8, minutes: 0 }";
     },
     updateMeetingId() {
-      const selectedMeeting = this.mr.find(mr => mr.name === this.mr.name);
-      if (selectedMeeting) {
-        this.formData.meetingroom.id = selectedMeeting.id;
-      }
-      // this.formData.meetingroom.id = this.mr.id;
+      console.log(this.id);
+      this.formData.meetingroom.id = this.id;
     },
     updateStartTime() {
       const hours = this.startTime.hours < 10 ? '0' + this.startTime.hours : this.startTime.hours;
@@ -238,10 +230,6 @@ export default {
       console.log(this.meetingDate)
 
       this.formData.meetingDate = this.meetingDate;
-    },
-    updateInfo() {
-      this.formData.purpose = purpose;
-      // this.formData.meetingroom.id = this.meetingroomId;
     },
     saveReservationHandler(e) {
       const url = `${this.backURL}/meetingroom`

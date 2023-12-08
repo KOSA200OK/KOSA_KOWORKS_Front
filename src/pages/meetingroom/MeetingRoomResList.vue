@@ -16,7 +16,6 @@
                     v-if="meetingroomreslist.content"
                     v-for="mrr in meetingroomreslist.content" 
                     v-bind:key="mrr.id"
-                    @click="clickMeetingRoomResInfo(`${mrr.id}`)"
                 />
             </tbody>
             
@@ -117,13 +116,6 @@ th{
 th {
   background-color: var(--dark);
   color: #ddd;
-}
-
-/* 테이블 올렸을 때 */
-tbody tr:hover {
-  background-color: #d3d3d3;
-  opacity: 0.9;
-  cursor: pointer;
 }
 
 /* 테이블 비율 */
