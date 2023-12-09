@@ -37,7 +37,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post("http://localhost:8880/login", {
+        const response = await axios.post(`${this.backURL}/login`, {
           id: this.id,
           password: this.password,
         });
@@ -67,7 +67,7 @@ export default {
         this.eventSource.addEventListener("sse", (event) => {
           console.log(event.data);
 
-          const data = JSON.parse(event.data);
+          // const data = JSON.parse(event.data);
 
           // 브라우저의 알림 표시
           this.showNotification(data);
@@ -114,14 +114,8 @@ export default {
         }
         // =============
 
-        await axios.get("http://localhost:8880/logout", {});
+        await axios.get(`${this.backURL}/logout`, {});
         this.isLoggedIn = false;
-
-        // 브라우저 스토리지에서 로그인 상태 제거
-        localStorage.removeItem("isLoggedIn");
-        // localStorage에서 memberId 제거
-        localStorage.removeItem("memberId");
-
         // 브라우저 스토리지에서 로그인 상태 제거
         localStorage.removeItem("isLoggedIn");
         // localStorage에서 memberId 제거

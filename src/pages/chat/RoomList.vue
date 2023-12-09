@@ -1,31 +1,23 @@
 <template>
-  <!-- RoomList.vue -->
   <!-- v-cloak 디렉티브를 사용하여 앱이 로딩될 때까지 템플릿을 감춤 -->
-  <div class="container" id="app" v-cloak>
-    <div class="row">
-      <div class="col-md-12">
-        <h3>채팅방 리스트</h3>
-      </div>
+  <div class="messenger-container" id="app" v-cloak>
+    <div class="header">
+      <h3>채팅방 목록</h3>
     </div>
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text">방제목</label>
-      </div>
+    <div class="chatroom-form">
+      <label for="roomName" class="sr-only">방제목</label>
       <input
+        id="roomName"
         type="text"
-        class="form-control"
         v-model="room_name"
+        placeholder="만들고싶은 채팅방제목을 입력하세요"
         @keyup.enter="createRoom"
       />
-      <div class="input-group-append">
-        <button class="btn btn-primary" type="button" @click="createRoom">
-          채팅방 개설
-        </button>
-      </div>
+      <button @click="createRoom">채팅방 개설</button>
     </div>
-    <ul class="list-group">
+    <ul class="chatroom-list">
       <li
-        class="list-group-item list-group-item-action"
+        class="chatroom-item"
         v-for="item in chatrooms"
         :key="item.roomId"
         @click="enterRoom(item.roomId)"
@@ -56,7 +48,7 @@ export default {
     async findAllRoom() {
       try {
         // 응답을 받아와서 chatrooms에 대입
-        const response = await axios.get("http://localhost:8880/chat/rooms");
+        const response = await axios.get(`${this.backURL}/chat/rooms`);
         this.chatrooms = response.data;
       } catch (error) {
         console.error("채팅방 조회에 실패했습니다", error);
@@ -73,10 +65,7 @@ export default {
         const params = new URLSearchParams();
         params.append("name", this.room_name);
 
-        const response = await axios.post(
-          "http://localhost:8880/chat/room",
-          params
-        );
+        const response = await axios.post(`${this.backURL}/chat/room`, params);
 
         alert(response.data.name + "방 개설이 성공했습니다.");
         //방 이름 초기화
@@ -94,10 +83,7 @@ export default {
       if (sender !== "") {
         localStorage.setItem("wschat.sender", sender);
         localStorage.setItem("wschat.roomId", roomId);
-        //---추가 시작
         this.$router.push(`/chat/room/enter/${roomId}`);
-        //--추가 끝
-        // location.href = "http://localhost:8880/chat/room/enter/" + roomId;
       }
     },
   },
@@ -107,5 +93,60 @@ export default {
 <style scoped>
 [v-cloak] {
   display: none;
+}
+.messenger-container {
+  max-width: 400px;
+  margin: 50px auto;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.chatroom-form {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chatroom-item {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.chatroom-item:hover {
+  background-color: #f0f0f0;
 }
 </style>
