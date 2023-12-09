@@ -59,6 +59,10 @@
 				<span class="material-icons">meeting_room</span>
 				<span class="text">회의실 예약</span>
 			</router-link>
+			<router-link class="button" to="/meetingroom/myreservation">
+				<span class="material-icons">meeting_room</span>
+				<span class="text">회의실 내예약보기</span>
+			</router-link>
 			<router-link class="button" to="/carrent/carlist">
 				<span class="material-icons">no_crash</span>
 				<span class="text">차량 예약</span><br>

@@ -18,14 +18,14 @@
                     v-bind:key="n.id"
                     @click="clickNoticeInfo(`${n.id}`)"/>
             </tbody>
-            
-            <!-- <PageGroup 
+
+            <PageGroup 
             v-if="noticelist" 
-            :path="'/notice/noticelist/'"
-            :currentPage="$route.params.currentPage?$route.params.currentPage:1"
-            :totalPage="noticelist.totalPages"
-            :cntPerPage="noticelist.size"
-            :totalCnt="noticelist.totalElements" /> -->
+            :path="$route.params.currentPage ? $route.params.currentPage : 1"
+            :currentPage="currentPage"
+            :startPage="startPage"
+            :endPage="endPage"
+            />
         </table>
     </div>
 </template>
@@ -40,7 +40,9 @@ export default {
     data() {
         return {
             noticelist : [],
-            currentPage: 1
+            currentPage: 1,
+            startPage:1,
+            endPage:1,
         }
     }, 
     methods: {
@@ -49,7 +51,16 @@ export default {
             const url = `${this.backURL}/notice/list?currentPage=${this.currentPage}`
             axios.get(url)
             .then(response=>{
-                this.noticelist = response.data})
+                this.noticelist = response.data
+                if (this.currentPage <= this.noticelist.totalPages) {
+                    this.startPage = parseInt((this.currentPage - 1) / 5) * 5 + 1;
+                    this.endPage = this.startPage + 5 - 1;
+                }
+
+                if (this.endPage > this.noticelist.totalPages) {
+                this.endPage = this.noticelist.totalPages;
+                }
+            })
             .catch((Error) =>{
                 console.log(Error)
             })
@@ -73,17 +84,16 @@ export default {
             } else {
                 this.currentPage = 1
             }
-            this.axiosHandler(this.currentPage)
+            this.axiosHandler()
         }
         //----라우터값이 변경되었을 때 할 일 END----
     },
     created() {
-        console.log('created noticelist')
-        // console.log(noticelist)
+        console.log('created myreservationlist')
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
-        this.axiosHandler(this.currentPage)
+        this.axiosHandler()
     },
 }
 </script>

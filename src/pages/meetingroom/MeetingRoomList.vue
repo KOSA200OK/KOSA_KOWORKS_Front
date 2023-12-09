@@ -17,7 +17,6 @@
                 <th>시간</th>
                 </tr>
             </thead>
-
             <tbody>
                 <MeetingRoomItem 
                     :mr="mr"
@@ -28,6 +27,7 @@
                     @click="clickMeetingRoomReservation()"
                 />
             </tbody>
+            
         </table>
     </div>
 </template>
