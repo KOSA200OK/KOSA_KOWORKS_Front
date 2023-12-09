@@ -11,22 +11,26 @@
       </button>
     </div>
 
-		<div class="menu">
-			<button class="button">
-				<span class="material-icons" :class="{ 'bell-has-content' : hasContent }" >notifications</span>
-				<button @click="toggleOnOff" class="text">Bell</button>
-				<!-- <span class="text">Bell</span> -->
-			</button>
-			<!-- 찬석  -->
-			<div v-if="isStatusOn" class="notify">
-				<notificationItem :n="n"
-									v-for="n in this.notificationList.content"
-									:key="n.id">
-					{{ n.content }}
-					예약 내용 
-				</notificationItem>
-			</div>
-
+    <div class="menu">
+      <button class="button">
+        <span class="material-icons" :class="{ 'bell-has-content': hasContent }"
+          >notifications</span
+        >
+        <button @click="toggleOnOff" class="text">Bell</button>
+        <!-- <span class="text">Bell</span> -->
+      </button>
+      <!-- 찬석  -->
+      <div v-if="isStatusOn" class="notify">
+        <notificationItem
+          :n="n"
+          v-for="n in this.notificationList.content"
+          :key="n.id"
+        >
+          {{ n.content }}
+          예약 내용
+        </notificationItem>
+      </div>
+    </div>
     <h3>Menu</h3>
     <div class="menu">
       <router-link class="button" to="/home">
@@ -92,67 +96,71 @@ import axios from "axios";
 import { ref } from "vue";
 
 export default {
-	// 찬석
-	name: 'Sidebar',
-	components: { notificationItem },
-	data() {
-		return {
-			is_expanded: localStorage.getItem("is_expanded") === "true",
-			//찬석
-			isStatusOn: false,
-			notificationList: { content: [] },
-			scrollPostion: 0,
-			hasContent: false, // 종 색깔
-		};
-	},
-	methods: {
-		toggleMenu() {
-			this.is_expanded = !this.is_expanded;
-			localStorage.setItem("is_expanded", this.is_expanded);
-		},
-		// 찬석
-		toggleOnOff: function() {
-    	this.isStatusOn = !this.isStatusOn;
-		console.log('isStatusOn 값:', this.isStatusOn);
-  		},
-	},
-	computed: {
-		getClassObject() {
-			return { 'is-expanded': this.is_expanded };
-		},
-	},
-	// 찬석
-	created() {
-		const id = window.localStorage.getItem("memberId");
-		// const id = 1;
-		console.log("localStorage memberId : ", id);
-		const url = `${this.backURL}/subscribe?memberId=${id}`
+  // 찬석
+  name: "Sidebar",
+  components: { notificationItem },
+  data() {
+    return {
+      is_expanded: localStorage.getItem("is_expanded") === "true",
+      //찬석
+      isStatusOn: false,
+      notificationList: { content: [] },
+      scrollPostion: 0,
+      hasContent: false, // 종 색깔
+    };
+  },
+  methods: {
+    toggleMenu() {
+      this.is_expanded = !this.is_expanded;
+      localStorage.setItem("is_expanded", this.is_expanded);
+    },
+    // 찬석
+    toggleOnOff: function () {
+      this.isStatusOn = !this.isStatusOn;
+      console.log("isStatusOn 값:", this.isStatusOn);
+    },
+  },
+  computed: {
+    getClassObject() {
+      return { "is-expanded": this.is_expanded };
+    },
+  },
+  // 찬석
+  created() {
+    const id = window.localStorage.getItem("memberId");
+    // const id = 1;
+    console.log("localStorage memberId : ", id);
+    const url = `${this.backURL}/subscribe?memberId=${id}`;
 
-		axios.get(url)
-			.then(response=> {
+    axios
+      .get(url)
+      .then((response) => {
+        if (response.data && response.data.length > 0) {
+          // this.notificationList = response.data
+          this.notificationList.content = response.data;
+          // this.notificationList = { content: response.data }; // 객체 내에 content 속성으로 데이터 할당
+          const contentList = this.notificationList.content.map(
+            (item) => item.content
+          );
 
-				if(response.data && response.data.length > 0) {
-					// this.notificationList = response.data
-					this.notificationList.content = response.data;
-					// this.notificationList = { content: response.data }; // 객체 내에 content 속성으로 데이터 할당
-					  const contentList = this.notificationList.content.map(item => item.content);
-	
-					console.log(this.notificationList);
-					console.log("list : ", contentList);
+          console.log(this.notificationList);
+          console.log("list : ", contentList);
 
-					this.hasContent = true;
-				} else {
-					console.log("최근 알림이 없습니다");
+          this.hasContent = true;
+        } else {
+          console.log("최근 알림이 없습니다");
 
-					this.notificationList.content = [];
-					this.notificationList.content.push({ content: " 최근 알림이 없습니다 ㅠ " })
-					this.hasContent = false;
-				}
-			})
-			.catch(error => {
-				console.error('에러발생');
-			})
-	}
+          this.notificationList.content = [];
+          this.notificationList.content.push({
+            content: " 최근 알림이 없습니다 ㅠ ",
+          });
+          this.hasContent = false;
+        }
+      })
+      .catch((error) => {
+        console.error("에러발생");
+      });
+  },
 };
 </script>
 
@@ -165,7 +173,7 @@ aside {
   overflow: hidden;
   padding: 1rem;
 
-  background-color: #009EA8;//var(--dark); //var()는 사용자 지정 속성
+  background-color: #009ea8; //var(--dark); //var()는 사용자 지정 속성
   color: var(--light);
 
   transition: 0.2s ease-out; //토글 속도
@@ -293,7 +301,6 @@ aside {
     z-index: 99; // 요소의 수직 위치 지정 - 제일 높음
   }
 }
-<<<<<<< HEAD
 // 찬석
 .notify {
   position: absolute;
@@ -309,7 +316,7 @@ aside {
 }
 /* 스크롤바 스타일링 */
 .notify::-webkit-scrollbar {
-  width: 8px; /* 스크롤바 너비 */
+  width: 8px;
 }
 
 .notify::-webkit-scrollbar-thumb {
@@ -321,38 +328,8 @@ aside {
   background-color: var(--dark); /* 스크롤바 트랙 색상 */
   border-radius: 4px; /* 스크롤바 트랙 모양 */
 }
-=======
-	// 찬석
-	.notify {
-		position: absolute;
-		width: 400px;
-		margin-left: 245px;
-		margin-top: 5px;
-		padding: 10px;
-		background-color: var(--dark);
-		border: 1px solid white;
-		border-radius: 4px;
-		max-height: 450px; 
-		overflow-y: auto; 
-	}
-	/* 스크롤바 스타일링 */
-	.notify::-webkit-scrollbar {
-		width: 8px;
-	}
-
-	.notify::-webkit-scrollbar-thumb {
-		background-color: var(--light); /* 스크롤바 색상 */
-		border-radius: 4px; /* 스크롤바 모양 */
-	}
-
-	.notify::-webkit-scrollbar-track {
-		background-color: var(--dark); /* 스크롤바 트랙 색상 */
-		border-radius: 4px; /* 스크롤바 트랙 모양 */
-	}
-	/* contentList가 null이 아니면 종 이모티콘 색상 변경 */
-	.material-icons.bell-has-content {
-	color: yellow !important;
-	}
-
->>>>>>> 297b88da82d93066d3ef2628c371f257ab424e09
+/* contentList가 null이 아니면 종 이모티콘 색상 변경 */
+.material-icons.bell-has-content {
+  color: yellow !important;
+}
 </style>
