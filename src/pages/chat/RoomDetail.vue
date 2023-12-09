@@ -1,7 +1,14 @@
 <template>
   <div class="container" id="app" v-cloak>
-    <div class="header">
+    <div class="detail-header">
       <h2>{{ room.name }}</h2>
+    </div>
+    <div class="chat-input" ref="chatList">
+      <ul class="chat-list">
+        <li class="chat-item" v-for="message in messages" :key="message.id">
+          <strong>{{ message.sender }} - {{ message.message }}</strong>
+        </li>
+      </ul>
     </div>
     <div class="chat-input">
       <input
@@ -13,20 +20,6 @@
       />
       <button class="send-button" @click="sendMessage">보내기</button>
     </div>
-    <ul class="chat-list">
-      <li
-        class="chat-item"
-        v-for="message in messages"
-        :key="message.id"
-        :class="{ 'my-message': message.sender === sender }"
-        :style="{ textAlign: message.sender === sender ? 'right' : 'left' }"
-      >
-        <strong>{{ message.sender }} - {{ message.message }}</strong>
-        <!-- 시간 표시 추가 -->
-        <span>{{ message.timestamp }}</span>
-      </li>
-    </ul>
-    <div></div>
   </div>
 </template>
 
@@ -49,6 +42,7 @@ export default {
     };
   },
   created() {
+    //어차피 DB에 id들어가있는걸 그대로 local에 저장해놓은거라, 아니면 파라미터로 넘겨도 됨
     this.roomId = localStorage.getItem("wschat.roomId");
     this.sender = localStorage.getItem("wschat.sender");
     this.findRoom();
@@ -62,12 +56,10 @@ export default {
         this.room = response.data;
       });
     },
-
     // 메시지 송신 처리
     sendMessage() {
       this.ws.send(
         `/pub/chat/message`,
-        // 메시지를 보낼 때 {}여기에 담아서 보냄
         {},
         JSON.stringify({
           type: "TALK",
@@ -92,14 +84,13 @@ export default {
       // 메시지 수신 시 채팅 내역 저장
       this.saveChatHistory();
       // 화면 갱신
-      //this.$forceUpdate();
-      //
+      // this.$forceUpdate();
     },
 
     loadChatHistory() {
-      // 현재 방에 대한 채팅 내역을 로드
+      // 추가 시작, 현재 방에 대한 채팅 내역을 로드
       const roomChatHistoryKey = `wschat.chatHistory.${this.roomId}`;
-
+      // 추가 끝
       const chatHistory = localStorage.getItem(roomChatHistoryKey);
       console.log(chatHistory);
       if (chatHistory) {
@@ -109,7 +100,7 @@ export default {
 
     saveChatHistory() {
       console.log("saveChatHistory message" + this.messages);
-      // 각 방에 대한 채팅 내역을 별도로 저장
+      // 추가시작, 각 방에 대한 채팅 내역을 별도로 저장
       const roomChatHistoryKey = `wschat.chatHistory.${this.roomId}`;
       localStorage.setItem(roomChatHistoryKey, JSON.stringify(this.messages));
 
@@ -182,84 +173,31 @@ export default {
   display: none;
 }
 .container {
-  max-width: 400px;
-  margin: 20px auto;
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 화면 전체 높이로 설정 */
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #495057;
-}
-
-.chat-input {
-  display: flex !important;
-  flex-direction: row !important;
-  margin-bottom: 20px;
-}
-
-input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-.send-button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.chat-list {
+  overflow-y: auto;
+  flex: 1; /* 채팅 화면이 남은 공간을 모두 차지하도록 설정 */
+  max-height: 300px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
 }
 
 .chat-item {
-  padding: 10px;
-  background-color: #ffffff;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-.chat-item strong {
-  color: #007bff;
-  display: block;
-}
-/* 채팅 아이템의 text-align 스타일을 오른쪽으로 정렬하도록 변경 */
-.chat-item[style*="text-align: right"] strong {
-  text-align: right;
-}
-
-/* 채팅 아이템의 text-align 스타일을 왼쪽으로 정렬하도록 변경 */
-.chat-item[style*="text-align: left"] strong {
-  text-align: left;
-}
-ul {
   list-style: none;
-  padding: 0;
+  padding: 10px;
   margin: 0;
-  overflow-y: auto; /* 세로 스크롤 추가 */
-  max-height: 300px; /* 스크롤이 나타날 최대 높이 지정 (필요에 따라 조절) */
-}
-/* 채팅 오른쪽 왼쪽 */
-.my-message strong {
-  order: 2;
+  border-bottom: 1px solid #ccc;
 }
 
-.chat-item[style*="text-align: right"] strong {
-  order: 1;
+.chat-input {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
 }
 </style>

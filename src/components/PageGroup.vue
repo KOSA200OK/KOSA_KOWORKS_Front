@@ -1,65 +1,65 @@
 <template lang="">
+    <!-- <h1>{{startPage}}, {{endPage}}</h1> -->
     <div class="pagegroup">
         <ul class="pagination">
             <li class="page-item">
                 <router-link 
-                    v-if= "start > 1"
+                    v-if= "startPage > 1"
                     class="page-link" 
-                    :to="path + (start - 1)">
+                    :to="path + (startPage - 1)">
                     PREV
                 </router-link>
             </li>
 
-            <template  v-for="i in (end-start+1)">
-                <li v-if="(i+start-1) == currentPage"
+            <template  v-for="i in (endPage-startPage+1)">
+                <li v-if="(i+startPage-1) == currentPage"
                     class="page-item active" 
                     aria-current="page">
-                    <span class="page-link">{{i+start-1}}</span>
+                    <span class="page-link">{{i+startPage-1}}</span>
                 </li>
                 <li v-else
                     class="page-item">
                     <router-link 
                         class="page-link"            
-                        :to="path+(i+start-1)">
-                        {{i+start-1}}
+                        :to="path+(i+startPage-1)">
+                        {{i+startPage-1}}
                     </router-link>
                 </li>
             </template>
             <li class="page-item"> 
                 <router-link 
-                    v-if= "totalPage > end"
+                    v-if= "totalPage > endPage"
                     class="page-link"  
-                    :to="path+(end + 1)">
+                    :to="path+(endPage + 1)"
+                    >
                     NEXT
                 </router-link>
             </li>
+           
         </ul>    
     </div>
 </template>
 <script>
 export default {
     name: 'PageGroup',
-    props: ["path", "currentPage", "totalPage", "cntPerPage", "totalCnt"],
+    props: ["path", "currentPage", "totalPage", "startPage", "endPage"],
     data() {
         return {
-            start : "",
-            end :""
+            // startPage:0,
+            // endPage:0
         }
     },
     methods: {
     },
     created(){
-        console.log(this.currentPage)
-        if(this.currentPage <= this.totalPage){
-            this.start = (this.currentPage - 1 ) / 5 * 5+1
-            this.end = this.start + 5 - 1
+        // if(this.currentPage <=  this.totalPage){
+        //     this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
+        //     this.endPage = this.startPage + 5 - 1
 
-            if(this.end>this.totalPage){
-                this.end = this.totalPage
-            }
-        }
-        console.log(this.start)
-        console.log(this.end)
+        //     if(this.endPage>this.totalPage){
+        //         this.endPage =this.totalPage
+        //     }
+        // }
     }
 }
 </script>

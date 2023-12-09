@@ -4,8 +4,19 @@
     <div class="header">
       <h3>채팅방 목록</h3>
     </div>
+    <!-- 채팅방 검색 -->
+    <div class="search-form">
+      <label for="roomSearch" class="sr-only">채팅방 검색 </label>
+      <input
+        id="roomSearch"
+        type="text"
+        v-model="search"
+        placeholder="채팅방을 검색하세요"
+      />
+    </div>
+    <!-- 채팅방 검색 -->
     <div class="chatroom-form">
-      <label for="roomName" class="sr-only">방제목</label>
+      <label for="roomName" class="sr-only">방제목 </label>
       <input
         id="roomName"
         type="text"
@@ -18,7 +29,7 @@
     <ul class="chatroom-list">
       <li
         class="chatroom-item"
-        v-for="item in chatrooms"
+        v-for="item in filteredChatrooms"
         :key="item.roomId"
         @click="enterRoom(item.roomId)"
       >
@@ -34,15 +45,29 @@ import axios from "axios";
 export default {
   data() {
     return {
-      // room_name, chatrooms 초기화
+      // room_name, chatrooms, search 초기화
       room_name: "",
       chatrooms: [],
+      search: "",
     };
   },
+
   // 페이지가 로드될 때 findAllRoom 메소드를 호출
   created() {
     this.findAllRoom();
   },
+
+  //채팅방 검색 기능
+  computed: {
+    // 검색어에 따라 필터된 채팅방 목록을 반환합니다.
+    filteredChatrooms() {
+      return this.chatrooms.filter((room) => {
+        // 방 이름 또는 검색어가 포함된 경우만 반환합니다.
+        return room.name.includes(this.search);
+      });
+    },
+  },
+  //채팅방 검색 기능
   methods: {
     // 모든 방 조회
     async findAllRoom() {
@@ -54,6 +79,7 @@ export default {
         console.error("채팅방 조회에 실패했습니다", error);
       }
     },
+
     // 방 생성
     async createRoom() {
       if ("" === this.room_name) {
