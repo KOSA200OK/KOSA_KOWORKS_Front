@@ -4,23 +4,21 @@ import Home from "@/pages/Home.vue";
 import Attendance from "@/pages/attendance/AttendanceList.vue";
 import Address from "@/pages/address/AddressList.vue";
 import CarList from "@/pages/car/CarList.vue";
-import CarMyRentList from '@/pages/car/CarMyRentList.vue'
-import CarManageList from '@/pages/car/CarManageList.vue'
-import CarWaitingList from '@/pages/car/CarWaitingList.vue'
-import CarRentList from '@/pages/car/CarRentList.vue'
-import CarNoReturnList from '@/pages/car/CarNoReturnList.vue'
-import CarAllRentList from '@/pages/car/CarAllRentList.vue'
+import CarMyRentList from "@/pages/car/CarMyRentList.vue";
+import CarManageList from "@/pages/car/CarManageList.vue";
+import CarWaitingList from "@/pages/car/CarWaitingList.vue";
+import CarRentList from "@/pages/car/CarRentList.vue";
+import CarNoReturnList from "@/pages/car/CarNoReturnList.vue";
+import CarAllRentList from "@/pages/car/CarAllRentList.vue";
 import NoticeList from "@/pages/notice/NoticeList.vue";
 import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
-import RoomList from "@/pages/chat/RoomList.vue";
-import RoomDetail from "@/pages/chat/RoomDetail.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
 import ReservationModal from "@/pages/meetingroom/ReservationModal.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
 import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
-
-
-
+import RoomList from "@/pages/chat/RoomList.vue";
+import RoomDetail from "@/pages/chat/RoomDetail.vue";
+// import RoomDetail from "@/pages/chat/RoomDetailCopy.vue";
 
 import StuffReq from "@/pages/stuff/StuffReq.vue";
 import StuffManage from "@/pages/stuff/StuffManage.vue"
@@ -30,7 +28,6 @@ const router = createRouter({
     { path: "/home", component: Home },
     // { path: '/attendancelist', component: AttendanceList },
     { path: "/address/members", component: Address },
-    // { path: "/chat/list", component: ChatRoomList },
     { path: "/chat/roomlist", component: RoomList },
     { path: "/chat/room/enter/:roomid", component: RoomDetail },
     // { path: '/calendar/list', component: Attendance },
@@ -49,7 +46,7 @@ const router = createRouter({
     { path: "/carrent/rentlist/:currentPage", component: CarRentList },
     { path: "/carrent/noreturnlist", component: CarNoReturnList },
     { path: "/carrent/noreturnlist/:currentPage", component: CarNoReturnList },
-    { path: '/carrent/allrentlist', component: CarAllRentList },
+    { path: "/carrent/allrentlist", component: CarAllRentList },
     { path: "/carrent/allrentlist/:currentPage", component: CarAllRentList },
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },
