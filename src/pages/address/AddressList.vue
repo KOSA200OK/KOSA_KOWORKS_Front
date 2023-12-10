@@ -6,14 +6,21 @@
     <!-- 화면에 사원정보가 조회되기 전까지는 화면에 Loading... 보여줌 -->
     <div v-if="loading">Loading...</div>
     <div v-else>
+      <!-- 고정된 헤더 부분 -->
+      <div class="table-header">
+        <div class="header-cell">사원 번호</div>
+        <div class="header-cell">이름</div>
+        <div class="header-cell">직급</div>
+        <div class="header-cell">전화번호</div>
+      </div>
       <!-- key를 member.id로 정해서 <tr></tr>안의 내용을 반복 -->
       <div v-for="member in filteredMembers" :key="member.id">
-        <tr>
-          <td>사원번호: {{ member.id }}</td>
-          <td>이름: {{ member.name }}</td>
-          <td>직급: {{ member.position }}</td>
-          <td>전화번호: {{ member.tel }}</td>
-        </tr>
+        <div class="table-row">
+          <div class="table-cell">{{ member.id }}</div>
+          <div class="table-cell">{{ member.name }}</div>
+          <div class="table-cell">{{ member.position }}</div>
+          <div class="table-cell">{{ member.tel }}</div>
+        </div>
         <hr />
       </div>
     </div>
@@ -51,9 +58,7 @@ export default {
   methods: {
     async findAll() {
       try {
-        const response = await axios.get(
-          `http://localhost:8880/address/members`
-        );
+        const response = await axios.get(`${this.backURL}/address/members`);
         // response.data에는 id, name, position, tel정보가 있음, 그 정보를 members배열에 넣음
         this.members = response.data;
         this.loading = false;
@@ -65,4 +70,28 @@ export default {
   },
 };
 </script>
-<style></style>
+<style scoped>
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.header-cell {
+  flex: 1;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.table-cell {
+  flex: 1;
+  padding: 5px;
+}
+</style>

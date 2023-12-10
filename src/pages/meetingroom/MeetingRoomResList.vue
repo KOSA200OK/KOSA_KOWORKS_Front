@@ -16,17 +16,16 @@
                     v-if="meetingroomreslist.content"
                     v-for="mrr in meetingroomreslist.content" 
                     v-bind:key="mrr.id"
-                    @click="clickMeetingRoomResInfo(`${mrr.id}`)"
                 />
             </tbody>
             
             <PageGroup 
             v-if="meetingroomreslist" 
             :path="'/meetingroom/myreservation/'"
-            :currentPage="$route.params.currentPage?$route.params.currentPage:1"
-            :totalPage="meetingroomreslist.totalPages"
-            :cntPerPage="meetingroomreslist.size"
-            :totalCnt="meetingroomreslist.totalElements" />
+            :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
+            :startPage="startPage"
+            :endPage="endPage"
+            />
         </table>
     </div>
 </template>
@@ -42,21 +41,29 @@ export default {
         return {
             meetingroomreslist : {
                 content: [],
-                totalPages: 0,
-                size: 0,
-                totalElements: 0,
             },    
-            currentPage: 1
+            currentPage: 1,
+            startPage: 1,
+            endPage: 1,
         }
     }, 
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const memberId = "3"
-            const url = `${this.backURL}/meetingroom/myreservation?currentPage=${this.currentPage}&memberId=${memberId}`
+            const memberId = '3'; //localStorage.getItem('memberId')
+            const url = `${this.backURL}/meetingroom/myreservation/${this.currentPage}?memberId=${memberId}`
             axios.get(url)
             .then(response=>{
                 this.meetingroomreslist = response.data;
+                if(this.currentPage <=  this.meetingroomreslist.totalPages){
+                    this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
+                    this.endPage = this.startPage + 5 - 1
+
+                    if(this.endPage>this.meetingroomreslist.totalPages){
+                        this.endPage =this.meetingroomreslist.totalPages
+                    }
+                }
+                console.log(startPage+' '+endPage)
             })
             .catch((error) =>{
                 console.log(error)
@@ -67,8 +74,6 @@ export default {
         //----리스트 중 한 항목 클릭되었을 때 할 일 START----
         clickMeetingRoomResInfo(id) {
             this.id = id;
-            //모달창으로 띄우기
-            // this.$router.push({path: `./${id}`})
         },
         //----리스트 중 한 항목 클릭되었을 때 할 일 END----
 
@@ -82,16 +87,16 @@ export default {
             } else {
                 this.currentPage = 1
             }
-            this.axiosHandler(this.currentPage)
+            this.axiosHandler()
         }
         //----라우터값이 변경되었을 때 할 일 END----
     },
     created() {
-        console.log('created meetingroomreslist')
+        console.log('created myreservationlist')
         if (this.$route.params.currentPage) {
             this.currentPage = this.$route.params.currentPage
         }
-        this.axiosHandler(this.currentPage)
+        this.axiosHandler()
     },
 }
 </script>
@@ -117,13 +122,6 @@ th{
 th {
   background-color: var(--dark);
   color: #ddd;
-}
-
-/* 테이블 올렸을 때 */
-tbody tr:hover {
-  background-color: #d3d3d3;
-  opacity: 0.9;
-  cursor: pointer;
 }
 
 /* 테이블 비율 */

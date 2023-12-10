@@ -14,9 +14,7 @@
             <button type="submit">Logout</button>
         </form>
         <!-- 찬석 -->
-        <div class="notify_bar"
-            v-if="notifyMessage"
-            @click="handleNotificationClick">
+        <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
             {{ notifyMessage }}
         </div>
 
@@ -24,8 +22,8 @@
     </div>
 
     <!-- <div class="gg">
-        login
-    </div> -->
+      login
+  </div> -->
 </template>
 
 <script>
@@ -57,9 +55,8 @@ export default {
                 this.isLoggedIn = true;
                 // 브라우저 스토리지에 로그인 상태 저장
                 localStorage.setItem("isLoggedIn", "true");
-
-				//localStorage에 memberId로 id저장
-				localStorage.setItem("memberId", this.id);
+                //localStorage에 memberId로 id저장
+                localStorage.setItem("memberId", this.id);
 
                 // SSE 구독 시작 ==
                 this.startSSE();
@@ -73,7 +70,57 @@ export default {
 
         // 찬석
         async startSSE() {
-            if(this.isLoggedIn) {
+            if (this.isLoggedIn) {
+                const id = localStorage.getItem("memberId");
+
+                // String id = localStorage.getItem
+                // EventSource를 이용해 SSE 구독 시작
+                // this.eventSource = new EventSource(`${this.backURL}/subscribe/${this.id}`);
+                this.eventSource = new EventSource(`${this.backURL}/subscribe/${id}`);
+
+                this.eventSource.addEventListener("sse", (event) => {
+                    console.log(event.data);
+                    console.log(event);
+
+                    // const data = JSON.parse(event.data);
+
+                    // 브라우저의 알림 표시
+                    // this.showNotification(data);
+                    // this.showNotification(event.data);
+                });
+            }
+        },
+        // 찬석
+        async showNotification(data) {
+            // 브라우저 알림
+            const notification = new Notification("제목", {
+                body: data.content,
+            });
+
+            this.notifyMessage = data.content;
+
+            // 브라우저의 알림이 클릭 되었을 때
+            notification.addEventListener("click", () => {
+                window.open(data.url, "_blank");
+            });
+            // 타이머를 설정하여 10초 후에 알림을 숨김
+            this.notificationTimer = setTimeout(() => {
+                this.notifyMessage = "";
+            }, 10 * 1000);
+        },
+
+        async findSession() {
+            //----
+            // 브라우저 스토리지에서 로그인 상태 확인
+            const storedLoggedIn = localStorage.getItem("isLoggedIn");
+            this.isLoggedIn = storedLoggedIn === "true";
+
+            if (this.isLoggedIn) {
+                console.log("로그인 상태입니다. id: ");
+
+                // 찬석
+                // 이전 SSE 구독을 중지
+                this.stopSSE();
 
                 const id = localStorage.getItem("memberId");
 
@@ -105,14 +152,14 @@ export default {
             this.notifyMessage = data.content;
 
             // 브라우저의 알림이 클릭 되었을 때 
-            notification.addEventListener("click", ()=> {
+            notification.addEventListener("click", () => {
                 window.open(data.url, "_blank");
             })
             // 타이머를 설정하여 10초 후에 알림을 숨김
             this.notificationTimer = setTimeout(() => {
                 this.notifyMessage = '';
             }, 10 * 1000);
-            
+
         },
 
         async findSession() {
@@ -120,19 +167,19 @@ export default {
             // 브라우저 스토리지에서 로그인 상태 확인
             const storedLoggedIn = localStorage.getItem("isLoggedIn");
             this.isLoggedIn = storedLoggedIn === "true";
-            
+
             if (this.isLoggedIn) {
                 console.log("로그인 상태입니다. id: ");
-            
-            // 찬석
-            // 이전 SSE 구독을 중지
-            this.stopSSE();
 
-            // memberId 값이 존재할 때만 SSE 구독 시작
-            if (this.isLoggedIn) {
-                console.log("이전 로그인 정보로 SSE 구독 시작합니다.");
-                this.startSSE(this.isLoggedIn);
-            }
+                // 찬석
+                // 이전 SSE 구독을 중지
+                this.stopSSE();
+
+                // memberId 값이 존재할 때만 SSE 구독 시작
+                if (this.isLoggedIn) {
+                    console.log("이전 로그인 정보로 SSE 구독 시작합니다.");
+                    this.startSSE(this.isLoggedIn);
+                }
             } else {
                 console.log("로그인하지 않은 상태입니다.");
             } // if-else
@@ -143,7 +190,7 @@ export default {
             try {
 
                 // ============== SSE 연결 해제 =============== -> 찬석
-                if(this.eventSource) {
+                if (this.eventSource) {
                     this.eventSource.close();
                     this.eventSource = null;
                 }
@@ -154,8 +201,8 @@ export default {
 
                 // 브라우저 스토리지에서 로그인 상태 제거
                 localStorage.removeItem("isLoggedIn");
-				// localStorage에서 memberId 제거
-				localStorage.removeItem("memberId");
+                // localStorage에서 memberId 제거
+                localStorage.removeItem("memberId");
 
                 this.$router.push("/");
             } catch (error) {
@@ -172,28 +219,69 @@ export default {
             }
         },
     },
-};
-</script>
-<style>
-.login-container{
-	background-color:white;
-	width: 100vw;
+
+    async logout() {
+        try {
+            // SSE 연결 해제 -> 찬석
+            if (this.eventSource) {
+                this.eventSource.close();
+                this.eventSource = null;
+            }
+            // =============
+
+            await axios.get(`${this.backURL}/logout`, {});
+            this.isLoggedIn = false;
+
+            // 브라우저 스토리지에서 로그인 상태 제거
+            localStorage.removeItem("isLoggedIn");
+            // localStorage에서 memberId 제거
+            localStorage.removeItem("memberId");
+
+            this.$router.push("/");
+        } catch (error) {
+            console.error("로그아웃 실패:", error);
+        }
+    },
+    // ========================== 구독 중지 ============================ -> 찬석
+    async stopSSE() {
+        // 이전 SSE 구독을 중지하고 eventSource 초기화
+        if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = null;
+            console.log("이전 SSE 구독을 중지합니다.");
+        }
+    },
 }
+</script>
+
+<style>
+.login-container {
+    background-color: white;
+    width: 100vw;
+}
+
 .notify_bar {
     margin-top: 830px;
     margin-left: 1255px;
     height: 70px;
     width: 400px;
-    padding: 10px; /* 알림 내용과의 간격 조정을 위한 패딩 */
-    background-color: #009EA8; /* 배경색 지정 */
-    border: 2px solid #ccc; /* 테두리 설정 */
-    border-radius: 5px; /* 둥근 테두리를 위한 속성 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-    text-align: center; /* 텍스트 가운데 정렬 */
-    font-family: Arial, sans-serif; /* 폰트 설정 */
-    color: white; /* 텍스트 색상 */
+    padding: 10px;
+    /* 알림 내용과의 간격 조정을 위한 패딩 */
+    background-color: #009EA8;
+    /* 배경색 지정 */
+    border: 2px solid #ccc;
+    /* 테두리 설정 */
+    border-radius: 5px;
+    /* 둥근 테두리를 위한 속성 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* 그림자 효과 */
+    text-align: center;
+    /* 텍스트 가운데 정렬 */
+    font-family: Arial, sans-serif;
+    /* 폰트 설정 */
+    color: white;
+    /* 텍스트 색상 */
     position: absolute;
-}
-</style>
+}</style>
 
 <!-- test -->
