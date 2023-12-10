@@ -8,8 +8,8 @@
                 <h2 class="title">
                     회의실 예약 상세
                 </h2>
-                <button @click="closeModal" class="close">
-                    <svg class="closebutton" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <button class="close">
+                    <svg @click="closeModal" class="closebutton" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                     </svg>
                 </button>
@@ -37,6 +37,26 @@
                     <b>예약자: </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{mrr.member.name}}
                 </div>
                 <br>
+                <!--수정 가능한 영역 START-->
+                <div class="participants"> 
+                <b>회의 참석자: </b> &nbsp;&nbsp;&nbsp; {{mrr.participants.id}}<br>
+                <input v-model="search" type="text" placeholder="검색"/>
+                  <div v-if="loading"></div>
+                  <div v-else-if="filteredMembers.length > 0">
+                        <!-- key를 member.id로 정해서 <tr></tr>안의 내용을 반복 -->
+                        <div v-for="member in filteredMembers" :key="member.id">
+                          <div class="table-row">
+                            <div class="table-cell">{{ member.name }}</div>
+                          </div>
+                        </div>
+                    </div>
+                    <div v-else>
+                    <!-- 검색 결과가 없는 경우 메시지를 화면에 표시 -->
+                    <p>다시 검색해주세요</p>
+                    </div>
+                </div>
+                <!--수정 가능한 영역 END-->
+                <br>
                 <div class="date">
                     <b>회의 날짜: </b> &nbsp;&nbsp;&nbsp;&nbsp; {{mrr.meetingDate}}
                 </div>
@@ -50,11 +70,18 @@
                     <b>사용목적: </b>&nbsp;&nbsp;&nbsp;&nbsp;{{mrr.purpose}}
                 </div>
             </div>
+            <br>
+            <div class="button">
+              <button type="submit" class="confirmbtn" @click="updateParticipantHandler"><b>저장</b></button>
+              &nbsp;
+              <button class="cancelbtn" @click="closeModal"><b>취소</b></button>
+          </div>
         </div>
     </div>
 </template>
 <script>
 import {reactive} from 'vue';
+import axios from 'axios'
 
 export default {
   props: {
@@ -66,8 +93,33 @@ export default {
   },
   data() {
     return {
-
+      formData: {
+        meetingId: {
+          id : `${this.mrr.id}`
+        },
+        member: {
+          id: '3'
+        }
+      },
+      loading: true,
+      members: [],
+      search: "",
     }
+  },
+  computed: {
+     filteredMembers() {
+      return this.members.filter((member) => {
+        // 검색어가 없거나, 검색어가 이름과 직급에 포함되어 있는 경우에만 반환
+        return (
+          !this.search ||
+          member.name.includes(this.search) ||
+          member.position.includes(this.search)
+        );
+      });
+    },
+  },
+  mounted() {
+
   },
   setup() {
     const state = reactive({
@@ -76,11 +128,49 @@ export default {
     })
   },
   methods: {
-    openModal() {
+    openUpdateModal() {
 
     },
     closeModal() {
       this.$emit("close");
+    },
+    updateParticipantHandler(e) {
+      const url = `${this.backURL}/meetingroom/myreservation`
+      const data = this.formData
+
+      console.log(this.formData)
+      axios
+        .post(url, data)
+        .then(response => {
+          location.href = "/meetingroom/myreservation"
+          alert("수정되었습니다!")
+        })
+        .catch(error => {
+          alert(error.message)
+        })
+    },
+    async fetchData() {
+      try {
+        this.loading=true;
+        const url = `${this.backURL}/address/members`
+        const response = await axios.get(url);
+        // response.data에는 id, name, position, tel정보가 있음, 그 정보를 members배열에 넣음
+        this.members = response.data;
+      } catch (error) {
+        console.error("사원 정보를 불러오지 못했습니다:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
+  watch: {
+    search(newValue) {
+      if (newValue.trim() !== "") {
+        this.fetchData();
+      } else {
+        // Clear the members array when the search term is empty
+        this.members = [];
+      }
     },
   }
 }

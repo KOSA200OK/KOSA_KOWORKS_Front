@@ -13,6 +13,7 @@ import CarAllRentList from "@/pages/car/CarAllRentList.vue";
 import NoticeList from "@/pages/notice/NoticeList.vue";
 import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
+import ReservationModal from "@/pages/meetingroom/ReservationModal.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
 import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
 import RoomList from "@/pages/chat/RoomList.vue";
@@ -20,6 +21,7 @@ import RoomDetail from "@/pages/chat/RoomDetail.vue";
 // import RoomDetail from "@/pages/chat/RoomDetailCopy.vue";
 
 import StuffReq from "@/pages/stuff/StuffReq.vue";
+import StuffManage from "@/pages/stuff/StuffManage.vue"
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -51,13 +53,16 @@ const router = createRouter({
     { path: "/attendance/date/:currentPage", component: Attendance },
     // /attendance/date/:currentPage
     // { path: "/attendance/:page", component: Attendance },
-    { path: "/notice/noticelist/", component: NoticeList },
+    { path: "/notice/noticelist", component: NoticeList },
     { path: "/notice/noticelist/:currentPage", component: NoticeList },
     { path: "/notice/:id", component: NoticeInfo },
-    { path: "/meetingroom", component: MeetingRoomList },
-    { path: "/meetingroom/myreservation", component: MeetingRoomResList },
-    { path: "/meetingroom/timeline", component: MeetingRoomTimeline },
+    { path: '/meetingroom', component: MeetingRoomList },
+    { path: '/meetingroom/:id', component: ReservationModal },
+    { path: '/meetingroom/myreservation', component: MeetingRoomResList},
+    { path: '/meetingroom/myreservation/:currentPage', component: MeetingRoomResList},
+    { path: '/meetingroom/timeline', component: MeetingRoomTimeline },
     { path: "/stuff/request", component: StuffReq },
+    { path: "/stuff/stuffmanage", component: StuffManage },
   ],
 });
 
