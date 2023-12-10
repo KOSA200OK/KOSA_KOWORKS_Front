@@ -142,7 +142,7 @@ export default {
         async logout() {
             try {
 
-                // SSE 연결 해제 -> 찬석
+                // ============== SSE 연결 해제 =============== -> 찬석
                 if(this.eventSource) {
                     this.eventSource.close();
                     this.eventSource = null;
@@ -180,17 +180,18 @@ export default {
 	width: 100vw;
 }
 .notify_bar {
-    margin-top: 850px;
-    margin-left: 1350px;
-    width: 300px;
+    margin-top: 830px;
+    margin-left: 1255px;
+    height: 70px;
+    width: 400px;
     padding: 10px; /* 알림 내용과의 간격 조정을 위한 패딩 */
-    background-color: #f3f3f3; /* 배경색 지정 */
+    background-color: #009EA8; /* 배경색 지정 */
     border: 2px solid #ccc; /* 테두리 설정 */
     border-radius: 5px; /* 둥근 테두리를 위한 속성 */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
     text-align: center; /* 텍스트 가운데 정렬 */
     font-family: Arial, sans-serif; /* 폰트 설정 */
-    color: #333; /* 텍스트 색상 */
+    color: white; /* 텍스트 색상 */
     position: absolute;
 }
 </style>

@@ -303,8 +303,9 @@ aside {
 		margin-left: 245px;
 		margin-top: 5px;
 		padding: 10px;
-		background-color: var(--dark);
-		border: 1px solid white;
+		// background-color: var(--dark);
+		background-color:#009EA8;
+		border: 1px solid #009EA8;
 		border-radius: 4px;
 		max-height: 450px; 
 		overflow-y: auto; 
