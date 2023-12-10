@@ -71,7 +71,7 @@
 				<span class="material-icons">add_box</span>
 				<span class="text">비품 요청</span>
 			</router-link>
-			<router-link class="button" to="/stuff/requestmanage/">
+			<router-link class="button" to="/stuff/stuffmanage">
 				<span class="material-icons">shelves</span>
 				<span class="text">비품 요청 관리</span>
 			</router-link>

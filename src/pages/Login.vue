@@ -57,7 +57,8 @@ export default {
                 this.isLoggedIn = true;
                 // 브라우저 스토리지에 로그인 상태 저장
                 localStorage.setItem("isLoggedIn", "true");
-
+				//localStorage에 memberId로 id저장
+				localStorage.setItem("memberId", this.id);
 				//localStorage에 memberId로 id저장
 				localStorage.setItem("memberId", this.id);
 

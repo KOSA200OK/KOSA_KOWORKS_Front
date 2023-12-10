@@ -22,6 +22,7 @@ import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
 
 
 import StuffReq from "@/pages/stuff/StuffReq.vue";
+import StuffManage from "@/pages/stuff/StuffManage.vue"
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -61,6 +62,7 @@ const router = createRouter({
     { path: "/meetingroom/myreservation", component: MeetingRoomResList },
     { path: "/meetingroom/timeline", component: MeetingRoomTimeline },
     { path: "/stuff/request", component: StuffReq },
+    { path: "/stuff/stuffmanage", component: StuffManage },
   ],
 });
 
