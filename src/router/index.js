@@ -23,6 +23,7 @@ import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
 
 
 import StuffReq from "@/pages/stuff/StuffReq.vue";
+import StuffManage from "@/pages/stuff/StuffManage.vue"
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -55,6 +56,9 @@ const router = createRouter({
     { path: "/carrent/allrentlist/:currentPage", component: CarAllRentList },
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },
+    { path: "/attendance/date/:currentPage", component: Attendance },
+    // /attendance/date/:currentPage
+    // { path: "/attendance/:page", component: Attendance },
     { path: "/notice/noticelist/", component: NoticeList },
     { path: "/notice/noticelist/:currentPage", component: NoticeList },
     { path: "/notice/:id", component: NoticeInfo },
@@ -62,6 +66,7 @@ const router = createRouter({
     { path: "/meetingroom/myreservation", component: MeetingRoomResList },
     { path: "/meetingroom/timeline", component: MeetingRoomTimeline },
     { path: "/stuff/request", component: StuffReq },
+    { path: "/stuff/stuffmanage", component: StuffManage },
   ],
 });
 
