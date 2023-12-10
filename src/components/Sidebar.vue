@@ -31,6 +31,7 @@
         </notificationItem>
       </div>
     </div>
+
     <h3>Menu</h3>
     <div class="menu">
       <router-link class="button" to="/home">
@@ -61,6 +62,10 @@
         <span class="material-icons">meeting_room</span>
         <span class="text">회의실 예약</span>
       </router-link>
+      <router-link class="button" to="/meetingroom/myreservation">
+        <span class="material-icons">meeting_room</span>
+        <span class="text">회의실 내예약보기</span>
+      </router-link>
       <router-link class="button" to="/carrent/carlist">
         <span class="material-icons">no_crash</span>
         <span class="text">차량 예약</span><br />
@@ -73,7 +78,7 @@
         <span class="material-icons">add_box</span>
         <span class="text">비품 요청</span>
       </router-link>
-      <router-link class="button" to="/stuff/requestmanage/">
+      <router-link class="button" to="/stuff/stuffmanage">
         <span class="material-icons">shelves</span>
         <span class="text">비품 요청 관리</span>
       </router-link>
@@ -81,73 +86,11 @@
 
     <div class="flex"></div>
 
-<<<<<<< HEAD
     <div class="menu">
       <span class="material-icons">account_circle</span>
       <span></span>
     </div>
   </aside>
-=======
-		<h3>Menu</h3>
-		<div class="menu">
-			<router-link class="button" to="/home">
-				<span class="material-icons">home</span>
-				<span class="text">메인</span>
-			</router-link>
-			<router-link class="button" to="/attendance">
-				<span class="material-icons">check_circle</span>
-				<span class="text">근태관리</span>
-			</router-link>
-			<router-link class="button" to="/notice/noticelist">
-				<span class="material-icons">campaign</span>
-				<span class="text">공지사항</span>
-			</router-link>
-			<router-link class="button" to="/address/members">
-				<span class="material-icons">group</span>
-				<span class="text">주소록</span>
-			</router-link>
-			<router-link class="button" to="/chat/list">
-				<span class="material-icons">chat</span>
-				<span class="text">채팅</span>
-			</router-link>
-			<router-link class="button" to="/calendar/list">
-				<span class="material-icons">calendar_month</span>
-				<span class="text">일정</span>
-			</router-link>
-			<router-link class="button" to="/meetingroom">
-				<span class="material-icons">meeting_room</span>
-				<span class="text">회의실 예약</span>
-			</router-link>
-			<router-link class="button" to="/meetingroom/myreservation">
-				<span class="material-icons">meeting_room</span>
-				<span class="text">회의실 내예약보기</span>
-			</router-link>
-			<router-link class="button" to="/carrent/carlist">
-				<span class="material-icons">no_crash</span>
-				<span class="text">차량 예약</span><br>
-			</router-link>
-			<router-link class="button" to="/carrent/carmanagelist">
-				<span class="material-icons">car_rental</span>
-				<span class="text">차량 관리</span>
-			</router-link>
-			<router-link class="button" to="/stuff/request">
-				<span class="material-icons">add_box</span>
-				<span class="text">비품 요청</span>
-			</router-link>
-			<router-link class="button" to="/stuff/stuffmanage">
-				<span class="material-icons">shelves</span>
-				<span class="text">비품 요청 관리</span>
-			</router-link>
-		</div>
-
-		<div class="flex"></div>
-
-		<div class="menu">
-			<span class="material-icons">account_circle</span>
-			<span></span>
-		</div>
-	</aside>
->>>>>>> 597bb62d1bdd37c7e293f9700d1ea4c62bd7c896
 </template>
 
 <script>
