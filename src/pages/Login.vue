@@ -87,10 +87,10 @@ export default {
                     console.log(event.data);
                     console.log(event);
 
-                    const data = JSON.parse(event.data);
+                    // const data = JSON.parse(event.data);
 
                     // 브라우저의 알림 표시
-                    this.showNotification(data);
+                    // this.showNotification(data);
                     // this.showNotification(event.data);
                 });
             }

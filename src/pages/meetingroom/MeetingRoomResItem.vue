@@ -6,20 +6,42 @@
 
         <!--시간 비교해서 다른 버튼 띄우기-->
         <td v-if="currentDateTime() > originalEndTime()">
-            <button>상세보기</button>
+            <button class="resinfo" @click="openModal">상세보기</button>
+            <InfoModal
+            :show="showModal" 
+            :mrr="mrr" 
+            @close="closeModal"/>
         </td>
         <td v-else>
-            <button>수정</button>&nbsp; <button>취소</button>
+            <button class="update" @click="openUpdateModal">수정</button>&nbsp; 
+            <UpdateModal
+            :show="showUpdateModal" 
+            :mrr="mrr" 
+            @close="closeModal"/>
+            <button class="cancel" @click="openCancelModal">취소</button>
+            <CancelModal
+            :show="showCancelModal" 
+            :mrr="mrr" 
+            @close="closeModal"/>
         </td>
     </tr>
 </template>
 <script>
+import InfoModal from "@/pages/meetingroom/MeetingRoomResInfo.vue";
+import UpdateModal from "@/pages/meetingroom/MeetingRoomResModify.vue";
+import CancelModal from "@/pages/meetingroom/MeetingRoomResDelete.vue";
+
 export default {
     name: 'MeetingRoomResItem',
     props:["mrr"],
+    components: {
+        InfoModal, UpdateModal, CancelModal
+    },
     data(){
         return {
-            
+            showModal: false,
+            showUpdateModal: false,
+            showCancelModal: false,
         }
     },
     methods: {
@@ -35,6 +57,20 @@ export default {
             const dateTimeString = `${this.mrr.meetingDate} ${this.mrr.endTime}:00`;
             return new Date(dateTimeString);
         },
+        openModal() {
+            this.showModal = true;
+        },
+        openUpdateModal() {
+            this.showUpdateModal = true;
+        },
+        openCancelModal() {
+            this.showCancelModal = true;
+        },
+        closeModal() {
+            this.showModal = false;
+            this.showUpdateModal = false;
+            this.showCancelModal = false;
+        }
     },
 
 }
