@@ -1,9 +1,15 @@
 <template lang="">
     <tr>
-        <td class="container">
+        <td>
             <img :src="`../../images/${mr.name}.jpg`" :alt="mr.name">
-            <br>{{mr.name}}
-            <br><br><button>예약하기</button>
+            <div class="roomname">{{mr.name}}</div>
+            <button class="resbutton" @click="openModal">
+                <span><b>예약하기</b></span>
+            </button>
+            <Modal 
+            :show="showModal"
+            :mr = "mr"
+            @close="closeModal"/>
         </td>
         <td>
             <div class="flex-container">
@@ -21,12 +27,17 @@
     </tr>
 </template>
 <script>
+import Modal from "@/pages/meetingroom/ReservationModal.vue";
 export default {
     name: 'MeetingRoomItem',
     props:['mr', 'date'],
+    components: {
+        Modal,
+    },
     data(){
         return {
             times: this.generateTimeSlots(),
+            showModal: false,
         }
     },
     methods: {
@@ -49,6 +60,12 @@ export default {
 
             return times;
         },
+        openModal() {
+            this.showModal = true;
+        },
+        closeModal() {
+            this.showModal = false;
+        },
     }
 }
 </script>
@@ -68,8 +85,61 @@ td {
   text-align: center;
 }
 
-/*추가*/
+.roomname {
+    margin-top: 5px;
+}
 
+.resbutton {
+  display: inline-block;
+
+  border-radius: 4px;
+  background: var(--dark);
+  color: #ddd;
+  border: none;
+
+  text-align: center;
+  font-size: 14px;
+
+  padding: 5px;
+  width: 100px;
+  height: 35px;
+  vertical-align: middle;
+  align-items: center;
+
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  margin-top: 10px;
+}
+
+.resbutton span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.resbutton span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.resbutton:hover span {
+  padding-right: 15px;
+}
+
+.resbutton:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/* container css*/
 .flex-container {
     overflow-x: auto;
 }
@@ -79,7 +149,7 @@ td {
   flex-wrap: wrap;
   /* padding: 8px; */
   width: auto;
-  height: 100px;
+  height: auto;
   /* text-align: left; */
   text-align: center;
 }
