@@ -8,6 +8,7 @@
                     <th>예약자</th>
                     <th>차량번호</th>
                     <th>대여기간</th>
+                    <th> </th>
                 </tr>
             </thead>
             <tbody>

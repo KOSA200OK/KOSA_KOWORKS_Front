@@ -92,11 +92,11 @@ export default {
 </script>
 <style scoped>
 .pagegroup{
-    width : 1400px;
+    width : 95%;
     margin-bottom:100px;
 }
 table{
-    width : 1400px;
+    width : 95%;
     margin-bottom: 100px;
     border: solid 1px #ebe9e9;
     border-radius: 20px;
