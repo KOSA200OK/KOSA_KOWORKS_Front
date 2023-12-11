@@ -1,17 +1,24 @@
 <template>
 	<main class="home-page">
-		<div class="container">
+		<div class="gridContainer">
 			<div class="item attendance"> <!-- 찬석 -->
-				<h3>근태</h3>
-				<h3>{{ getCurrentTime() }}</h3>
-				<h3 v-bind="attendanceTime">출근 시간: {{ attendanceTime }}</h3>
-				<h3>퇴근시간</h3>
-				<button @click="attendanceHandler"> 출근 </button>
+				<h3>근태 현황</h3>
+				<br>
+				<h3>{{ currentTime }}</h3>
+				<br>
+				<!-- <h3 v-bind="attendanceTime">출근 시간: {{ attendanceTime }}</h3>
+				<h3>퇴근시간</h3> -->
+				<button @click="attendanceHandler">출근</button> 
 				<button @click="attendance2Handler">퇴근</button>
 			</div>
-			<div class="item">B</div>
-			<div class="item">C</div>
-			<div class="item">D</div>
+			<div class="item notice">
+				<h3>최근 공지사항</h3>
+				<button class="add-button" @click="addNotice">
+					<span class="material-icons">add</span>
+				</button>
+				<hr>
+			</div>
+			<div class="item calendar">C</div>
 		</div>
 
 		<!-- <div>
@@ -31,6 +38,11 @@ export default {
 			attendanceTime: null, 
 		};
 	},
+	mounted() {
+			setInterval(() => {
+				this.currentTime = this.getCurrentTime();
+			}, 1000);
+		},
 	methods: {
 		getCurrentTime() {
 			const now = new Date();
@@ -45,21 +57,21 @@ export default {
 			return `${year}년 ${month}월 ${day}일 (${dayOfWeek}) ${hours}시 ${minutes}분 ${seconds}초`;
 		},
 
-		mounted() {
-			// 1초마다 현재 시간을 업데이트
-			setInterval(this.getCurrentTime(), 1000);
-		},
 
 		// ======================= 출근 버튼 ================================
 		attendanceHandler() {
+			const id = localStorage.getItem('memberId');
+
+			console.log('id {}', id);
+
 			const url = `${this.backURL}/attendance`;
-			const memberId = '0001'; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+			const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
 			const currentTime = new Date(); // 현재 시간을 가져옴
 			const memberData = {
 				memberId: memberId,
 				currentTime: currentTime,
 				member: {
-					id: '1' // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+					id: id // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
 				},
 			};
 
@@ -68,7 +80,7 @@ export default {
 				.then((response) => {
 					alert('출근 완료');
 					//재원 추가
-					this.attendanceTime = this.currentTime;
+					// this.attendanceTime = this.currentTime;
 				})
 				.catch((error) => {
 					console.error('출근 요청 실패', error);
@@ -76,14 +88,16 @@ export default {
 		},
 		// ======================= 퇴근 버튼 ===============================
 		attendance2Handler() {
+			const id = localStorage.getItem('memberId');
+
 			const url = `${this.backURL}/attendance`;
-			const memberId = 1; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+			const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
 			const currentTime = new Date(); // 현재 시간을 가져옴
 			const memberData = {
 				memberId: memberId,
 				currentTime: currentTime,
 				member: {
-					id: 1	// memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+					id: id	// memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
 				},
 			};
 
@@ -100,10 +114,11 @@ export default {
 };
 </script>
 <style>
-.container {
+.gridContainer {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: repeat(2, minmax(400px, auto));
+	/* grid-template-rows: repeat(2, minmax(400px, auto)); */
+	grid-template-rows: 200px 600px;
 	row-gap: 30px;
 	column-gap: 20px;
 
@@ -112,34 +127,72 @@ export default {
 .item {
 	border-radius: 30px;
 	background-color: ghostwhite;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	/* 그림자 효과 추가 */
 }
 
 .attendance {
 	text-align: center;
 	padding: 20px;
-	/* 원하는 패딩 값으로 조절하세요 */
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	/* 그림자 효과 추가 */
+
 }
 
-/* 스타일 추가: 버튼 */
+.notice{
+	position: relative;
+}
+
+.calendar{
+	grid-column-start: 2;
+	grid-row : 1 / 3;
+}
+
+.notice span{
+	color: black;
+}
+
+.notice h3{
+	text-align: center;
+	padding: 20px;
+}
+
 .item button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 15px;
+  border: 2px solid #3498db; 
+  border-radius: 5px;
+  background-color: transparent; 
+  color: #3498db; 
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.item button:hover {
+  background-color: #3498db; 
+  color: #fff; 
+}
+
+.item .add-button {
 	display: inline-block;
-	padding: 10px 20px;
-	margin-top: 15px;
+	position: absolute;
+	top: 0;
+	right: 0; 
+	padding: 10px;
 	border: none;
-	border-radius: 5px;
-	background-color: #3498db;
-	/* 버튼 배경색 */
+	border-radius: 50%;
+	background-color: transparent;
 	color: #fff;
-	/* 버튼 텍스트 색상 */
-	font-size: 14px;
+	font-size: 18px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 }
 
-.item button:hover {
+.item .add-button:hover {
 	background-color: #2980b9;
-	/* 호버 상태일 때의 배경색 */
+}
+
+.item button + button {
+  margin-left: 10px;
 }
 </style>

@@ -129,6 +129,57 @@ export default {
         // 이전 SSE 구독을 중지
         this.stopSSE();
 
+        const id = localStorage.getItem("memberId");
+
+        // String id = localStorage.getItem
+        // EventSource를 이용해 SSE 구독 시작
+        // this.eventSource = new EventSource(`${this.backURL}/subscribe/${this.id}`);
+        this.eventSource = new EventSource(`${this.backURL}/subscribe/${id}`);
+
+        this.eventSource.addEventListener("sse", (event) => {
+          console.log(event.data);
+          console.log(event);
+
+          const data = JSON.parse(event.data);
+
+          // 브라우저의 알림 표시
+          this.showNotification(data);
+          // this.showNotification(event.data);
+        });
+      }
+    },
+    // 찬석
+    async showNotification(data) {
+      // 브라우저 알림
+      const notification = new Notification("제목", {
+        body: data.content,
+      });
+
+      this.notifyMessage = data.content;
+
+      // 브라우저의 알림이 클릭 되었을 때
+      notification.addEventListener("click", () => {
+        window.open(data.url, "_blank");
+      });
+      // 타이머를 설정하여 10초 후에 알림을 숨김
+      this.notificationTimer = setTimeout(() => {
+        this.notifyMessage = "";
+      }, 10 * 1000);
+    },
+
+    async findSession() {
+      //----
+      // 브라우저 스토리지에서 로그인 상태 확인
+      const storedLoggedIn = localStorage.getItem("isLoggedIn");
+      this.isLoggedIn = storedLoggedIn === "true";
+
+      if (this.isLoggedIn) {
+        console.log("로그인 상태입니다. id: ");
+
+        // 찬석
+        // 이전 SSE 구독을 중지
+        this.stopSSE();
+
         // memberId 값이 존재할 때만 SSE 구독 시작
         if (this.isLoggedIn) {
           console.log("이전 로그인 정보로 SSE 구독 시작합니다.");
@@ -151,18 +202,12 @@ export default {
         await axios.get(`${this.backURL}/logout`, {});
         this.isLoggedIn = false;
 
-        // localStorage에서 로그인 상태 제거
+        // 브라우저 스토리지에서 로그인 상태 제거
         localStorage.removeItem("isLoggedIn");
-
         // localStorage에서 memberId 제거
         localStorage.removeItem("memberId");
 
-        // localStorage에서 departmentId 제거
-        localStorage.removeItem("departmentId");
-
         this.$router.push("/home");
-        //화면 새로고침
-        location.reload();
       } catch (error) {
         console.error("로그아웃 실패:", error);
       }
@@ -176,6 +221,44 @@ export default {
         console.log("이전 SSE 구독을 중지합니다.");
       }
     },
+  },
+
+  async logout() {
+    try {
+      // SSE 연결 해제 -> 찬석
+      if (this.eventSource) {
+        this.eventSource.close();
+        this.eventSource = null;
+      }
+      // =============
+
+      await axios.get(`${this.backURL}/logout`, {});
+      this.isLoggedIn = false;
+
+      // localStorage에서 로그인 상태 제거
+      localStorage.removeItem("isLoggedIn");
+
+      // localStorage에서 memberId 제거
+      localStorage.removeItem("memberId");
+
+      // localStorage에서 departmentId 제거
+      localStorage.removeItem("departmentId");
+
+      this.$router.push("/home");
+      //화면 새로고침
+      location.reload();
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+    }
+  },
+  // ========================== 구독 중지 ============================ > 찬석
+  async stopSSE() {
+    // 이전 SSE 구독을 중지하고 eventSource 초기화
+    if (this.eventSource) {
+      this.eventSource.close();
+      this.eventSource = null;
+      console.log("이전 SSE 구독을 중지합니다.");
+    }
   },
 };
 </script>

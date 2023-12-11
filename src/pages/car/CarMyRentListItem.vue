@@ -43,6 +43,18 @@ export default {
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
             return `${year}/${month}/${day}`;
+        },
+        applyCancel(){
+            const url = `${this.backURL}/carrent/cancelreserve/${this.m.id}`
+            axios.delete(url)
+            .then(response=>{
+                console.log(response.status)
+                alert("취소되었습니다.")
+                window.location.reload()
+            })
+            .catch((Error)=>{
+                console.log(Error)
+            })
         }
     }
 }
