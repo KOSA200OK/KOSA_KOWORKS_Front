@@ -52,14 +52,18 @@ export default {
 
 		// ======================= 출근 버튼 ================================
 		attendanceHandler() {
+			const id = localStorage.getItem('memberId');
+
+			console.log('id {}', id);
+
 			const url = `${this.backURL}/attendance`;
-			const memberId = '0001'; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+			const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
 			const currentTime = new Date(); // 현재 시간을 가져옴
 			const memberData = {
 				memberId: memberId,
 				currentTime: currentTime,
 				member: {
-					id: '1' // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+					id: id // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
 				},
 			};
 
@@ -76,14 +80,16 @@ export default {
 		},
 		// ======================= 퇴근 버튼 ===============================
 		attendance2Handler() {
+			const id = localStorage.getItem('memberId');
+
 			const url = `${this.backURL}/attendance`;
-			const memberId = 1; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+			const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
 			const currentTime = new Date(); // 현재 시간을 가져옴
 			const memberData = {
 				memberId: memberId,
 				currentTime: currentTime,
 				member: {
-					id: 1	// memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+					id: id	// memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
 				},
 			};
 
