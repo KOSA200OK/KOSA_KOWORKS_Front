@@ -10,6 +10,7 @@ export default {
             return{
                 map : null,
                 infowindow: null,
+                overlay: null,
                 selectedMarker : null
             }
     },
@@ -97,13 +98,26 @@ export default {
 
             kakao.maps.event.addListener(marker, 'click', () => {
                 if (this.selectedMarker && this.selectedMarker !== marker) {
-                    this.infowindow.close(); 
+                    // this.infowindow.close(); 
+                    this.overlay.setMap(null);
                 }
+                var content = document.createElement('div');
+                content.className = 'bubble';
+                content.innerHTML = title;
+                // 마커 위에 커스텀오버레이를 표시합니다
+                // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+                this.overlay = new kakao.maps.CustomOverlay({
+                    content: content,//`<div class="bubble">${title}</div>`,
+                    map: this.map,
+                    position: marker.getPosition()       
+                });
 
-                this.infowindow = new kakao.maps.InfoWindow({
-                    content: `<div class="custom-infowindow">${title}</div>`
-                }); 
-                this.infowindow.open(this.map, marker)
+                this.overlay.setMap(this.map);
+
+                // this.infowindow = new kakao.maps.InfoWindow({
+                //     content: `<div class="custom-infowindow">${title}</div>`
+                // }); 
+                // this.infowindow.open(this.map, marker)
 
                 this.selectedMarker = marker;
             });
@@ -111,11 +125,11 @@ export default {
     },
 }
 </script>
-<style scoped>
+<style>
  #map{
     width:800px;
     height:400px;
-    margin-left : 15%;
+    margin-left : 20%;
     margin-bottom: 5%;
     border-radius: 20px;
     border : solid 2px #50798b34;
@@ -125,4 +139,40 @@ export default {
     border : solid 1px #009EA8;
     padding : 10px;
  }
+ .bubble {
+    text-align: center;
+    font-size : 15px;
+    font-weight: 700;
+    color : white;
+    text-shadow: 1px 1px 1px #ff9500;
+    padding-top : 5px;
+    position:relative; 
+    margin: 50px;
+    width:80px; 
+    height:30px;
+    background:#ffea00; 
+    border-radius: 30px;
+    bottom: 50px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    box-shadow:  inset 0 3px 8px #ff9500;
+    /* inset 0 0 20px */
+
+    animation: bubble 0.7s ease-in 0s infinite alternate; 
+    margin-top: 0;
+}
+
+.bubble:after {
+    border-top:10px solid #ffe175; 
+    border-left: 10px solid transparent; 
+    border-right: 10px solid transparent; 
+    border-bottom: 0px solid transparent; 
+    content:""; 
+    position:absolute;
+    top:30px;
+    left:30px;  
+}
+@keyframes bubble {
+	0% {margin-top: 0px;} /* 처음 위치 */
+	100% {margin-top: 10px;} /* 마지막 위치 */
+}
 </style>
