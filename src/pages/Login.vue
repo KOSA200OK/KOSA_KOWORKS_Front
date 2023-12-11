@@ -157,7 +157,7 @@ export default {
 				// localStorage에서 memberId 제거
 				localStorage.removeItem("memberId");
 
-                this.$router.push("/");
+                this.$router.push("/home");
             } catch (error) {
                 console.error("로그아웃 실패:", error);
             }

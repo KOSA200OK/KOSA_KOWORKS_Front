@@ -1,12 +1,14 @@
 <template>
 	<main class="home-page">
-		<div class="container">
+		<div class="gridContainer">
 			<div class="item attendance"> <!-- 찬석 -->
 				<h3>근태 현황</h3>
+				<br>
 				<h3>{{ currentTime }}</h3>
-				<h3 v-bind="attendanceTime">출근 시간: {{ attendanceTime }}</h3>
-				<h3>퇴근시간</h3>
-				<button @click="attendanceHandler"> 출근 </button>
+				<br>
+				<!-- <h3 v-bind="attendanceTime">출근 시간: {{ attendanceTime }}</h3>
+				<h3>퇴근시간</h3> -->
+				<button @click="attendanceHandler">출근</button> 
 				<button @click="attendance2Handler">퇴근</button>
 			</div>
 			<div class="item notice">
@@ -36,6 +38,11 @@ export default {
 			attendanceTime: null, 
 		};
 	},
+	mounted() {
+			setInterval(() => {
+				this.currentTime = this.getCurrentTime();
+			}, 1000);
+		},
 	methods: {
 		getCurrentTime() {
 			const now = new Date();
@@ -50,11 +57,6 @@ export default {
 			return `${year}년 ${month}월 ${day}일 (${dayOfWeek}) ${hours}시 ${minutes}분 ${seconds}초`;
 		},
 
-		mounted() {
-			setInterval(() => {
-				this.currentTime = this.getCurrentTime();
-			}, 1000);
-		},
 
 		// ======================= 출근 버튼 ================================
 		attendanceHandler() {
@@ -78,7 +80,7 @@ export default {
 				.then((response) => {
 					alert('출근 완료');
 					//재원 추가
-					this.attendanceTime = this.this.getCurrentTime();
+					// this.attendanceTime = this.currentTime;
 				})
 				.catch((error) => {
 					console.error('출근 요청 실패', error);
@@ -112,10 +114,11 @@ export default {
 };
 </script>
 <style>
-.container {
+.gridContainer {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: repeat(2, minmax(400px, auto));
+	/* grid-template-rows: repeat(2, minmax(400px, auto)); */
+	grid-template-rows: 200px 600px;
 	row-gap: 30px;
 	column-gap: 20px;
 
@@ -153,20 +156,21 @@ export default {
 }
 
 .item button {
-	display: inline-block;
-	padding: 10px 20px;
-	margin-top: 15px;
-	border: none;
-	border-radius: 5px;
-	background-color: #3498db;
-	color: #fff;
-	font-size: 14px;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 15px;
+  border: 2px solid #3498db; 
+  border-radius: 5px;
+  background-color: transparent; 
+  color: #3498db; 
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .item button:hover {
-	background-color: #2980b9;
+  background-color: #3498db; 
+  color: #fff; 
 }
 
 .item .add-button {
@@ -186,5 +190,9 @@ export default {
 
 .item .add-button:hover {
 	background-color: #2980b9;
+}
+
+.item button + button {
+  margin-left: 10px;
 }
 </style>
