@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@mobiscroll/vue": "npm:@mobiscroll/vue-trial@^5.28.0",
-    "@vuepic/vue-datepicker": "^7.4.0",
+<<<<<<< HEAD
+=======
     "@vitejs/plugin-vue": "^3.1.2",
     "@vue/compat": "^3.2.41",
+>>>>>>> 8885ff3f369acca880b563c78cac06dfa779afb1
+    "@vuepic/vue-datepicker": "^7.4.0",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.2",
     "bootstrap-vue": "^2.21.2",

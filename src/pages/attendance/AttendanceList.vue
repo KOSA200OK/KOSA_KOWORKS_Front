@@ -79,27 +79,34 @@ export default {
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-
             console.log('제발..{}', this.selectedMonth);
-            const memberId = localStorage.getItem("memberId")
+    const memberId = localStorage.getItem("memberId");
 
-            const url = `${this.backURL}/attendance/all?memberId=${memberId}&currentPage=${this.currentPage}`
-            axios.get(url)
-                .then(response => {
-                    // this.attendanceList = response.data
-                    this.attendanceList = response.data
+    const url = `${this.backURL}/attendance/all?memberId=${memberId}&currentPage=${this.currentPage}`;
+    axios.get(url)
+        .then(response => {
+            this.attendanceList = response.data;
 
-                    if (this.currentPage <= this.attendanceList.totalPages) {
-                        this.startPage = parseInt((this.currentPage - 1) / 5) * 5 + 1
-                        this.endPage = this.startPage + 5 - 1
+            console.log(this.attendanceList);
 
-                        if (this.endPage > this.attendanceList.totalPages) {
-                            this.endPage = this.attendanceList.totalPages
-                        }
-                    }
+            this.attendanceList.content.sort((a, b) => {    
+                return b.id - a.id; // id 필드를 기준으로 내림차순 정렬
+            });
 
-                    console.log('ㅠㅠㅠㅠㅠㅠㅠㅠㅠ');
-                })
+            if (this.currentPage <= this.attendanceList.totalPages) {
+                this.startPage = parseInt((this.currentPage - 1) / 5) * 5 + 1;
+                this.endPage = this.startPage + 5 - 1;
+
+                if (this.endPage > this.attendanceList.totalPages) {
+                    this.endPage = this.attendanceList.totalPages;
+                }
+            }
+
+            console.log('Sorted Data:', this.attendanceList.content);
+        })
+        .catch(error => {
+            console.error('Error occurred:', error);
+        });
         },
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
 
@@ -113,6 +120,11 @@ export default {
             axios.get(url)
                 .then(response => {
                     this.attendanceList = response.data;
+
+                    
+                    this.attendanceList.content.sort((a, b) => {
+                        return b.id - a.id; // id 필드를 기준으로 내림차순 정렬
+                    });
 
                     console.log('ㅜㅜㅜㅜ : {}', this.attendanceList);
 
@@ -183,8 +195,6 @@ export default {
         // --- 라우터값이 변경되었을 때 할 일 END ---
     },
     created() {
-        // console.log('created attendanceList')
-
         // if (this.$route.params.currentPage) {
         //     this.currentPage = this.$route.params.currentPage
         // }

@@ -17,9 +17,12 @@ import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
 import ReservationModal from "@/pages/meetingroom/ReservationModal.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
 import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
+<<<<<<< HEAD
+=======
 import RoomList from "@/pages/chat/RoomList.vue";
 import RoomDetail from "@/pages/chat/RoomDetail.vue";
 
+>>>>>>> 8885ff3f369acca880b563c78cac06dfa779afb1
 import StuffReq from "@/pages/stuff/StuffReq.vue";
 import StuffManage from "@/pages/stuff/StuffManage.vue";
 const router = createRouter({
