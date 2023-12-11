@@ -17,14 +17,16 @@
                             :key="r.id"/>
             </tbody>
         </table>
+        <div class="pagegroup">
         <PageGroup
             v-if="rentlist" 
-            :path="'/carrent/rentlist/'"
+            :path="'/carrent/manage/'"
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
             :startPage="startPage"
             :endPage="endPage"
             :totalPage="rentlist.totalPages"
         />
+        </div>
     </div>
 </template>
 <script>
@@ -34,6 +36,7 @@ import axios from 'axios'
 export default {
     name: 'CarRentList',
     components: { CarRentListItem, PageGroup},
+    props:["menu"],
     data() {
         return {
             currentPage: 1,
@@ -76,8 +79,13 @@ export default {
                 this.currentPage = 1
             }
             this.axiosHandler()
-        }
+        },
         //----라우터값이 변경되었을 때 할 일 END----     
+        menu() {
+            console.log(menu감시)
+            this.currentPage = 1
+            this.axiosHandler()
+        }
     },
     created() {
         console.log('created rentlist')
@@ -89,24 +97,27 @@ export default {
 }
 </script>
 <style scoped>
-.rentlist{
+/* .rentlist{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+} */
+.pagegroup{
+    width : 1400px;
+    margin-bottom:100px;
 }
 .rentlist>table{
-    width : 1000px;
-    border-top:solid 3px #363840;
-    border-bottom:solid 3px #363840;
+    width : 1400px;
+    margin-bottom: 100px;
+    border: solid 1px #ebe9e9;
+    border-radius: 20px;
+    box-shadow: 0 19px 38px #f3f3f3;
 }
 th{
-    padding : 25px;
-}
-
-th{
-    font-size: 15px;
-    border-bottom: solid 3px #363840;
+    padding : 20px;
+    font-size: 13px;
+    background-color : #f5f8f8;
 }
 
 </style>

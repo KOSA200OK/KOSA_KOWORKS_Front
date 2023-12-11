@@ -1,31 +1,25 @@
 <template>
-  <!-- RoomDetail.vue -->
   <div class="container" id="app" v-cloak>
-    <div>
+    <div class="detail-header">
       <h2>{{ room.name }}</h2>
     </div>
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text">내용</label>
-      </div>
+    <div class="chat-input" ref="chatList">
+      <ul class="chat-list">
+        <li class="chat-item" v-for="message in messages" :key="message.id">
+          <strong>{{ message.sender }} - {{ message.message }}</strong>
+        </li>
+      </ul>
+    </div>
+    <div class="chat-input">
       <input
         type="text"
         class="form-control"
         v-model="message"
         @keypress.enter="sendMessage"
+        placeholder="메시지를 입력하세요"
       />
-      <div class="input-group-append">
-        <button class="btn btn-primary" type="button" @click="sendMessage">
-          보내기
-        </button>
-      </div>
+      <button class="send-button" @click="sendMessage">보내기</button>
     </div>
-    <ul class="list-group">
-      <li class="list-group-item" v-for="message in messages">
-        {{ message.sender }} - {{ message.message }}
-      </li>
-    </ul>
-    <div></div>
   </div>
 </template>
 
@@ -33,6 +27,7 @@
 import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+
 export default {
   data() {
     return {
@@ -57,25 +52,14 @@ export default {
   methods: {
     // 시작하자마자 방 찾기
     findRoom() {
-      axios
-        .get(
-          `http://localhost:8880/pub/chat/room/${this.roomId}`,
-          {},
-          {
-            "Access-Control-Allow-Origin": `http://localhost:5173`,
-            "Access-Control-Allow-Credentials": "true",
-          }
-        )
-        .then((response) => {
-          this.room = response.data;
-        });
+      axios.get(`${this.backURL}/chat/room/${this.roomId}`).then((response) => {
+        this.room = response.data;
+      });
     },
     // 메시지 송신 처리
     sendMessage() {
-      // /pub: pub 설정 uri, /chat/message: @MessageMapping uri
       this.ws.send(
-        // `http://localhost:8880/chat/message`,
-        `http://localhost:8880/pub/chat/message`,
+        `/pub/chat/message`,
         {},
         JSON.stringify({
           type: "TALK",
@@ -84,13 +68,14 @@ export default {
           message: this.message,
         })
       );
-      this.message = "";
+
       // 메시지 전송 시 채팅 내역 저장
+      this.message = "";
       this.saveChatHistory();
     },
     // 메시지 수신 처리
     recvMessage(recv) {
-      alert(1);
+      console.log("수신된 메시지:", recv);
       this.messages.unshift({
         type: recv.type,
         sender: recv.type === "ENTER" ? "[알림]" : recv.sender,
@@ -98,10 +83,15 @@ export default {
       });
       // 메시지 수신 시 채팅 내역 저장
       this.saveChatHistory();
+      // 화면 갱신
+      // this.$forceUpdate();
     },
 
     loadChatHistory() {
-      const chatHistory = localStorage.getItem("wschat.chatHistory");
+      // 추가 시작, 현재 방에 대한 채팅 내역을 로드
+      const roomChatHistoryKey = `wschat.chatHistory.${this.roomId}`;
+      // 추가 끝
+      const chatHistory = localStorage.getItem(roomChatHistoryKey);
       console.log(chatHistory);
       if (chatHistory) {
         this.messages = JSON.parse(chatHistory);
@@ -109,14 +99,17 @@ export default {
     },
 
     saveChatHistory() {
-      console.log(this.messages);
-      localStorage.setItem("wschat.chatHistory", JSON.stringify(this.messages));
+      console.log("saveChatHistory message" + this.messages);
+      // 추가시작, 각 방에 대한 채팅 내역을 별도로 저장
+      const roomChatHistoryKey = `wschat.chatHistory.${this.roomId}`;
+      localStorage.setItem(roomChatHistoryKey, JSON.stringify(this.messages));
+
       this.loadChatHistory();
     },
 
     // WebSocket 설정
     setupWebSocket() {
-      this.sock = new SockJS("http://localhost:8880/ws-stomp");
+      this.sock = new SockJS(`${this.backURL}/ws-stomp`);
       this.ws = Stomp.over(this.sock);
       this.connectWebSocket();
     },
@@ -126,17 +119,13 @@ export default {
         {},
         (frame) => {
           // 연결 성공 시 실행되는 부분
-          this.ws.subscribe(
-            `http://localhost:8880/sub/chat/room/${this.roomId}`,
-            (message) => {
-              alert(1);
-              const recv = JSON.parse(message.body);
-              this.recvMessage(recv);
-            }
-          );
+          console.log("WebSocket 연결 성공", frame);
+          this.ws.subscribe(`/sub/chat/room/${this.roomId}`, (message) => {
+            const recv = JSON.parse(message.body);
+            this.recvMessage(recv);
+          });
           this.ws.send(
-            // `http://localhost:8880/chat/message`,
-            `http://localhost:8880/pub/chat/message`,
+            `/pub/chat/message`,
             {},
             JSON.stringify({
               type: "ENTER",
@@ -146,6 +135,7 @@ export default {
           );
         },
         (error) => {
+          console.log("WebSocket 연결 실패", error);
           if (this.reconnectAttempts++ <= 5) {
             setTimeout(() => {
               console.log("다시 연결되었습니다");
@@ -158,7 +148,7 @@ export default {
 
     enterRoom(roomId) {
       axios
-        .get(`http://localhost:8880/pub/chat/room/enter/${roomId}`)
+        .get(`${this.backURL}/pub/chat/room/enter/${roomId}`)
         .then((response) => {
           console.log(response.data);
           this.room = response.data;
@@ -167,7 +157,7 @@ export default {
           if (sender !== "") {
             localStorage.setItem("wschat.sender", sender);
             localStorage.setItem("wschat.roomId", roomId);
-            location.href = `http://localhost:8880/chat/room/enter/${roomId}`;
+            location.href = `${this.backURL}/chat/room/enter/${roomId}`;
           }
         })
         .catch((error) => {
@@ -181,5 +171,33 @@ export default {
 <style>
 [v-cloak] {
   display: none;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 화면 전체 높이로 설정 */
+}
+
+.chat-list {
+  overflow-y: auto;
+  flex: 1; /* 채팅 화면이 남은 공간을 모두 차지하도록 설정 */
+  max-height: 300px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.chat-item {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
 }
 </style>

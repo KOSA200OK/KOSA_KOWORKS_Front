@@ -86,10 +86,10 @@ export default {
                     console.log(event.data);
                     console.log(event);
 
-                    // const data = JSON.parse(event.data);
+                    const data = JSON.parse(event.data);
 
                     // 브라우저의 알림 표시
-                    // this.showNotification(data);
+                    this.showNotification(data);
                     // this.showNotification(event.data);
                 });
             }
@@ -162,7 +162,7 @@ export default {
                 console.error("로그아웃 실패:", error);
             }
         },
-        // ========================== 구독 중지 ============================ -> 찬석
+        // ========================== 구독 중지 ============================ > 찬석
         async stopSSE() {
             // 이전 SSE 구독을 중지하고 eventSource 초기화
             if (this.eventSource) {
@@ -180,18 +180,19 @@ export default {
 	width: 100vw;
 }
 .notify_bar {
-    margin-top: 850px;
-    margin-left: 1350px;
-    width: 300px;
+    margin-top: 880px;
+    margin-left: 1460px;
+    width: 400px;
+    height: 100px;
     padding: 10px; /* 알림 내용과의 간격 조정을 위한 패딩 */
-    background-color: #f3f3f3; /* 배경색 지정 */
-    border: 2px solid #ccc; /* 테두리 설정 */
+    background-color: #009EA8; /* 배경색 지정 */
+    border: 2px solid whitesmoke; /* 테두리 설정 */
     border-radius: 5px; /* 둥근 테두리를 위한 속성 */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
     text-align: center; /* 텍스트 가운데 정렬 */
-    font-family: Arial, sans-serif; /* 폰트 설정 */
-    color: #333; /* 텍스트 색상 */
-    position: absolute;
+    font-family: Arial, sans-serif;
+    color: white; /* 텍스트 색상 */
+    position: absolute; 
 }
 </style>
 

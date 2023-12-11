@@ -183,8 +183,6 @@ export default {
         // --- 라우터값이 변경되었을 때 할 일 END ---
     },
     created() {
-        // console.log('created attendanceList')
-
         // if (this.$route.params.currentPage) {
         //     this.currentPage = this.$route.params.currentPage
         // }
