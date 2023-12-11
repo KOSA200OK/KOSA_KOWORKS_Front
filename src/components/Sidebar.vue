@@ -70,7 +70,7 @@
         <span class="material-icons">no_crash</span>
         <span class="text">차량 예약</span><br />
       </router-link>
-      <router-link class="button" to="/carrent/carmanagelist">
+      <router-link class="button" to="/carrent/manage">
         <span class="material-icons">car_rental</span>
         <span class="text">차량 관리</span>
       </router-link>
@@ -323,6 +323,24 @@ aside {
 .notify::-webkit-scrollbar {
   width: 8px;
 }
+	// 찬석
+	.notify {
+		position: absolute;
+		width: 400px;
+		margin-left: 245px;
+		margin-top: 5px;
+		padding: 10px;
+		// background-color: var(--dark);
+		background-color:#009EA8;
+		border: 1px solid #009EA8;
+		border-radius: 4px;
+		max-height: 450px; 
+		overflow-y: auto; 
+	}
+	/* 스크롤바 스타일링 */
+	.notify::-webkit-scrollbar {
+		width: 8px;
+	}
 
 .notify::-webkit-scrollbar-thumb {
   background-color: var(--light); /* 스크롤바 색상 */

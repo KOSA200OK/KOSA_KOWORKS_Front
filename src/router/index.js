@@ -4,12 +4,13 @@ import Home from "@/pages/Home.vue";
 import Attendance from "@/pages/attendance/AttendanceList.vue";
 import Address from "@/pages/address/AddressList.vue";
 import CarList from "@/pages/car/CarList.vue";
-import CarMyRentList from "@/pages/car/CarMyRentList.vue";
-import CarManageList from "@/pages/car/CarManageList.vue";
-import CarWaitingList from "@/pages/car/CarWaitingList.vue";
-import CarRentList from "@/pages/car/CarRentList.vue";
-import CarNoReturnList from "@/pages/car/CarNoReturnList.vue";
-import CarAllRentList from "@/pages/car/CarAllRentList.vue";
+import CarMyRentList from '@/pages/car/CarMyRentList.vue'
+import CarManage from '@/pages/car/CarManage.vue'
+// import CarManageList from '@/pages/car/CarManageList.vue'
+// import CarWaitingList from '@/pages/car/CarWaitingList.vue'
+// import CarRentList from '@/pages/car/CarRentList.vue'
+// import CarNoReturnList from '@/pages/car/CarNoReturnList.vue'
+import CarAllRentList from '@/pages/car/CarAllRentList.vue'
 import NoticeList from "@/pages/notice/NoticeList.vue";
 import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
@@ -38,15 +39,18 @@ const router = createRouter({
     { path: "/carrent/carlist/:currentPage", component: CarList },
     { path: "/carrent/myrentlist", component: CarMyRentList },
     { path: "/carrent/myrentlist/:currentPage", component: CarMyRentList },
-    { path: "/carrent/managelist", component: CarManageList },
-    { path: "/carrent/managelist/:currentPage", component: CarManageList },
-    { path: "/carrent/waitinglist", component: CarWaitingList },
-    { path: "/carrent/waitinglist/:currentPage", component: CarWaitingList },
-    { path: "/carrent/rentlist", component: CarRentList },
-    { path: "/carrent/rentlist/:currentPage", component: CarRentList },
-    { path: "/carrent/noreturnlist", component: CarNoReturnList },
-    { path: "/carrent/noreturnlist/:currentPage", component: CarNoReturnList },
-    { path: "/carrent/allrentlist", component: CarAllRentList },
+    { path: "/carrent/manage", component: CarManage },
+    { path: "/carrent/manage/:currentPage", component: CarManage },
+    // { path: "/carrent/manage/:currentPage", component: CarManage },
+    // { path: "/carrent/managelist", component: CarManageList },
+    // { path: "/carrent/managelist/:currentPage", component: CarManageList },
+    // { path: "/carrent/waitinglist", component: CarWaitingList },
+    // { path: "/carrent/waitinglist/:currentPage", component: CarWaitingList },
+    // { path: "/carrent/rentlist", component: CarRentList },
+    // { path: "/carrent/rentlist/:currentPage", component: CarRentList },
+    // { path: "/carrent/noreturnlist", component: CarNoReturnList },
+    // { path: "/carrent/noreturnlist/:currentPage", component: CarNoReturnList },
+    { path: '/carrent/allrentlist', component: CarAllRentList },
     { path: "/carrent/allrentlist/:currentPage", component: CarAllRentList },
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },

@@ -102,6 +102,7 @@ export default {
             axios.get(url,{params : this.data})
             .then(response=>{
                 this.carlist = response.data
+                console.log(this.carlist)
                 // alert("dateSelectHandler this.carlist.totalPages:"  +this.carlist.totalPages)
                 if(this.currentPage <=  this.carlist.totalPages){
                     this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
