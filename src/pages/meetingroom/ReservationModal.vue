@@ -161,12 +161,12 @@ export default {
             id: 0
           },
           member: {
-            id: '3'
+            id: ''
           },
           participants: [
             {
               member: {
-                id: '1'
+                id: '0001'
               }
             },
             {
@@ -203,22 +203,24 @@ export default {
       console.log(this.id);
       this.formData.meetingroom.id = this.id;
     },
-    updateStartTime() {
+    updateStartTime(selectedTime) {
       const hours = this.startTime.hours < 10 ? '0' + this.startTime.hours : this.startTime.hours;
       const minutes = this.startTime.minutes < 10 ? '0' + this.startTime.minutes : this.startTime.minutes;
       // "HH:mm" 형식의 문자열로 변환
-      this.startTime = `${hours}:${minutes}`;
+      const startTime = `${hours}:${minutes}`;
+      this.startTime = selectedTime;
       console.log(this.startTime);
       
-      this.formData.startTime = this.startTime;
+      this.formData.startTime = startTime;
     },
-    updateEndTime() {
+    updateEndTime(selectedTime) {
       const endhours = this.endTime.hours < 10 ? '0' + this.endTime.hours : this.endTime.hours;
       const endminutes = this.endTime.minutes < 10 ? '0' + this.endTime.minutes : this.endTime.minutes;
-      this.endTime = `${endhours}:${endminutes}`;
-      console.log(this.endTime);
+      const endtime = `${endhours}:${endminutes}`;
+      this.endTime = selectedTime;
+      console.log(endtime);
 
-      this.formData.endTime = this.endTime;
+      this.formData.endTime = endtime;
     },
     updateMeetingDate() {
       const date = this.meetingDate;
@@ -233,6 +235,8 @@ export default {
     },
     saveReservationHandler(e) {
       const url = `${this.backURL}/meetingroom`
+      this.formData.meetingroom.id = this.mr.id;
+      this.formData.member.id = localStorage.getItem('memberId')
       const data = this.formData
 
       console.log(this.formData)

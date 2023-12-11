@@ -50,7 +50,7 @@ export default {
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const memberId = '3'; //localStorage.getItem('memberId')
+            const memberId = localStorage.getItem('memberId');
             const url = `${this.backURL}/meetingroom/myreservation/${this.currentPage}?memberId=${memberId}`
             axios.get(url)
             .then(response=>{
