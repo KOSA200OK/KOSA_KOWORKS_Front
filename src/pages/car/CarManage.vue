@@ -155,7 +155,7 @@ a{
     color : rgb(57, 97, 97);
 }
 .managesection>table{
-    width : 1400px;
+    width : 95%;
     margin-bottom: 200px;
     border: solid 1px #ebe9e9;
     border-radius: 20px;

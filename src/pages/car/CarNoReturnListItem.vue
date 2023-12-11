@@ -1,10 +1,11 @@
 <template lang="">
-    <tr @click="openModal">
-        <td>{{n.reqDate}}</td>
-        <td>{{n.member.department.name}}</td>
-        <td>{{n.member.name}}</td>
-        <td>{{n.car.carNo}}</td>
-        <td>{{n.startDate}} ~ {{n.endDate}}</td>
+    <tr>
+        <td  @click="openModal">{{n.reqDate}}</td>
+        <td  @click="openModal">{{n.member.department.name}}</td>
+        <td  @click="openModal">{{n.member.name}}</td>
+        <td  @click="openModal">{{n.car.carNo}}</td>
+        <td  @click="openModal">{{n.startDate}} ~ {{n.endDate}}</td>
+        <td><button @click="returnHandler">반납완료</button></td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck" >
         <div class="modal-container">
@@ -38,6 +39,18 @@ export default {
             this.modalCheck = !this.modalCheck
             const today = new Date()
             console.log(today)
+        },
+        returnHandler(){
+            const url = `${this.backURL}/carrent/return?id=${this.n.id}`
+            axios.get(url)
+            .then(response=>{
+                if(response.status==200){
+                    alert('반납처리 되었습니다.')
+                }
+            })
+            .catch((Error)=>{
+                console.log(Error)
+            })
         }
     }
 }
