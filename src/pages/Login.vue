@@ -190,7 +190,7 @@ export default {
     border-radius: 5px; /* 둥근 테두리를 위한 속성 */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
     text-align: center; /* 텍스트 가운데 정렬 */
-    font-family: Arial, sans-serif; /* 폰트 설정 */
+    font-family: Arial, sans-serif;
     color: white; /* 텍스트 색상 */
     position: absolute;
 }
