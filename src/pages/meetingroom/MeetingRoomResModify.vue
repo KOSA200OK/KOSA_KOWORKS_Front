@@ -43,17 +43,31 @@
                 <input v-model="search" type="text" placeholder="검색"/>
                   <div v-if="loading"></div>
                   <div v-else-if="filteredMembers.length > 0">
-                        <!-- key를 member.id로 정해서 <tr></tr>안의 내용을 반복 -->
-                        <div v-for="member in filteredMembers" :key="member.id">
-                          <div class="table-row">
-                            <div class="table-cell">{{ member.name }}</div>
-                          </div>
+                      <!-- key를 member.id로 정해서 <tr></tr>안의 내용을 반복 -->
+                      <div v-for="member in filteredMembers" :key="member.id">
+                        <div class="table-row">
+                          <div class="table-cell" @click="addParticipant(member)">{{ member.name }}</div>
                         </div>
-                    </div>
-                    <div v-else>
-                    <!-- 검색 결과가 없는 경우 메시지를 화면에 표시 -->
-                    <p>다시 검색해주세요</p>
-                    </div>
+                      </div>
+                  </div>
+                  <div v-else>
+                  <!-- 검색 결과가 없는 경우 메시지를 화면에 표시 -->
+                  <p>다시 검색해주세요</p>
+                  </div>
+                  <div v-if="addedParticipants.length > 0">
+                    <p><b>추가된 참석자:</b></p>
+                    <ul>
+                      <li v-for="participant in addedParticipants" :key="participant.id">
+                        {{ participant.name }}
+                        <button @click="removeParticipant(participant)">
+                          <svg class="removebtn" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
+                              stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                          </svg>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
                 <!--수정 가능한 영역 END-->
                 <br>
@@ -93,17 +107,11 @@ export default {
   },
   data() {
     return {
-      formData: {
-        meetingId: {
-          id : `${this.mrr.id}`
-        },
-        member: {
-          id: '3'
-        }
-      },
+      formDataList: [],
       loading: true,
       members: [],
       search: "",
+      addedParticipants: [], //추가된 참석자 저장
     }
   },
   computed: {
@@ -134,11 +142,47 @@ export default {
     closeModal() {
       this.$emit("close");
     },
+    addParticipant(member) {
+      this.addedParticipants.push(member);
+      console.log(member);
+
+      this.formDataList = this.addedParticipants.map((participant) => ({
+        meetingId: {
+          id : `${this.mrr.id}`
+        },
+        member: {
+          id: participant.id
+        }
+      }))
+    },
+    removeParticipant(participant) {
+      // member.id와 일치하는 참석자를 addedParticipants 배열에서 찾기
+      const indexToRemove = this.addedParticipants.findIndex(
+        (addedParticipant) => addedParticipant.id === participant.id
+      );
+
+      if (indexToRemove !== -1) {
+        // 배열에서 찾은 참석자 제거
+        this.addedParticipants.splice(indexToRemove, 1);
+        console.log("제거 완료")
+        console.log(this.addedParticipants)
+
+        // 추가된 참석자의 id를 갖는 객체를 formDataList 업데이트
+        this.formDataList = this.addedParticipants.map((participant) => ({
+          meetingId: {
+            id : `${this.mrr.id}`
+          },
+          member: {
+            id: participant.id
+          }
+        }))
+      }
+    },
     updateParticipantHandler(e) {
       const url = `${this.backURL}/meetingroom/myreservation`
-      const data = this.formData
+      const data = this.formDataList
 
-      console.log(this.formData)
+      console.log(this.formDataList)
       axios
         .post(url, data)
         .then(response => {
@@ -217,6 +261,11 @@ button.close {
   float: right;
   width: 30px;
   height: 30px;
+}
+
+.removebtn {
+  width: 15px;
+  height: 15px;
 }
 
 .meetingroominfo {
