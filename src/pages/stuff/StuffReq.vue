@@ -52,6 +52,7 @@
                         <th>요청수량</th>
                         <th>요청사유</th>
                         <th>처리현황</th>
+                        <th>반려사유</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,11 +62,14 @@
                         <td>{{ reqList.stuff.id }}</td>
                         <td>{{ reqList.stuff.name }}</td>
                         <td>{{ reqList.quantity }}</td>
-                        <td>{{ reqList.purpose }}</td>
+                        <!-- <td>{{ reqList.purpose }}</td> -->
+                        <td>{{ truncateString(reqList.purpose, 10) }}</td>
                         <td
                             :class="{ 'processing': reqList.status === 0, 'completed': reqList.status === 1, 'rejected': reqList.status === 2 }">
                             {{ reqList.status === 0 ? '대기' : reqList.status === 1 ? '승인' : '반려' }}
                         </td>
+
+                        <td>{{ truncateString(reqList.reject, 10) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -123,8 +127,8 @@ export default {
             memberId: null,
             status: 3,
             stuffId: 'default',
-            startDate: null,
-            endDate: null,
+            startDate: '',
+            endDate: '',
             // 비품 데이터 예시
             reqList: [
                 {
@@ -171,6 +175,13 @@ export default {
         }
     },
     methods: {
+        truncateString(str, maxLength) {
+            if (str && str.length > maxLength) {
+                return str.substring(0, maxLength) + '...';
+            } else {
+                return str;
+            }
+        },
         loadData() {
             const url = `${this.backURL}/stuff/requestlist/case`;
 
@@ -215,7 +226,7 @@ export default {
                     {
                         headers: {
                             'Content-Type': 'application/json',
-                        }, 
+                        },
                         withCredentials: true,
                     }
                 )
