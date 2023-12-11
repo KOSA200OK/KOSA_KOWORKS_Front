@@ -162,7 +162,7 @@ export default {
                 console.error("로그아웃 실패:", error);
             }
         },
-        // ========================== 구독 중지 ============================ -> 찬석
+        // ========================== 구독 중지 ============================ > 찬석
         async stopSSE() {
             // 이전 SSE 구독을 중지하고 eventSource 초기화
             if (this.eventSource) {
@@ -192,7 +192,7 @@ export default {
     text-align: center; /* 텍스트 가운데 정렬 */
     font-family: Arial, sans-serif;
     color: white; /* 텍스트 색상 */
-    position: absolute;
+    position: absolute; 
 }
 </style>
 
