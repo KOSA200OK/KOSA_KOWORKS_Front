@@ -28,6 +28,7 @@ const router = createRouter({
     { path: "/home", component: Home },
     // { path: '/attendancelist', component: AttendanceList },
     { path: "/address/members", component: Address },
+    { path: "/address/:currentPage", component: Address },
     { path: "/chat/roomlist", component: RoomList },
     { path: "/chat/room/enter/:roomid", component: RoomDetail },
     // { path: '/calendar/list', component: Attendance },
