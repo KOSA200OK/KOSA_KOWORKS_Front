@@ -51,12 +51,10 @@ export default {
       search: "",
     };
   },
-
   // 페이지가 로드될 때 findAllRoom 메소드를 호출
   created() {
     this.findAllRoom();
   },
-
   //채팅방 검색 기능
   computed: {
     // 검색어에 따라 필터된 채팅방 목록을 반환합니다.
@@ -79,7 +77,6 @@ export default {
         console.error("채팅방 조회에 실패했습니다", error);
       }
     },
-
     // 방 생성
     async createRoom() {
       if ("" === this.room_name) {
@@ -160,6 +157,8 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow-y: auto; /* 세로 스크롤 추가 */
+  max-height: 300px; /* 스크롤이 나타날 최대 높이 지정 (필요에 따라 조절) */
 }
 
 .chatroom-item {
