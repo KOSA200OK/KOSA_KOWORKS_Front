@@ -2,16 +2,21 @@
 	<main class="home-page">
 		<div class="container">
 			<div class="item attendance"> <!-- 찬석 -->
-				<h3>근태</h3>
-				<h3>{{ getCurrentTime() }}</h3>
+				<h3>근태 현황</h3>
+				<h3>{{ currentTime }}</h3>
 				<h3 v-bind="attendanceTime">출근 시간: {{ attendanceTime }}</h3>
 				<h3>퇴근시간</h3>
 				<button @click="attendanceHandler"> 출근 </button>
 				<button @click="attendance2Handler">퇴근</button>
 			</div>
-			<div class="item">B</div>
-			<div class="item">C</div>
-			<div class="item">D</div>
+			<div class="item notice">
+				<h3>최근 공지사항</h3>
+				<button class="add-button" @click="addNotice">
+					<span class="material-icons">add</span>
+				</button>
+				<hr>
+			</div>
+			<div class="item calendar">C</div>
 		</div>
 
 		<!-- <div>
@@ -46,8 +51,9 @@ export default {
 		},
 
 		mounted() {
-			// 1초마다 현재 시간을 업데이트
-			setInterval(this.getCurrentTime(), 1000);
+			setInterval(() => {
+				this.currentTime = this.getCurrentTime();
+			}, 1000);
 		},
 
 		// ======================= 출근 버튼 ================================
@@ -68,7 +74,7 @@ export default {
 				.then((response) => {
 					alert('출근 완료');
 					//재원 추가
-					this.attendanceTime = this.currentTime;
+					this.attendanceTime = this.this.getCurrentTime();
 				})
 				.catch((error) => {
 					console.error('출근 요청 실패', error);
@@ -112,17 +118,34 @@ export default {
 .item {
 	border-radius: 30px;
 	background-color: ghostwhite;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	/* 그림자 효과 추가 */
 }
 
 .attendance {
 	text-align: center;
 	padding: 20px;
-	/* 원하는 패딩 값으로 조절하세요 */
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	/* 그림자 효과 추가 */
+
 }
 
-/* 스타일 추가: 버튼 */
+.notice{
+	position: relative;
+}
+
+.calendar{
+	grid-column-start: 2;
+	grid-row : 1 / 3;
+}
+
+.notice span{
+	color: black;
+}
+
+.notice h3{
+	text-align: center;
+	padding: 20px;
+}
+
 .item button {
 	display: inline-block;
 	padding: 10px 20px;
@@ -130,9 +153,7 @@ export default {
 	border: none;
 	border-radius: 5px;
 	background-color: #3498db;
-	/* 버튼 배경색 */
 	color: #fff;
-	/* 버튼 텍스트 색상 */
 	font-size: 14px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
@@ -140,6 +161,24 @@ export default {
 
 .item button:hover {
 	background-color: #2980b9;
-	/* 호버 상태일 때의 배경색 */
+}
+
+.item .add-button {
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0; 
+	padding: 10px;
+	border: none;
+	border-radius: 50%;
+	background-color: transparent;
+	color: #fff;
+	font-size: 18px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.item .add-button:hover {
+	background-color: #2980b9;
 }
 </style>
