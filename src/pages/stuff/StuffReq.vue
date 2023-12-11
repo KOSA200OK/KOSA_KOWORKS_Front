@@ -49,7 +49,6 @@
                         <th>요청날짜</th>
                         <th>비품번호</th>
                         <th>비품명</th>
-                        <th>현재재고</th>
                         <th>요청수량</th>
                         <th>요청사유</th>
                         <th>처리현황</th>
@@ -61,12 +60,11 @@
                         <td>{{ reqList.reqDate }}</td>
                         <td>{{ reqList.stuff.id }}</td>
                         <td>{{ reqList.stuff.name }}</td>
-                        <td>{{ reqList.stuff.stock }}</td>
                         <td>{{ reqList.quantity }}</td>
                         <td>{{ reqList.purpose }}</td>
                         <td
                             :class="{ 'processing': reqList.status === 0, 'completed': reqList.status === 1, 'rejected': reqList.status === 2 }">
-                            {{ reqList.status === 0 ? '처리대기' : reqList.status === 1 ? '승인완료' : '승인반려' }}
+                            {{ reqList.status === 0 ? '대기' : reqList.status === 1 ? '승인' : '반려' }}
                         </td>
                     </tr>
                 </tbody>
