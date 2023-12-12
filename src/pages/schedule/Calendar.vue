@@ -3,7 +3,7 @@
     <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents">
         <template v-slot:eventContent='arg'>
             <div class="event">
-                <b>{{ arg.event.title }}</b>
+                <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}</b>
             </div>
         </template>
     </FullCalendar>
@@ -33,9 +33,6 @@ export default {
                         end: ''
                     }
                 ],
-                eventColor: '#088A85',
-                editable: true,
-                allDay: false
             }
         }
     },
@@ -62,6 +59,16 @@ export default {
         },
          handleDateClick: function(arg) {
             alert('date click! ' + arg.dateStr)
+        },
+        formatTime(time) {
+            if (time instanceof Date) {
+                const hours = time.getHours().toString().padStart(2, '0');
+                const minutes = time.getMinutes().toString().padStart(2, '0');
+                return `${hours}:${minutes}`;
+            } else {
+                // 문자열인 경우에 대한 처리 추가
+                return time;
+            }
         }
     },
     created(){
@@ -73,6 +80,7 @@ export default {
 .event{
     background-color: #bbebe9; 
     width:100%;
+    border : none;
     border-radius: 3px;
     padding : 2px;
     padding-left : 8px;
