@@ -12,13 +12,17 @@
     </div>
 
     <div class="menu">
-      <button class="button">
+      <div class="button">
+        <span class="material-icons">badge</span>
+        <span class="text">{{memberName}}님 환영합니다</span>
+      </div>
+      <div class="button">
         <span class="material-icons" :class="{ 'bell-has-content': hasContent }"
           >notifications</span
         >
         <button @click="toggleOnOff" class="text">Bell</button>
         <!-- <span class="text">Bell</span> -->
-      </button>
+      </div>
       <!-- 찬석  -->
       <div v-if="isStatusOn" class="notify">
         <notificationItem
@@ -87,8 +91,11 @@
     <div class="flex"></div>
 
     <div class="menu">
-      <span class="material-icons">account_circle</span>
-      <span></span>
+      <div class="button">
+        <span class="material-icons">logout</span>
+        <span class="text">로그아웃</span>
+      </div>
+      <!-- <span class="material-icons">account_circle</span> -->
     </div>
   </aside>
 </template>
@@ -107,6 +114,7 @@ export default {
   data() {
     return {
       is_expanded: localStorage.getItem("is_expanded") === "true",
+      memberName : '',
       //찬석
       isStatusOn: false,
       notificationList: { content: [] },
@@ -130,8 +138,13 @@ export default {
       return { "is-expanded": this.is_expanded };
     },
   },
-  // 찬석
+  
   created() {
+    //재원
+    const memberName = window.localStorage.getItem("name");
+    this.memberName = memberName
+
+    // 찬석
     const id = window.localStorage.getItem("memberId");
     // const id = 1;
     console.log("localStorage memberId : ", id);
@@ -226,7 +239,7 @@ aside {
 
   h3,
   .button .text {
-    // opacity: 0;
+    //  opacity: 0;
     transition: 0.3s ease-out;
   }
 
