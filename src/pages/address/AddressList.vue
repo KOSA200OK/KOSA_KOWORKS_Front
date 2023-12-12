@@ -1,36 +1,45 @@
 <template>
-  <div>
-    <h2>주소록</h2>
-    <!-- 검색창과 검색내용이 양방향으로 binding시키기 위해 v-model사용 -->
-    <input v-model="search" type="text" placeholder="이름 또는 직급을 입력" />
-    <!-- 화면에 사원정보가 조회되기 전까지는 화면에 Loading... 보여줌 -->
-    <div v-if="loading">Loading...</div>
-    <div v-else>
-      <!-- 고정된 헤더 부분 -->
-      <div class="table-header">
-        <div class="header-cell">사원 번호</div>
-        <div class="header-cell">이름</div>
-        <div class="header-cell">직급</div>
-        <div class="header-cell">전화번호</div>
-      </div>
-      <!-- key를 member.id로 정해서 <tr></tr>안의 내용을 반복 -->
-      <div v-for="member in filteredMembers" :key="member.id">
-        <div class="table-row">
-          <div class="table-cell">{{ member.id }}</div>
-          <div class="table-cell">{{ member.name }}</div>
-          <div class="table-cell">{{ member.position }}</div>
-          <div class="table-cell">{{ member.tel }}</div>
-        </div>
-        <hr />
-      </div>
+  <main>
+    <h3 class="title">주소록</h3>
+    <div class="search-container">
+      <input
+        v-model="search"
+        type="text"
+        placeholder="이름 또는 직급 또는 부서명을 입력하세요."
+        class="search-input"
+      />
+      <button @click="findAll" class="search-button">조회</button>
     </div>
-  </div>
+    <div v-if="loading">잠시만 기다려주세요...</div>
+    <div v-else>
+      <table>
+        <thead>
+          <tr>
+            <th>사원 번호</th>
+            <th>이름</th>
+            <th>부서명</th>
+            <th>직급</th>
+            <th>사내번호</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="member in filteredMembers" :key="member.id">
+            <td>{{ member.id }}</td>
+            <td>{{ member.name }}</td>
+            <td>{{ member.departmentName }}</td>
+            <td>{{ member.position }}</td>
+            <td>{{ member.tel }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
 </template>
+
 <script>
 import axios from "axios";
 
 export default {
-  // loading, members, search 초기화
   data() {
     return {
       loading: true,
@@ -38,20 +47,18 @@ export default {
       search: "",
     };
   },
-  //computed를 안 쓰면 값 변화에 따른 화면 갱신이 자동으로 안 됨
   computed: {
     filteredMembers() {
       return this.members.filter((member) => {
-        // 검색어가 없거나, 검색어가 이름과 직급에 포함되어 있는 경우에만 반환
         return (
           !this.search ||
           member.name.includes(this.search) ||
-          member.position.includes(this.search)
+          member.position.includes(this.search) ||
+          member.departmentName.includes(this.search)
         );
       });
     },
   },
-  // mounted훅은 컴포넌트가 화면에 마운트(삽입)된 후에 실행되는 함수, 여기서는 findAll()을 실행
   mounted() {
     this.findAll();
   },
@@ -59,7 +66,6 @@ export default {
     async findAll() {
       try {
         const response = await axios.get(`${this.backURL}/address/members`);
-        // response.data에는 id, name, position, tel정보가 있음, 그 정보를 members배열에 넣음
         this.members = response.data;
         this.loading = false;
       } catch (error) {
@@ -70,28 +76,61 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-.table-header {
-  display: flex;
-  justify-content: space-between;
+.title {
+  text-align: center;
+  font-size: 28px;
+  color: #2c3e50;
+  text-transform: uppercase;
+  margin-top: 100px;
+  margin-bottom: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
+  text-shadow: 1px 1px 1px #ccc;
 }
 
-.header-cell {
-  flex: 1;
-  padding: 5px;
-  border-bottom: 1px solid #ccc;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-.table-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+th,
+td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
 }
 
-.table-cell {
-  flex: 1;
-  padding: 5px;
+thead {
+  background-color: #f5f5f5;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #eaeaea;
+}
+
+.search-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  padding: 10px;
+  margin-right: 10px;
+  width: 300px; /* 변경된 부분: 검색 필드의 길이를 조정합니다. */
+}
+
+.search-button {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
 }
 </style>
