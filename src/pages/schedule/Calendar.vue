@@ -1,6 +1,6 @@
 <template>
 <main>
-    <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarOptions.events">
+    <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents">
         <template v-slot:eventContent='arg'>
             <div class="event">
                 <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}</b>
@@ -32,7 +32,7 @@
                                         name="content" 
                                         v-model="FormData.content">
                 <div class="modal-btn">
-                    <button type="submit" class="ok" @click="scheduleAddHandler(memberId)">등록</button>
+                    <button type="submit" class="ok" @click="scheduleAddHandler">등록</button>
                     <button class="cancel" @click="openModal">취소</button>
                 </div>
             </form>
@@ -117,7 +117,7 @@ export default {
                 return time;
             }
         },
-        scheduleAddHandler(memberId){
+        scheduleAddHandler(){
             
             if(this.endDate<this.startDate){
                 alert("올바른 날짜 기입이 아닙니다. 기간을 다시 확인하세요.")
@@ -131,10 +131,10 @@ export default {
 
             this.FormData.startTime = `${this.startDate} ${this.FormData.startTime}:00`
             this.FormData.endTime = `${this.endDate} ${this.FormData.endTime}:00`
-            this.Formdata.member.id = memberId
+            this.FormData.member.id = localStorage.getItem('memberId')
 
             const url = `${this.backURL}/schedule/add`
-            const data = this.Formdata
+            const data = this.FormData
             console.log(data)
 
             axios.post(url,data)
