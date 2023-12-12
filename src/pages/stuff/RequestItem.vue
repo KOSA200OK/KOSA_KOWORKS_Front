@@ -1,5 +1,5 @@
 <template lang="">
-    <tr>
+    <tr @click="trClickHandler(request.id)">
         <td>{{ request.reqDate }}</td>
         <td>{{ request.stuff.id }}</td>
         <td>{{ request.stuff.name }}</td>
@@ -13,16 +13,23 @@
 
         <td>{{ truncateString(request.reject, 10) }}</td>
     </tr>
+    <RequestItemModal 
+    v-if="isModalVisible" 
+    :request="selectedRowData" 
+    @close="closeModal" />
 </template>
 <script>
+import RequestItemModal from '@/pages/stuff/RequestItemModal.vue';
 export default {
     name: 'RequestItem',
+    components: { RequestItemModal },
     props: {
         request: Object,
     },
     data() {
         return {
-
+            isModalVisible: false,
+            selectedRowData: null,
         }
     },
     methods: {
@@ -32,6 +39,13 @@ export default {
             } else {
                 return str;
             }
+        },
+        trClickHandler(reqId) {
+            this.selectedRowData = this.request;
+            this.isModalVisible = true;
+        },
+        closeModal() {
+            this.isModalVisible = false;
         },
     },
 }
