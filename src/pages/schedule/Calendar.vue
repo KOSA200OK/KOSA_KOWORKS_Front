@@ -1,8 +1,10 @@
 <template>
 <main>
-    <FullCalendar ref="fullCalendar" :options="calendarOptions">
+    <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents">
         <template v-slot:eventContent='arg'>
-            <b>{{ arg.event.title }}</b>
+            <div class="event">
+                <b>{{ arg.event.title }}</b>
+            </div>
         </template>
     </FullCalendar>
 </main>
@@ -11,6 +13,7 @@
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import axios from 'axios'
 
 export default {
     name: 'Calendar',
@@ -23,32 +26,35 @@ export default {
                 plugins: [ dayGridPlugin, interactionPlugin ],
                 initialView: 'dayGridMonth',
                 dateClick: this.handleDateClick,
-                events: null
+                events: [
+                    {
+                        title: '',
+                        start: '',
+                        end: ''
+                    }
+                ],
+                eventColor: '#088A85',
+                editable: true,
+                allDay: false
             }
         }
     },
     methods: {
-        getCurrentMonth() {
-            // FullCalendar의 date 객체를 사용하여 현재 월을 얻기
-            const currentMonth = this.$refs.fullCalendar.getApi().getDate().format('YYYY-MM');
-
-            // 콘솔에 출력 또는 원하는 로직 수행
-            console.log('Current Month:', currentMonth);
-        },
         scheduleHandler(){
             const memberId = localStorage.getItem('memberId')
             console.log(memberId)
-            const url = `${this.backURL}/schedule/calendar?memberId=${memberId}&month=12`
+            const url = `${this.backURL}/schedule/calendar?memberId=${memberId}`
             axios.get(url,{params : this.data})
             .then(response=>{
                 console.log(response.data)
-                if(response.data){
-                    for(const data of response.data){
-                        this.calendarOptions.events[i].title = data.title
-                        this.calendarOptions.events[i].start = data.startTime
-                        this.calendarOptions.events[i].end = data.endTime
-                    }
+                if(response.data && response.data.length > 0){
+                    this.calendarOptions.events = response.data.map(event => ({
+                        title: event.title,
+                        start: event.startTime,
+                        end: event.endTime
+                    }));
                 }
+                console.log('캘린더옵션 events',this.calendarOptions.events)
             })
             .catch((Error)=>{
                 console.log(Error)
@@ -58,10 +64,18 @@ export default {
             alert('date click! ' + arg.dateStr)
         }
     },
-    mounted(){
+    created(){
         this.scheduleHandler()
-        let calendarApi = this.$refs.fullCalendar.getApi()
-        console.log(calendarApi)
     }
 }
 </script>
+<style scoped>
+.event{
+    background-color: #bbebe9; 
+    width:100%;
+    border-radius: 3px;
+    padding : 2px;
+    padding-left : 8px;
+    color : rgb(7, 7, 7);
+}
+</style>
