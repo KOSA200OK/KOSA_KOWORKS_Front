@@ -14,11 +14,7 @@
       <button type="submit">Logout</button>
     </form>
     <!-- 찬석 -->
-    <div
-      class="notify_bar"
-      v-if="notifyMessage"
-      @click="handleNotificationClick"
-    >
+    <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
       {{ notifyMessage }}
     </div>
 
@@ -64,6 +60,9 @@ export default {
 
         // localStorage에 departmentId로 departmentId저장
         localStorage.setItem("departmentId", response.data.departmentId);
+
+        // localStorage에 name으로 사원이름 저장
+        localStorage.setItem("name", response.data.name);
 
         // SSE 구독 시작 ==
         this.startSSE();
@@ -206,6 +205,8 @@ export default {
         localStorage.removeItem("isLoggedIn");
         // localStorage에서 memberId 제거
         localStorage.removeItem("memberId");
+
+        localStorage.removeItem("name");
 
         this.$router.push("/home");
       } catch (error) {
