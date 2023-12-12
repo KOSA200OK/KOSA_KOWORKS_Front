@@ -56,11 +56,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <RequestItem 
-                    :request="request"
-                    v-if="reqList"
-                    v-for="request in reqList"
-                    :key="request.id" />
+                    <RequestItem :request="request" v-if="reqList" v-for="request in reqList" :key="request.id" />
                 </tbody>
             </table>
         </div>
@@ -107,11 +103,11 @@
 </template>
   
 <script>
-import RequestItem from'@/pages/stuff/RequestItem.vue'
+import RequestItem from '@/pages/stuff/RequestItem.vue'
 import axios from 'axios'
 export default {
     name: 'StuffReq',
-    components:{RequestItem},
+    components: { RequestItem },
     data() {
         return {
             category: 'default', // 대분류 선택값
@@ -142,6 +138,11 @@ export default {
     },
     methods: {
         loadData() {
+            if (!this.startDate || !this.endDate) {
+                alert('시작 날짜와 종료 날짜를 선택하세요.');
+                return;
+            }
+
             const url = `${this.backURL}/stuff/requestlist/case`;
 
             const params = {
@@ -161,6 +162,7 @@ export default {
                 withCredentials: true
             })
                 .then(response => {
+                    console.log(response)
                     this.reqList = response.data;
                 })
                 .catch(error => {

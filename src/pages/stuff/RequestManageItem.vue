@@ -12,25 +12,32 @@
             {{ request.status === 0 ? '대기' : request.status === 1 ? '승인' : '반려' }}
         </td>
     </tr>
+    <ManageItemModal 
+    v-if="isModalVisible" 
+    :request="selectedRowData" 
+    @close="closeModal" />
 </template>
 <script>
+import ManageItemModal from '@/pages/stuff/ManageItemModal.vue';
 export default {
     name: 'RequestManageItem',
+    components: { ManageItemModal },
     props: {
         request: Object,
     },
     data() {
         return {
-
+            isModalVisible: false,
+            selectedRowData: null,
         }
     },
     methods: {
         trClickHandler(reqId) {
-            console.log('클릭한 tr의 데이터:', reqId);
-
-
-            this.selectedRowData = this.reqList;
+            this.selectedRowData = this.request;
             this.isModalVisible = true;
+        },
+        closeModal() {
+            this.isModalVisible = false;
         },
     },
 }

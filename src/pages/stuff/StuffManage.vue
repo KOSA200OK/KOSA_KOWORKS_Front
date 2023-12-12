@@ -63,11 +63,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <RequestManageItem 
-                    :request="request"
-                    v-if="reqList"
-                    v-for="request in reqList"
-                    :key="request.id" />
+                    <RequestManageItem :request="request" v-if="reqList" v-for="request in reqList" :key="request.id" />
                 </tbody>
             </table>
         </div>
@@ -78,7 +74,7 @@ import RequestManageItem from '@/pages/stuff/RequestManageItem.vue'
 import axios from 'axios'
 export default {
     name: 'StuffManage',
-    components:{RequestManageItem},
+    components: { RequestManageItem },
     data() {
         return {
             category: 'default', // 대분류 선택값
@@ -94,6 +90,11 @@ export default {
     },
     methods: {
         loadData() {
+            if (!this.startDate || !this.endDate) {
+                alert('시작 날짜와 종료 날짜를 선택하세요.');
+                return;
+            }
+
             const url = `${this.backURL}/stuff/requestmanage`;
 
             const params = {
@@ -121,7 +122,7 @@ export default {
         },
         trClickHandler(reqId) {
             console.log('클릭한 tr의 데이터:', reqId);
-            
+
 
             this.selectedRowData = this.reqList;
             this.isModalVisible = true;
@@ -179,7 +180,7 @@ tbody tr:hover {
 }
 
 .processing {
-    background-color: #E9BC00 ;
+    background-color: #E9BC00;
 }
 
 .completed {
@@ -187,7 +188,7 @@ tbody tr:hover {
 }
 
 .rejected {
-    background-color: #FE813C ;
+    background-color: #FE813C;
 }
 
 .form-container {
