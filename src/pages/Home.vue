@@ -116,7 +116,7 @@ export default {
 <style>
 .gridContainer {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 3fr 5fr;
 	/* grid-template-rows: repeat(2, minmax(400px, auto)); */
 	grid-template-rows: 200px 600px;
 	row-gap: 30px;
