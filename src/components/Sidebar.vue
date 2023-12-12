@@ -141,7 +141,7 @@ export default {
   
   created() {
     //재원
-    const memberName = window.localStorage.getItem("memberName");
+    const memberName = window.localStorage.getItem("name");
     this.memberName = memberName
 
     // 찬석
