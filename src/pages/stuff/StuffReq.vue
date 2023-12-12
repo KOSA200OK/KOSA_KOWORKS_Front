@@ -56,21 +56,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 비품 데이터를 반복하여 출력 -->
-                    <tr v-for="(reqList, index) in reqList" :key="index">
-                        <td>{{ reqList.reqDate }}</td>
-                        <td>{{ reqList.stuff.id }}</td>
-                        <td>{{ reqList.stuff.name }}</td>
-                        <td>{{ reqList.quantity }}</td>
-                        <!-- <td>{{ reqList.purpose }}</td> -->
-                        <td>{{ truncateString(reqList.purpose, 10) }}</td>
-                        <td
-                            :class="{ 'processing': reqList.status === 0, 'completed': reqList.status === 1, 'rejected': reqList.status === 2 }">
-                            {{ reqList.status === 0 ? '대기' : reqList.status === 1 ? '승인' : '반려' }}
-                        </td>
-
-                        <td>{{ truncateString(reqList.reject, 10) }}</td>
-                    </tr>
+                    <RequestItem 
+                    :request="request"
+                    v-if="reqList"
+                    v-for="request in reqList"
+                    :key="request.id" />
                 </tbody>
             </table>
         </div>
@@ -117,9 +107,11 @@
 </template>
   
 <script>
+import RequestItem from'@/pages/stuff/RequestItem.vue'
 import axios from 'axios'
 export default {
     name: 'StuffReq',
+    components:{RequestItem},
     data() {
         return {
             category: 'default', // 대분류 선택값
@@ -130,33 +122,7 @@ export default {
             startDate: '',
             endDate: '',
             // 비품 데이터 예시
-            reqList: [
-                {
-                    "id": 31,
-                    "stuff": {
-                        "id": "S0001",
-                        "name": "A4",
-                        "stock": 10
-                    },
-                    "member": {
-                        "id": "0001",
-                        "department": {
-                            "id": 1,
-                            "name": "개발1팀"
-                        },
-                        "name": "서재원",
-                        "password": "1",
-                        "position": "사원",
-                        "tel": "01077771111"
-                    },
-                    "reqDate": "2023-11-30",
-                    "quantity": 5,
-                    "status": 2,
-                    "purpose": "테스트 1",
-                    "reject": "반려테스트 1"
-                }
-            ],
-
+            reqList: [],
             categoryReq: 'default', // 대분류 선택값
             subcategoryReq: '', // 소분류 선택값
             quantity: 0,
@@ -175,13 +141,6 @@ export default {
         }
     },
     methods: {
-        truncateString(str, maxLength) {
-            if (str && str.length > maxLength) {
-                return str.substring(0, maxLength) + '...';
-            } else {
-                return str;
-            }
-        },
         loadData() {
             const url = `${this.backURL}/stuff/requestlist/case`;
 
@@ -275,27 +234,6 @@ th {
 
 td {
     background-color: #ffffff;
-}
-
-/* 처리현황에 따른 스타일링 */
-.processing,
-.completed,
-.rejected {
-    font-weight: bold;
-    text-align: center;
-    padding: 8px;
-}
-
-.processing {
-    background-color: rgba(255, 165, 0, 0.7);
-}
-
-.completed {
-    background-color: rgba(0, 128, 0, 0.7);
-}
-
-.rejected {
-    background-color: rgba(255, 0, 0, 0.7);
 }
 
 .form-container {

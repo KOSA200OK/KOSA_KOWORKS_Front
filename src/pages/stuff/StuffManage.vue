@@ -59,43 +59,26 @@
                         <th>비품명</th>
                         <th>현재재고</th>
                         <th>요청수량</th>
-                        <th>요청사유</th>
                         <th>처리현황</th>
-                        <th>반려사유</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 비품 데이터를 반복하여 출력 -->
-                    <tr @click="trClickHandler(reqList.id)" v-for="(reqList, index) in reqList" :key="index">
-                        <td>{{ reqList.reqDate }}</td>
-                        <td>{{ reqList.member.name }}</td>
-                        <td>{{ reqList.member.department.name }}</td>
-                        <td>{{ reqList.stuff.id }}</td>
-                        <td>{{ reqList.stuff.name }}</td>
-                        <td>{{ reqList.stuff.stock }}</td>
-                        <td>{{ reqList.quantity }}</td>
-                        <td>{{ reqList.purpose }}</td>
-                        <td
-                            :class="{ 'processing': reqList.status === 0, 'completed': reqList.status === 1, 'rejected': reqList.status === 2 }">
-                            {{ reqList.status === 0 ? '대기' : reqList.status === 1 ? '승인' : '반려' }}
-                        </td>
-                        <td>{{ reqList.reject }}</td>
-                    </tr>
+                    <RequestManageItem 
+                    :request="request"
+                    v-if="reqList"
+                    v-for="request in reqList"
+                    :key="request.id" />
                 </tbody>
             </table>
-        </div>
-        <div class="overlay" v-if="isModalVisible"></div>
-        <div class="modal" v-if="isModalVisible">
-            <h2>비품 요청서</h2>
-            <div>{{ selectedRowData }}</div>
-            <button @click="closeModal">Close Modal</button>
         </div>
     </main>
 </template>
 <script>
+import RequestManageItem from '@/pages/stuff/RequestManageItem.vue'
 import axios from 'axios'
 export default {
     name: 'StuffManage',
+    components:{RequestManageItem},
     data() {
         return {
             category: 'default', // 대분류 선택값
@@ -106,34 +89,7 @@ export default {
             startDate: null,
             endDate: null,
             departmentId: 0,
-            reqList: [
-                {
-                    "id": 32,
-                    "stuff": {
-                        "id": "S0001",
-                        "name": "A4",
-                        "stock": 10
-                    },
-                    "member": {
-                        "id": "0001",
-                        "department": {
-                            "id": 1,
-                            "name": "개발1팀"
-                        },
-                        "name": "서재원",
-                        "password": "1",
-                        "position": "사원",
-                        "tel": "01077771111"
-                    },
-                    "reqDate": "2023-12-04",
-                    "quantity": 5,
-                    "status": 1,
-                    "purpose": "테스트 2",
-                    "reject": null
-                }
-            ],
-            isModalVisible: false,
-            selectedRowData: null,
+            reqList: [],
         }
     },
     methods: {
@@ -169,9 +125,6 @@ export default {
 
             this.selectedRowData = this.reqList;
             this.isModalVisible = true;
-        },
-        closeModal() {
-            this.isModalVisible = false;
         },
     },
 }
@@ -226,15 +179,15 @@ tbody tr:hover {
 }
 
 .processing {
-    background-color: rgba(255, 165, 0, 0.7);
+    background-color: #E9BC00 ;
 }
 
 .completed {
-    background-color: rgba(0, 128, 0, 0.7);
+    background-color: #58CB64;
 }
 
 .rejected {
-    background-color: rgba(255, 0, 0, 0.7);
+    background-color: #FE813C ;
 }
 
 .form-container {
@@ -276,25 +229,5 @@ select {
 
 .load-button:hover {
     background-color: #58b5c5;
-}
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* 어두운 배경의 색상과 투명도 조절 */
-  z-index: 999; /* 모달보다 더 위에 나타나도록 설정 */
-}
-
-.modal {
-  position: fixed;
-  top: 50%; /* 화면 상단에서 50% 위치에 표시 */
-  left: 50%; /* 화면 왼쪽에서 50% 위치에 표시 */
-  transform: translate(-50%, -50%); /* 모달을 가운데 정렬 */
-  background-color: white;
-  padding: 20px;
-  z-index: 1000; /* 어두운 배경보다 위에 나타나도록 설정 */
-  /* 다른 모달 스타일링 추가 */
 }
 </style>
