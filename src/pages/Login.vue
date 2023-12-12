@@ -206,6 +206,8 @@ export default {
         // localStorage에서 memberId 제거
         localStorage.removeItem("memberId");
 
+        localStorage.removeItem("departmentId");
+
         localStorage.removeItem("name");
 
         this.$router.push("/home");

@@ -49,11 +49,14 @@ export default {
       room_name: "",
       chatrooms: [],
       search: "",
+      memberId: "",
     };
   },
   // 페이지가 로드될 때 findAllRoom 메소드를 호출
   created() {
     this.findAllRoom();
+    // 추가: 로컬 스토리지에서 직원 번호를 불러오기
+    this.memberId = localStorage.getItem("memberId") || "";
   },
   //채팅방 검색 기능
   computed: {
@@ -102,7 +105,8 @@ export default {
     },
 
     enterRoom(roomId) {
-      const sender = prompt("대화명을 입력해 주세요.");
+      // 직원 번호를 입력 받지 않고 로컬 스토리지에서 불러오기
+      const sender = this.memberId;
       if (sender !== "") {
         localStorage.setItem("wschat.sender", sender);
         localStorage.setItem("wschat.roomId", roomId);
