@@ -58,10 +58,10 @@
         <span class="material-icons">chat</span>
         <span class="text">채팅</span>
       </router-link>
-      <!-- <router-link class="button" to="/calendar/list">
+      <router-link class="button" to="/schedule/calendar">
         <span class="material-icons">calendar_month</span>
         <span class="text">일정</span>
-      </router-link> -->
+      </router-link> 
       <router-link class="button" to="/meetingroom">
         <span class="material-icons">meeting_room</span>
         <span class="text">회의실 예약</span>
