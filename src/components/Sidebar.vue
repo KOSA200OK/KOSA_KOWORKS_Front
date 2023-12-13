@@ -115,6 +115,7 @@ export default {
     return {
       is_expanded: localStorage.getItem("is_expanded") === "true",
       memberName: "",
+      departmentId: 0,
       //찬석
       isStatusOn: false,
       notificationList: { content: [] },
@@ -143,6 +144,8 @@ export default {
     //재원
     const memberName = window.localStorage.getItem("name");
     this.memberName = memberName;
+    const departmentId = window.localStorage.getItem("departmentId");
+    this.departmentId = departmentId;
 
     // 찬석
     const id = window.localStorage.getItem("memberId");

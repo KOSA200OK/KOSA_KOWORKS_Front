@@ -141,9 +141,7 @@ export default {
   
 <style scoped>
 .table-container {
-    min-height: 200px;
-    max-height: 300px;
-    /* max-height: 50%; */
+    height: 250px;
     overflow-y: auto;
 }
 
