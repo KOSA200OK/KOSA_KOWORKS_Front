@@ -404,7 +404,23 @@ aside {
   /* 스크롤바 트랙 모양 */
 }
 
-/* contentList가 null이 아니면 종 이모티콘 색상 변경 */
+/* 종 딸랑딸랑 움직이는 애니메이션 */
+@keyframes bellAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(30deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* 이모티콘에 애니메이션 적용 */
 .material-icons.bell-has-content {
-  color: yellow !important;
-}</style>
+  color: #ffcc00 !important;
+  animation: bellAnimation 0.5s ease-in-out infinite; /* 무한 반복하는 애니메이션 설정 */
+}
+
+</style>
