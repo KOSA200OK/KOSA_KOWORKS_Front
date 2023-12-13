@@ -14,22 +14,16 @@
     <div class="menu">
       <div class="button">
         <span class="material-icons">badge</span>
-        <span class="text">{{memberName}}님 환영합니다</span>
+        <span class="text">{{ memberName }}님 환영합니다</span>
       </div>
       <div class="button">
-        <span class="material-icons" :class="{ 'bell-has-content': hasContent }"
-          >notifications</span
-        >
+        <span class="material-icons" :class="{ 'bell-has-content': hasContent }">notifications</span>
         <button @click="toggleOnOff" class="text">Bell</button>
         <!-- <span class="text">Bell</span> -->
       </div>
       <!-- 찬석  -->
       <div v-if="isStatusOn" class="notify">
-        <notificationItem
-          :n="n"
-          v-for="n in this.notificationList.content"
-          :key="n.id"
-        >
+        <notificationItem :n="n" v-for="n in this.notificationList.content" :key="n.id">
           {{ n.content }}
           예약 내용
         </notificationItem>
@@ -50,7 +44,7 @@
         <span class="material-icons">campaign</span>
         <span class="text">공지사항</span>
       </router-link>
-      <router-link class="button" to="/address/members">
+      <router-link class="button" to="/address/addresslist">
         <span class="material-icons">group</span>
         <span class="text">주소록</span>
       </router-link>
@@ -61,7 +55,7 @@
       <router-link class="button" to="/schedule/calendar">
         <span class="material-icons">calendar_month</span>
         <span class="text">일정</span>
-      </router-link> 
+      </router-link>
       <router-link class="button" to="/meetingroom">
         <span class="material-icons">meeting_room</span>
         <span class="text">회의실 예약</span>
@@ -74,7 +68,7 @@
         <span class="material-icons">no_crash</span>
         <span class="text">차량 예약</span><br />
       </router-link>
-      <router-link class="button" to="/carrent/manage">
+      <router-link v-if="departmentId === '4'" class="button" to="/carrent/manage">
         <span class="material-icons">car_rental</span>
         <span class="text">차량 관리</span>
       </router-link>
@@ -82,7 +76,7 @@
         <span class="material-icons">add_box</span>
         <span class="text">비품 요청</span>
       </router-link>
-      <router-link class="button" to="/stuff/stuffmanage">
+      <router-link v-if="departmentId === '4'" class="button" to="/stuff/stuffmanage">
         <span class="material-icons">shelves</span>
         <span class="text">비품 요청 관리</span>
       </router-link>
@@ -91,11 +85,10 @@
     <div class="flex"></div>
 
     <div class="menu">
-      <div class="button">
+      <div class="button" @click="logout">
         <span class="material-icons">logout</span>
         <span class="text">로그아웃</span>
       </div>
-      <!-- <span class="material-icons">account_circle</span> -->
     </div>
   </aside>
 </template>
@@ -114,7 +107,9 @@ export default {
   data() {
     return {
       is_expanded: localStorage.getItem("is_expanded") === "true",
-      memberName : '',
+      memberName: "",
+      departmentId: 0,
+
       //찬석
       isStatusOn: false,
       notificationList: { content: [] },
@@ -127,6 +122,38 @@ export default {
       this.is_expanded = !this.is_expanded;
       localStorage.setItem("is_expanded", this.is_expanded);
     },
+
+    async logout() {
+      try {
+        // SSE 연결 해제 -> 찬석
+        if (this.eventSource) {
+          this.eventSource.close();
+          this.eventSource = null;
+        }
+        // =============
+
+        await axios.get(`${this.backURL}/logout`, {});
+
+        // localStorage에서 로그인 상태 제거
+        localStorage.removeItem("isLoggedIn");
+
+        // localStorage에서 memberId 제거
+        localStorage.removeItem("memberId");
+
+        // localStorage에서 departmentId 제거
+        localStorage.removeItem("departmentId");
+
+        // localStorage에서 name 제거
+        localStorage.removeItem("name");
+
+        this.$router.push("/home");
+        //화면 새로고침
+        location.reload();
+      } catch (error) {
+        console.error("로그아웃 실패:", error);
+      }
+    },
+
     // 찬석
     toggleOnOff: function () {
       this.isStatusOn = !this.isStatusOn;
@@ -138,11 +165,14 @@ export default {
       return { "is-expanded": this.is_expanded };
     },
   },
-  
+
   created() {
     //재원
     const memberName = window.localStorage.getItem("name");
-    this.memberName = memberName
+    this.memberName = memberName;
+    const departmentId = window.localStorage.getItem("departmentId");
+    this.departmentId = departmentId;
+    console.log('부서' + this.departmentId)
 
     // 찬석
     const id = window.localStorage.getItem("memberId");
@@ -197,7 +227,7 @@ aside {
   transition: 0.2s ease-out; //토글 속도
 
   .flex {
-    flex: 1 1 0;
+    flex: 1 1 0%;
   }
 
   .logo {
@@ -237,9 +267,11 @@ aside {
     }
   }
 
+
   h3,
   .button .text {
-    //  opacity: 0;
+    display: none;
+     opacity: 0;
     transition: 0.3s ease-out;
   }
 
@@ -277,15 +309,12 @@ aside {
       &:hover,
       &.router-link-exact-active {
         background-color: var(--dark-alt);
+        border-right: 5px solid var(--primary);
 
         .material-icons,
         .text {
           color: var(--primary);
         }
-      }
-
-      &.router-link-exact-active {
-        border-right: 5px solid var(--primary);
       }
     }
   }
@@ -301,8 +330,11 @@ aside {
         transform: rotate(-180deg);
       }
 
-      h3,
+    }
+
+    h3,
       .button .text {
+        display: flex;
         opacity: 1;
       }
 
@@ -311,7 +343,6 @@ aside {
           margin-right: 1rem;
         }
       }
-    }
   }
 
   @media (max-width: 768px) {
@@ -319,6 +350,7 @@ aside {
     z-index: 99; // 요소의 수직 위치 지정 - 제일 높음
   }
 }
+
 // 찬석
 .notify {
   position: absolute;
@@ -332,10 +364,12 @@ aside {
   max-height: 450px;
   overflow-y: auto;
 }
+
 /* 스크롤바 스타일링 */
 .notify::-webkit-scrollbar {
   width: 8px;
 }
+
 // 찬석
 .notify {
   position: absolute;
@@ -350,22 +384,27 @@ aside {
   max-height: 450px;
   overflow-y: auto;
 }
+
 /* 스크롤바 스타일링 */
 .notify::-webkit-scrollbar {
   width: 8px;
 }
 
 .notify::-webkit-scrollbar-thumb {
-  background-color: var(--light); /* 스크롤바 색상 */
-  border-radius: 4px; /* 스크롤바 모양 */
+  background-color: var(--light);
+  /* 스크롤바 색상 */
+  border-radius: 4px;
+  /* 스크롤바 모양 */
 }
 
 .notify::-webkit-scrollbar-track {
-  background-color: var(--dark); /* 스크롤바 트랙 색상 */
-  border-radius: 4px; /* 스크롤바 트랙 모양 */
+  background-color: var(--dark);
+  /* 스크롤바 트랙 색상 */
+  border-radius: 4px;
+  /* 스크롤바 트랙 모양 */
 }
+
 /* contentList가 null이 아니면 종 이모티콘 색상 변경 */
 .material-icons.bell-has-content {
   color: yellow !important;
-}
-</style>
+}</style>
