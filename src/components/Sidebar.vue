@@ -74,7 +74,7 @@
         <span class="material-icons">no_crash</span>
         <span class="text">차량 예약</span><br />
       </router-link>
-      <router-link class="button" to="/carrent/manage">
+      <router-link v-if="departmentId === '4'" class="button" to="/carrent/manage">
         <span class="material-icons">car_rental</span>
         <span class="text">차량 관리</span>
       </router-link>
@@ -82,7 +82,7 @@
         <span class="material-icons">add_box</span>
         <span class="text">비품 요청</span>
       </router-link>
-      <router-link class="button" to="/stuff/stuffmanage">
+      <router-link v-if="departmentId === '4'" class="button" to="/stuff/stuffmanage">
         <span class="material-icons">shelves</span>
         <span class="text">비품 요청 관리</span>
       </router-link>
@@ -115,6 +115,7 @@ export default {
     return {
       is_expanded: localStorage.getItem("is_expanded") === "true",
       memberName: "",
+      departmentId: 0,
       //찬석
       isStatusOn: false,
       notificationList: { content: [] },
@@ -143,6 +144,9 @@ export default {
     //재원
     const memberName = window.localStorage.getItem("name");
     this.memberName = memberName;
+    const departmentId = window.localStorage.getItem("departmentId");
+    this.departmentId = departmentId;
+    console.log('부서' +this.departmentId)
 
     // 찬석
     const id = window.localStorage.getItem("memberId");
