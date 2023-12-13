@@ -114,9 +114,11 @@ export default {
                 withCredentials: true
             })
                 .then(response => {
+                    alert('목록 로드 성공')
                     this.reqList = response.data;
                 })
                 .catch(error => {
+                    alert('목록 로드 실패')
                     console.error('데이터를 불러오는 중 에러 발생:', error);
                 });
         },
