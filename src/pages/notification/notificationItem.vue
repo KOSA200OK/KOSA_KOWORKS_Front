@@ -1,4 +1,5 @@
-<template>
+<template> 
+    <main></main>
     <div>
         <ul>
             <li>
