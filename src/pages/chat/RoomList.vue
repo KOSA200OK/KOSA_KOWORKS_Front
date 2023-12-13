@@ -1,12 +1,12 @@
 <template>
   <!-- v-cloak 디렉티브를 사용하여 앱이 로딩될 때까지 템플릿을 감춤 -->
-  <div class="messenger-container" id="app" v-cloak>
-    <div class="header">
+  <div class="roomlist-container" id="app" v-cloak>
+    <div class="roomlist-header">
       <h3>채팅방 목록</h3>
     </div>
     <!-- 채팅방 검색 -->
     <div class="search-form">
-      <label for="roomSearch" class="sr-only">채팅방 검색 </label>
+      <!-- <label for="roomSearch" class="sr-only">채팅방 검색</label> -->
       <input
         id="roomSearch"
         type="text"
@@ -14,9 +14,9 @@
         placeholder="채팅방을 검색하세요"
       />
     </div>
-    <!-- 채팅방 검색 -->
+    <!-- 채팅방 만들기 -->
     <div class="chatroom-form">
-      <label for="roomName" class="sr-only">방제목 </label>
+      <!-- <label for="roomName" class="sr-only">방제목</label> -->
       <input
         id="roomName"
         type="text"
@@ -121,24 +121,33 @@ export default {
 [v-cloak] {
   display: none;
 }
-.messenger-container {
-  max-width: 400px;
+.roomlist-container {
+  max-width: 70%;
   margin: 50px auto;
-  background-color: #f0f0f0;
+  background-color: #acc8e5;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.header {
+.roomlist-header {
   text-align: center;
   margin-bottom: 20px;
 }
 
 .chatroom-form {
   display: flex;
+  flex-direction: column; /* 세로 방향으로 정렬되도록 변경 */
   margin-bottom: 20px;
+}
+.search-form {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center; /* 세로 중앙 정렬을 위해 추가 */
+}
+.chatroom-form input {
+  margin-bottom: 10px; /* 입력창 간 간격을 조절 */
 }
 
 input {
@@ -150,7 +159,7 @@ input {
 
 button {
   padding: 10px;
-  background-color: #4caf50;
+  background-color: #0d1c2b;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -162,7 +171,7 @@ ul {
   padding: 0;
   margin: 0;
   overflow-y: auto; /* 세로 스크롤 추가 */
-  max-height: 300px; /* 스크롤이 나타날 최대 높이 지정 (필요에 따라 조절) */
+  max-height: 400px; /* 스크롤이 나타날 최대 높이 지정 (필요에 따라 조절) */
 }
 
 .chatroom-item {
@@ -176,6 +185,6 @@ ul {
 }
 
 .chatroom-item:hover {
-  background-color: #f0f0f0;
+  background-color: #0e1c2a;
 }
 </style>

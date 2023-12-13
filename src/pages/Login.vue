@@ -1,3 +1,4 @@
+<!--Login.vue-->
 <template>
   <div class="login-container">
     <h2 v-if="!isLoggedIn">Login</h2>
@@ -10,15 +11,11 @@
 
       <button type="submit">Login</button>
     </form>
-    <form v-if="isLoggedIn" @submit.prevent="logout">
+    <!-- <form v-if="isLoggedIn" @submit.prevent="logout">
       <button type="submit">Logout</button>
-    </form>
+    </form> -->
     <!-- 찬석 -->
-    <div
-      class="notify_bar"
-      v-if="notifyMessage"
-      @click="handleNotificationClick"
-    >
+    <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
       {{ notifyMessage }}
     </div>
 
@@ -163,6 +160,7 @@ export default {
 
         // localStorage에서 departmentId 제거
         localStorage.removeItem("departmentId");
+        localStorage.removeItem("name");
 
         this.$router.push("/home");
         //화면 새로고침
