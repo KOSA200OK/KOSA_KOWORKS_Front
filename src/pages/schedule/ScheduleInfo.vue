@@ -9,6 +9,7 @@
             </div>
             <div class="modal-btn" v-if="modifyCheck==false">
                 <button type="submit" class="ok" @click="modifyModal">수정</button>
+                <button class="delete" @click="deleteHandler">삭제</button>
                 <button class="cancel" @click="$emit('closeModal')">취소</button>
             </div>
             <div class="modify-detail" v-if="modifyCheck==true">
@@ -125,6 +126,21 @@ export default {
                 .then((Response)=>{
                     alert('성공')
                     this.modifyCheck = !this.modifyCheck
+                    window.location.reload()
+                })
+                .catch((Error)=>{
+                    console.log(Error)
+                })
+        },
+        deleteHandler(){
+            const id = this.c.extendedProps.eventId
+            const url = `${this.backURL}/schedule/delete/${id}`
+
+            alert('삭제하시겠습니까?')
+
+            axios.delete(url)
+                .then((Response)=>{
+                    alert('성공')
                     window.location.reload()
                 })
                 .catch((Error)=>{
