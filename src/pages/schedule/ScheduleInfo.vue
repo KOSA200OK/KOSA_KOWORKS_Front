@@ -13,7 +13,8 @@
             </div>
             <div class="modify-detail" v-if="modifyCheck==true">
                 <label>제목 : </label><input type="text" 
-                                        v-model="c.title"><br><br>
+                                            name="scheduleTitle"
+                                        v-model="schedule.scheduleTitle"><br><br>
                 <label>기간 : <input type="date"
                                      name="startDate"
                                      v-model="startDate"
@@ -32,7 +33,7 @@
                                                         required></label><br><br><br>
                 <label>메모 : </label><input type="text" 
                                              name="content" 
-                                             v-model="c.extendedProps.memo">
+                                             v-model="schedule.content">
             </div>
             <div class="modal-btn" v-if="modifyCheck">
                 <button type="submit" class="ok" @click="modifyHandler">완료</button>
@@ -61,7 +62,7 @@ export default {
                 id : '',
                 startTime : null,
                 endTime : null,
-                scheduleTitle : '',
+                scheduleTitle :  '' ,
                 content : '',
                 member : {
                     id : ''
@@ -71,10 +72,14 @@ export default {
     },
     methods: {
         modifyModal(){
+            this.schedule.scheduleTitle = this.c.title 
+            this.schedule.content = this.c.extendedProps.memo
             this.startDate = this.formatYYYYmmdd(this.c.start)
             this.endDate = this.formatYYYYmmdd(this.c.end)
             this.sTime = this.formatHHmmss(this.c.start)
             this.eTime = this.formatHHmmss(this.c.end)
+            console.log(this.schedule.scheduleTitle)
+            console.log(this.schedule.content)
             this.modifyCheck = !this.modifyCheck
         },
         closeModal(){
@@ -96,7 +101,35 @@ export default {
             return `${hours}:${minutes}`
         },
         modifyHandler(){
+            console.log(this.c.extendedProps.eventId)
+            this.schedule.id = this.c.extendedProps.eventId
+            console.log(this.schedule.id)
+            if(this.endDate<this.startDate){
+                alert("올바른 날짜 기입이 아닙니다. 기간을 다시 확인하세요.")
+                return false
+            }
+
+            if(this.eTime<this.sTime){
+                alert("올바른 시간 기입이 아닙니다. 시간을 다시 확인하세요.")
+                return false
+            }
             
+            this.schedule.startTime = `${this.startDate} ${this.sTime}:00`
+            this.schedule.endTime = `${this.endDate} ${this.eTime}:00`
+
+            const url = `${this.backURL}/schedule/modify`
+            const data = this.schedule
+            console.log(data)
+
+            axios.put(url,data,{ withCredentials: true })
+                .then((Response)=>{
+                    alert('성공')
+                    this.modifyCheck = !this.modifyCheck
+                    window.location.reload()
+                })
+                .catch((Error)=>{
+                    console.log(Error)
+                })
         }
     },
     created(){
