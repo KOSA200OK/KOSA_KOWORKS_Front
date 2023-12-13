@@ -340,7 +340,7 @@ aside {
 .notify {
   position: absolute;
   width: 400px;
-  margin-left: 245px;
+  margin-left: 12.8%;
   margin-top: 5px;
   padding: 10px;
   // background-color: var(--dark);
