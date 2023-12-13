@@ -1,6 +1,7 @@
 <template>
     <main>
-        <h3 class="title">비품 요청</h3>
+        <h3 class="title">비품 요청 목록조회</h3>
+        <br>
         <div class="form-container">
             <div class="form-group">
                 <label for="startDatePicker">시작 날짜:</label>
@@ -64,50 +65,18 @@
         <hr>
         <br>
         <div class="req-container">
-            <div class="form-group">
-                <label for="categoryReqSelect">대분류:</label>
-                <select id="categoryReqSelect" v-model="categoryReq">
-                    <option value="default">선택안함</option>
-                    <option value="S">문구류</option>
-                    <option value="F">가구류</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="subcategoryReqSelect">소분류:</label>
-                <select id="subcategoryReqSelect" v-model="subcategoryReq">
-                    <option v-if="categoryReq === 'S'" value="S0001">A4</option>
-                    <option v-if="categoryReq === 'S'" value="S0002">B4</option>
-                    <option v-if="categoryReq === 'S'" value="S0003">볼펜</option>
-                    <option v-if="categoryReq === 'S'" value="S0004">클립</option>
-                    <option v-if="categoryReq === 'F'" value="F0001">책상</option>
-                    <option v-if="categoryReq === 'F'" value="F0002">의자</option>
-                    <option v-if="categoryReq === 'F'" value="F0003">파티션</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="quantity">요청수량:</label>
-                <input type="number" id="quantity" v-model="quantity" />
-            </div>
-
-            <div class="form-group">
-                <label for="purposetext">요청메시지 ({{ purpose.length }}/200):</label>
-                <textarea v-model="purpose" id="purposetext" cols="100" rows="5"
-                    placeholder="요청메시지를 200자 이내로 입력해 주세요"></textarea>
-            </div>
-
-            <div class="form-group">
-                <button @click="sendRequest" class="submit-button">요청 전송</button>
-            </div>
+            <StuffReqSend :memberId="memberId" @submitRequest="sendRequest" />
         </div>
     </main>
 </template>
   
 <script>
+import StuffReqSend from '@/pages/stuff/StuffReqSend.vue'
 import RequestItem from '@/pages/stuff/RequestItem.vue'
 import axios from 'axios'
 export default {
     name: 'StuffReq',
-    components: { RequestItem },
+    components: { RequestItem, StuffReqSend },
     data() {
         return {
             category: 'default', // 대분류 선택값
@@ -119,10 +88,6 @@ export default {
             endDate: '',
             // 비품 데이터 예시
             reqList: [],
-            categoryReq: 'default', // 대분류 선택값
-            subcategoryReq: '', // 소분류 선택값
-            quantity: 0,
-            purpose: '',
         };
     },
     created() {
@@ -162,44 +127,12 @@ export default {
                 withCredentials: true
             })
                 .then(response => {
+                    alert('목록 로드 성공')
                     console.log(response)
                     this.reqList = response.data;
                 })
                 .catch(error => {
-                    console.error('데이터를 불러오는 중 에러 발생:', error);
-                });
-        },
-        sendRequest() {
-            // 필요한 데이터를 서버로 전송하는 로직을 작성합니다.
-            const data = {
-                stuff: {
-                    id: this.subcategoryReq,
-                },
-                member: {
-                    id: this.memberId,
-                },
-                quantity: this.quantity,
-                purpose: this.purpose,
-            };
-            const jsonString = JSON.stringify(data);
-            axios
-                .post(`${this.backURL}/stuff/request`, jsonString,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        withCredentials: true,
-                    }
-                )
-                .then((response) => {
-                    alert('요청 성공')
-                    console.log('서버 응답:', response.data);
-                    console.log(data)
-                })
-                .catch((error) => {
-                    alert('요청 실패')
-                    console.error('서버 요청 실패:', error);
-                    console.log(data)
+                    alert('목록 로드 실패')
                 });
         },
     },
@@ -208,6 +141,7 @@ export default {
   
 <style scoped>
 .table-container {
+    min-height: 200px;
     max-height: 300px;
     /* max-height: 50%; */
     overflow-y: auto;
@@ -278,49 +212,10 @@ select {
 .load-button:hover {
     background-color: #58b5c5;
 }
-
 .req-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.req-container .form-group {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-}
-
-.req-container label {
-    font-weight: bold;
-    margin-right: 8px;
-}
-
-.req-container input,
-.req-container select,
-.req-container textarea {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-right: 8px;
-}
-
-.req-container .submit-button {
-    height: 35px;
-    background-color: #58d3e9;
-    border: none;
-    color: white;
-    padding: 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: auto;
-}
-
-.req-container .submit-button:hover {
-    background-color: #58b5c5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px; /* 필요에 따라 조절하세요 */
 }
 </style>
