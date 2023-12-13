@@ -135,7 +135,9 @@ export default {
 <style scoped>
 .table-container {
     max-height: 700px;
-    /* max-height: 50%; */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
 }
 
@@ -143,33 +145,24 @@ table {
     width: 99.5%;
     border-collapse: collapse;
     margin-top: 20px;
-    box-shadow: 3px 3px 3px 3px #555555
 }
 
-th,
 td {
-    /* border: 1px solid #dddddd; */
-    border: none;
+    padding: 10px;
     text-align: center;
-    padding: 12px;
+    border-bottom: 1px solid #ddd;
 }
 
-th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    color: #333;
+thead {
+    background-color: #f5f5f5;
 }
 
-td {
-    background-color: #ffffff;
-}
-
-tbody tr {
-    background-color: rgb(255, 255, 255);
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
 tbody tr:hover {
-    background-color: #000000;
+    background-color: #eaeaea;
 }
 
 /* 처리현황에 따른 스타일링 */
