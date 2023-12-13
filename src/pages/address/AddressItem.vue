@@ -12,6 +12,9 @@
 export default {
   name: "AddressItem",
   props: ["member"],
+  data() {
+    return {};
+  },
 };
 </script>
 

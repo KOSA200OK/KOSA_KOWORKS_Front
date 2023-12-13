@@ -14,7 +14,7 @@
     <div class="menu">
       <div class="button">
         <span class="material-icons">badge</span>
-        <span class="text">{{memberName}}님 환영합니다</span>
+        <span class="text">{{ memberName }}님 환영합니다</span>
       </div>
       <div class="button">
         <span class="material-icons" :class="{ 'bell-has-content': hasContent }"
@@ -50,7 +50,7 @@
         <span class="material-icons">campaign</span>
         <span class="text">공지사항</span>
       </router-link>
-      <router-link class="button" to="/address/members">
+      <router-link class="button" to="/address/addresslist">
         <span class="material-icons">group</span>
         <span class="text">주소록</span>
       </router-link>
@@ -114,7 +114,7 @@ export default {
   data() {
     return {
       is_expanded: localStorage.getItem("is_expanded") === "true",
-      memberName : '',
+      memberName: "",
       //찬석
       isStatusOn: false,
       notificationList: { content: [] },
@@ -138,11 +138,11 @@ export default {
       return { "is-expanded": this.is_expanded };
     },
   },
-  
+
   created() {
     //재원
     const memberName = window.localStorage.getItem("name");
-    this.memberName = memberName
+    this.memberName = memberName;
 
     // 찬석
     const id = window.localStorage.getItem("memberId");
