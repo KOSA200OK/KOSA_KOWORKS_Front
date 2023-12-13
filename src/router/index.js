@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "@/pages/Home.vue";
 import Attendance from "@/pages/attendance/AttendanceList.vue";
-import Address from "@/pages/address/AddressList.vue";
+import AddressList from "@/pages/address/AddressList.vue";
 import CarList from "@/pages/car/CarList.vue";
 import CarMyRentList from "@/pages/car/CarMyRentList.vue";
 import CarManage from "@/pages/car/CarManage.vue";
@@ -27,8 +27,8 @@ const router = createRouter({
   routes: [
     { path: "/home", component: Home },
     // { path: '/attendancelist', component: AttendanceList },
-    { path: "/address/members", component: Address },
-    { path: "/address/:currentPage", component: Address },
+    { path: "/address/addresslist/", component: AddressList },
+    { path: "/address/addresslist/:currentPage", component: AddressList },
     { path: "/chat/roomlist", component: RoomList },
     { path: "/chat/room/enter/:roomid", component: RoomDetail },
     // { path: '/calendar/list', component: Attendance },

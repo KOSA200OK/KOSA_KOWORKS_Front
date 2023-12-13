@@ -49,7 +49,7 @@ export default {
       room_name: "",
       chatrooms: [],
       search: "",
-      memberId: "",
+      memberId: "", // 사번 저장
     };
   },
   // 페이지가 로드될 때 findAllRoom 메소드를 호출
@@ -105,7 +105,7 @@ export default {
     },
 
     enterRoom(roomId) {
-      // 직원 번호를 입력 받지 않고 로컬 스토리지에서 불러오기
+      // 추가: 직원 번호를 입력 받지 않고 로컬 스토리지에서 불러오기
       const sender = this.memberId;
       if (sender !== "") {
         localStorage.setItem("wschat.sender", sender);

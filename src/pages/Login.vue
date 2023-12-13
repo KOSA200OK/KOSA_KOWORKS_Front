@@ -189,32 +189,6 @@ export default {
       } // if-else
     },
 
-    async logout() {
-      try {
-        // SSE 연결 해제 -> 찬석
-        if (this.eventSource) {
-          this.eventSource.close();
-          this.eventSource = null;
-        }
-        // =============
-
-        await axios.get(`${this.backURL}/logout`, {});
-        this.isLoggedIn = false;
-
-        // 브라우저 스토리지에서 로그인 상태 제거
-        localStorage.removeItem("isLoggedIn");
-        // localStorage에서 memberId 제거
-        localStorage.removeItem("memberId");
-
-        localStorage.removeItem("departmentId");
-
-        localStorage.removeItem("name");
-
-        this.$router.push("/home");
-      } catch (error) {
-        console.error("로그아웃 실패:", error);
-      }
-    },
     // ========================== 구독 중지 ============================ > 찬석
     async stopSSE() {
       // 이전 SSE 구독을 중지하고 eventSource 초기화
