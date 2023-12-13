@@ -124,11 +124,11 @@ export default {
 </script>
 <style scoped>
 .send-container {
+    width: 100%;
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
     background-color: #f5f5f5;
-
 }
 
 .form-group {
@@ -154,13 +154,10 @@ export default {
 
 table {
     border-collapse: separate;
-    /* border-spacing을 사용하려면 border-collapse를 separate로 설정해야 합니다. */
     border-spacing: 0 30px;
-    /* 위아래 간격을 10px로 설정 */
 }
 
 table tr {
     border-bottom: 1px solid #ccc;
-    /* 각 행의 아래에 얇은 선 스타일 및 색상 설정 */
 }
 </style>

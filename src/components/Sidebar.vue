@@ -227,7 +227,7 @@ aside {
   transition: 0.2s ease-out; //토글 속도
 
   .flex {
-    flex: 1 1 0;
+    flex: 1 1 0%;
   }
 
   .logo {
@@ -270,7 +270,8 @@ aside {
 
   h3,
   .button .text {
-    //  opacity: 0;
+    display: none;
+     opacity: 0;
     transition: 0.3s ease-out;
   }
 
@@ -308,15 +309,12 @@ aside {
       &:hover,
       &.router-link-exact-active {
         background-color: var(--dark-alt);
+        border-right: 5px solid var(--primary);
 
         .material-icons,
         .text {
           color: var(--primary);
         }
-      }
-
-      &.router-link-exact-active {
-        border-right: 5px solid var(--primary);
       }
     }
   }
@@ -332,8 +330,11 @@ aside {
         transform: rotate(-180deg);
       }
 
-      h3,
+    }
+
+    h3,
       .button .text {
+        display: flex;
         opacity: 1;
       }
 
@@ -342,7 +343,6 @@ aside {
           margin-right: 1rem;
         }
       }
-    }
   }
 
   @media (max-width: 768px) {
