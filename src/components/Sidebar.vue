@@ -377,11 +377,12 @@ aside {
   margin-top: 5px;
   padding: 10px;
   // background-color: var(--dark);
-  background-color: #009ea8;
-  border: 1px solid #009ea8;
+  background-color: #1565C0;
+  border: 1px solid white;
   border-radius: 4px;
   max-height: 450px;
   overflow-y: auto;
+
 }
 
 /* 스크롤바 스타일링 */

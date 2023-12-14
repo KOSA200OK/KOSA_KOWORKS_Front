@@ -199,27 +199,25 @@ export default {
 }
 
 .notify_bar {
-  margin-top: 880px;
-  margin-left: 1460px;
+  position: fixed;
+  right: 20px; /* 화면 오른쪽과의 여백 설정 */
+  bottom: 20px; /* 화면 하단과의 여백 설정 */
   width: 400px;
   height: 100px;
   padding: 10px;
-  /* 알림 내용과의 간격 조정을 위한 패딩 */
-  background-color: #009ea8;
-  /* 배경색 지정 */
+  background-color: #1565c0;
   border: 2px solid whitesmoke;
-  /* 테두리 설정 */
   border-radius: 5px;
-  /* 둥근 테두리를 위한 속성 */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  /* 그림자 효과 */
+  box-shadow: 0 2px 5px rgb(75, 140, 184);
   text-align: center;
-  /* 텍스트 가운데 정렬 */
   font-family: Arial, sans-serif;
   color: white;
-  /* 텍스트 색상 */
-  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
 }
+
 /*  */
 .login-form {
   max-width: 400px;
@@ -263,7 +261,8 @@ export default {
   border-radius: 4px;
   cursor: pointer;
   font-size: 18px;
-  margin-top: 20px; /* 버튼 위쪽 여백 추가 */
+  margin-top: 20px;
+  /* 버튼 위쪽 여백 추가 */
 }
 
 .login-img {
@@ -271,5 +270,3 @@ export default {
   height: auto;
 }
 </style>
-
-<!-- test -->
