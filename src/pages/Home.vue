@@ -37,15 +37,15 @@
           <div class="box">
             <div>
               <span>승인대기 : </span>
-              <span>{{ 승인대기 }}</span>
+              <!-- <span>{{ 승인대기 }}</span> -->
             </div>
             <div>
               <span>대여중 : </span>
-              <span>{{ 대여중 }}</span>
+              <!-- <span>{{ 대여중 }}</span> -->
             </div>
             <div>
               <span>미반납 : </span>
-              <span>{{ 미반납 }}</span>
+              <!-- <span>{{ 미반납 }}</span> -->
             </div>
           </div>
         </div>
@@ -90,9 +90,16 @@
           </div>
         </div>
       </div>
+      <!-- 찬석 -->
       <div class="item notification">
         <h3>알림</h3>
-        <div class="box"></div>
+        <div class="box">
+          <ul>
+          <li v-for="(notification, index) in notifications" :key="index" class="notify_content">
+            {{ notification.content }} - {{ notification.createdAt }}
+          </li>
+        </ul>
+        </div>
       </div>
     </div>
   </main>
@@ -123,6 +130,8 @@ export default {
     // 찬석
     const memberId = localStorage.getItem("memberId");
     this.fetchAttendanceData(memberId);
+    // 찬석 - 알림 호출
+    this.fetchNotifications();
   },
   methods: {
     getCurrentDay() {
@@ -225,6 +234,21 @@ export default {
         })
         .catch((Error) => {
           console.log(Error);
+        });
+    },
+    // ============================== 알림, 찬석 ================================
+        // 알림 데이터를 가져오는 메소드
+    fetchNotifications() {
+      const memberId = localStorage.getItem("memberId");
+      const url = `${this.backURL}/subscribe/?memberId=${memberId}`; // API 엔드포인트 URL을 채워넣으세요
+
+      axios
+        .get(url)
+        .then((response) => {
+          this.notifications = response.data;
+        })
+        .catch((error) => {
+          console.error("알림 데이터를 불러오는 중 에러 발생:", error);
         });
     },
   },

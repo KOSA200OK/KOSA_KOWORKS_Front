@@ -239,8 +239,8 @@ export default {
     padding: 20px;
     margin: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-left: 9%;
-    width: 1500px;
+    margin-left: 6%;
+    width: 1450px;
     /* max-width: 1300px; */
     /* width: 90% */
 }
@@ -276,10 +276,11 @@ tbody tr:hover {
 
 /* 월별 검색 */
 .action-buttons {
-    display: flex;
+    /* display: flex; */
     align-items: center;
     justify-content: flex-end; /* 오른쪽으로 보내기 */
-    margin-right: 9%;
+    /* margin-right: 5%; */
+    margin-left: 1340px;
 }
 
 .select-month {
