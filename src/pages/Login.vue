@@ -1,17 +1,28 @@
 <template>
   <div class="login-container">
-    <h2 v-if="!isLoggedIn">Login</h2>
-    <form v-if="!isLoggedIn" @submit.prevent="login">
-      <label for="id">사원번호: </label>
-      <input v-model="id" type="text" id="id" required />
+    <!-- <h2 v-if="!isLoggedIn">Login</h2> -->
+    <form class="login-form" v-if="!isLoggedIn" @submit.prevent="login">
+      <!-- <label for="id">사원번호: </label> -->
+      <img class="login-img" :src="`../images/logo.png`" alt="logo" />
+      <input
+        class="member-input"
+        v-model="id"
+        type="text"
+        id="id"
+        required
+        placeholder="사원번호"
+      />
 
-      <label for="password">비밀번호: </label>
-      <input v-model="password" type="password" id="password" required />
-
-      <button type="submit">Login</button>
-    </form>
-    <form v-if="isLoggedIn" @submit.prevent="logout">
-      <button type="submit">Logout</button>
+      <!-- <label for="password">비밀번호: </label> -->
+      <input
+        class="password-input"
+        v-model="password"
+        type="password"
+        id="password"
+        required
+        placeholder="비밀번호"
+      />
+      <button class="login-button" type="submit">로그인</button>
     </form>
     <!-- 찬석 -->
     <div
@@ -73,6 +84,7 @@ export default {
 
         this.$router.push("/home");
         this.$data.user = response.data;
+        location.reload();
       } catch (error) {
         console.error("로그인 실패:", error);
       }
@@ -164,6 +176,7 @@ export default {
         // localStorage에서 departmentId 제거
         localStorage.removeItem("departmentId");
 
+        localStorage.removeItem("name");
         this.$router.push("/home");
         //화면 새로고침
         location.reload();
@@ -183,7 +196,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .login-container {
   background-color: white;
   width: 100vw;
@@ -210,6 +223,59 @@ export default {
   color: white;
   /* 텍스트 색상 */
   position: absolute;
+}
+/*  */
+.login-form {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  text-align: center;
+  margin: 0 auto; /* 가운데 정렬을 위한 margin 속성 추가 */
+  position: absolute; /* 위치를 absolute로 설정 */
+  top: 50%; /* 부모 요소의 50% 위치로 이동 */
+  left: 50%; /* 부모 요소의 50% 위치로 이동 */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* 자기 자신의 50% 만큼 이동하여 중앙 정렬 */
+}
+
+.member-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.password-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 20px; /* 버튼 위쪽 여백 추가 */
+}
+
+.login-img {
+  width: 100px;
+  height: auto;
 }
 </style>
 

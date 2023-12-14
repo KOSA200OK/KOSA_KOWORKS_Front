@@ -6,9 +6,9 @@
 				<br>
 				<h3>{{ currentTime }}</h3>
 				<br>
-				<!-- <h3 v-bind="attendanceTime">출근 시간: {{ attendanceTime }}</h3>
-				<h3>퇴근시간</h3> -->
-				<button @click="attendanceHandler">출근</button> 
+				<h3>출근 시간: {{ attendanceTime }}</h3>
+				<h3>퇴근 시간: {{ offTime }}</h3>
+				<button @click="attendanceHandler">출근</button>
 				<button @click="attendance2Handler">퇴근</button>
 			</div>
 			<div class="item notice">
@@ -32,11 +32,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- <div>
-			<button @click="attendanceHandler"> 출근 </button>
-			<button @click="attendance2Handler">퇴근</button>
-		</div> -->
 	</main>
 </template>
 <script>
@@ -50,13 +45,19 @@ export default {
 			currentTime: this.getCurrentTime(),
 			attendanceTime: null, 
 			todayTodo : null,
+			offTime: null,
+
 		};
 	},
 	mounted() {
-			setInterval(() => {
-				this.currentTime = this.getCurrentTime();
-			}, 1000);
-		},
+		setInterval(() => {
+			this.currentTime = this.getCurrentTime();
+		}, 1000);
+
+		// 찬석
+		const memberId = localStorage.getItem('memberId');
+		this.fetchAttendanceData(memberId);
+	},
 	methods: {
 		getCurrentTime() {
 			const now = new Date();
@@ -72,7 +73,7 @@ export default {
 		},
 
 
-		// ======================= 출근 버튼 ================================
+		// ======================= 출근 버튼, 찬석 ================================
 		attendanceHandler() {
 			const id = localStorage.getItem('memberId');
 
@@ -100,7 +101,7 @@ export default {
 					console.error('출근 요청 실패', error);
 				});
 		},
-		// ======================= 퇴근 버튼 ===============================
+		// ======================= 퇴근 버튼, 찬석 ===============================
 		attendance2Handler() {
 			const id = localStorage.getItem('memberId');
 
@@ -124,19 +125,36 @@ export default {
 					console.error('퇴근 요청 실패', error);
 				});
 		},
+		// ============= 출근, 퇴근 데이터 출력 찬석 ==========================
+		fetchAttendanceData(memberId) {
+			// const id = localStorage.getItem('memberId');
+	
+			const url = `${this.backURL}/attendance/today?memberId=${memberId}`;
+	
+			axios.get(url)
+				.then((response) => {
+					const data = response.data;
+					this.attendanceTime = data.startTime;
+					this.offTime = data.endTime;
+				})
+				.catch((error) => {
+					console.error('출근 및 퇴근 시간 조회 실패', error);
+				});
+		},
 		// ======================= 오늘의 일정 ===============================
 		TodayTodoHandler(){
 			const memberId = localStorage.getItem("memberId")
 			const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`
-            axios.get(url,{params : this.data})
-            .then(response=>{
-                console.log(response.data)
-                this.todayTodo = response.data
-				console.log(this.todayTodo)
-            })
-            .catch((Error)=>{
-                console.log(Error)
-            })
+			axios.get(url,{params : this.data})
+				 .then(response=>{
+					console.log(response.data)
+					this.todayTodo = response.data
+					console.log(this.todayTodo)
+				})
+				.catch((Error)=>{
+					console.log(Error)
+				})
+				
 		}
 	},
 	created(){
@@ -149,7 +167,7 @@ export default {
 	display: grid;
 	grid-template-columns: 3fr 5fr;
 	/* grid-template-rows: repeat(2, minmax(400px, auto)); */
-	grid-template-rows: 200px 600px;
+	grid-template-rows: 250px 550px;
 	row-gap: 30px;
 	column-gap: 20px;
 
@@ -168,20 +186,20 @@ export default {
 
 }
 
-.notice{
+.notice {
 	position: relative;
 }
 
-.calendar{
+.calendar {
 	grid-column-start: 2;
-	grid-row : 1 / 3;
+	grid-row: 1 / 3;
 }
 
-.notice span{
+.notice span {
 	color: black;
 }
 
-.notice h3{
+.notice h3 {
 	text-align: center;
 	padding: 20px;
 }
@@ -192,28 +210,28 @@ export default {
 }
 
 .item button {
-  display: inline-block;
-  padding: 10px 20px;
-  margin-top: 15px;
-  border: 2px solid #3498db; 
-  border-radius: 5px;
-  background-color: transparent; 
-  color: #3498db; 
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+	display: inline-block;
+	padding: 10px 20px;
+	margin-top: 15px;
+	border: 2px solid #3498db;
+	border-radius: 5px;
+	background-color: transparent;
+	color: #3498db;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
 }
 
 .item button:hover {
-  background-color: #3498db; 
-  color: #fff; 
+	background-color: #3498db;
+	color: #fff;
 }
 
 .item .add-button {
 	display: inline-block;
 	position: absolute;
 	top: 0;
-	right: 0; 
+	right: 0;
 	padding: 10px;
 	border: none;
 	border-radius: 50%;
@@ -228,8 +246,8 @@ export default {
 	background-color: #2980b9;
 }
 
-.item button + button {
-  margin-left: 10px;
+.item button+button {
+	margin-left: 10px;
 }
 
 </style>

@@ -1,9 +1,7 @@
-<template> 
-    <main></main>
+<template>
     <div>
         <ul>
             <li>
-                <!-- {{ n.create    dAt }} -->
                 <div class="icon-cancel">
                     <span class="material-symbols-outlined">
                         highlight_text_cursor
@@ -49,9 +47,13 @@ export default {
                 if (index !== -1) {
                     // notificationList.content 배열에서 삭제된 알림 제거
                     this.$parent.notificationList.content.splice(index, 1);
+                    if (this.$parent.notificationList.content.length === 0) {
+                        window.location.reload();
+                    }
                 }
 
-                window.location.reload();
+                // window.location.reload();
+
 
                 })
                 .catch(error => {
