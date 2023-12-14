@@ -10,9 +10,9 @@
 
       <button type="submit">Login</button>
     </form>
-    <form v-if="isLoggedIn" @submit.prevent="logout">
+    <!-- <form v-if="isLoggedIn" @submit.prevent="logout">
       <button type="submit">Logout</button>
-    </form>
+    </form> -->
     <!-- 찬석 -->
     <div
       class="notify_bar"
@@ -73,6 +73,7 @@ export default {
 
         this.$router.push("/home");
         this.$data.user = response.data;
+        location.reload();
       } catch (error) {
         console.error("로그인 실패:", error);
       }
@@ -164,6 +165,7 @@ export default {
         // localStorage에서 departmentId 제거
         localStorage.removeItem("departmentId");
 
+        localStorage.removeItem("name");
         this.$router.push("/home");
         //화면 새로고침
         location.reload();
