@@ -30,7 +30,7 @@ export default {
 </script>
 <style scoped>
 div{
-    padding : 30px;
+    padding : 10px;
 }
 span{
     margin : 10px;
