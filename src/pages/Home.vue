@@ -109,9 +109,9 @@
 	</main>
 </template>
 <script>
-import Sidebar from "../components/Sidebar.vue";
+import Sidebar from "@/components/Sidebar.vue";
 import TodayTodoItem from "@/pages/schedule/TodayTodoItem.vue";
-import axios from 'axios'
+import axios from "axios";
 export default {
 	components: { Sidebar, TodayTodoItem },
 	data() {
@@ -131,75 +131,88 @@ export default {
 			this.currentTime = this.getCurrentTime();
 		}, 1000);
 
-		this.departmentId = localStorage.getItem('departmentId');
+    this.departmentId = localStorage.getItem("departmentId");
 
-		// 찬석
-		const memberId = localStorage.getItem('memberId');
-		this.fetchAttendanceData(memberId);
+    // 찬석
+    const memberId = localStorage.getItem("memberId");
+    this.fetchAttendanceData(memberId);
+  },
+  methods: {
+    getCurrentDay() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = (now.getMonth() + 1).toString().padStart(2, "0");
+      const day = now.getDate().toString().padStart(2, "0");
+      const days = ["일", "월", "화", "수", "목", "금", "토"];
+      const dayOfWeek = days[now.getDay()];
+      return `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
+    },
 
-	},
-	methods: {
-		getCurrentDay() {
-			const now = new Date();
-			const year = now.getFullYear();
-			const month = (now.getMonth() + 1).toString().padStart(2, '0');
-			const day = now.getDate().toString().padStart(2, '0');
-			const days = ['일', '월', '화', '수', '목', '금', '토'];
-			const dayOfWeek = days[now.getDay()];
-			return `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
-		},
+    getCurrentTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, "0");
+      const minutes = now.getMinutes().toString().padStart(2, "0");
+      const seconds = now.getSeconds().toString().padStart(2, "0");
+      return `${hours}시 ${minutes}분 ${seconds}초`;
+    },
 
-		getCurrentTime() {
-			const now = new Date();
-			const hours = now.getHours().toString().padStart(2, '0');
-			const minutes = now.getMinutes().toString().padStart(2, '0');
-			const seconds = now.getSeconds().toString().padStart(2, '0');
-			return `${hours}시 ${minutes}분 ${seconds}초`;
-		},
+    // ======================= 출근 버튼, 찬석 ================================
+    attendanceHandler() {
+      const id = localStorage.getItem("memberId");
 
+      console.log("id {}", id);
 
-		// ======================= 출근 버튼, 찬석 ================================
-		attendanceHandler() {
-			const id = localStorage.getItem('memberId');
+      const url = `${this.backURL}/attendance`;
+      const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+      const currentTime = new Date(); // 현재 시간을 가져옴
+      const memberData = {
+        memberId: memberId,
+        currentTime: currentTime,
+        member: {
+          id: id, // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+        },
+      };
 
-			console.log('id {}', id);
+      axios
+        .post(url, memberData)
+        .then((response) => {
+          alert("출근 완료");
+          //재원 추가
+          // this.attendanceTime = this.currentTime;
+        })
+        .catch((error) => {
+          console.error("출근 요청 실패", error);
+        });
+    },
+    // ======================= 퇴근 버튼, 찬석 ===============================
+    attendance2Handler() {
+      const id = localStorage.getItem("memberId");
 
-			const url = `${this.backURL}/attendance`;
-			const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
-			const currentTime = new Date(); // 현재 시간을 가져옴
-			const memberData = {
-				memberId: memberId,
-				currentTime: currentTime,
-				member: {
-					id: id // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
-				},
-			};
+      const url = `${this.backURL}/attendance`;
+      const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+      const currentTime = new Date(); // 현재 시간을 가져옴
+      const memberData = {
+        memberId: memberId,
+        currentTime: currentTime,
+        member: {
+          id: id, // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+        },
+      };
 
-			axios
-				.post(url, memberData)
-				.then((response) => {
-					alert('출근 완료');
-					//재원 추가
-					// this.attendanceTime = this.currentTime;
-				})
-				.catch((error) => {
-					console.error('출근 요청 실패', error);
-				});
-		},
-		// ======================= 퇴근 버튼, 찬석 ===============================
-		attendance2Handler() {
-			const id = localStorage.getItem('memberId');
+      axios
+        .put(url, memberData)
+        .then((response) => {
+          alert("퇴근 완료! 조심히가세요~");
+        })
+        .catch((error) => {
+          console.error("퇴근 요청 실패", error);
+        });
+    },
+    // ============= 출근, 퇴근 데이터 출력 찬석 ==========================
+    fetchAttendanceData(memberId) {
+      // const id = localStorage.getItem('memberId');
 
-			const url = `${this.backURL}/attendance`;
-			const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
-			const currentTime = new Date(); // 현재 시간을 가져옴
-			const memberData = {
-				memberId: memberId,
-				currentTime: currentTime,
-				member: {
-					id: id	// memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
-				},
-			};
+      const url = `${this.backURL}/attendance/today?memberId=${memberId}`;
 
 			axios
 				.put(url, memberData)
@@ -286,29 +299,29 @@ export default {
 }
 
 .attendance {
-	grid-column-start: 1;
+  grid-column-start: 1;
 }
 
 .notification {
-	grid-row-start: 2;
-	grid-column-end: span 2;
+  grid-row-start: 2;
+  grid-column-end: span 2;
 }
 
 .notice {
-	grid-column: 3 / 5;
-	grid-row-start: 2;
+  grid-column: 3 / 5;
+  grid-row-start: 2;
 }
 
 .calendar {
-	grid-column-start: 4;
+  grid-column-start: 4;
 }
 
 .box {
-	height: 350px;
-	border: 1px solid #ccc;
-	border-radius: 15px;
-	box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.1);
-	padding: 20px;
+  height: 350px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
 .item h3 {
