@@ -234,7 +234,14 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
   text-align: center;
-  margin: 0 auto;
+  margin: 0 auto; /* 가운데 정렬을 위한 margin 속성 추가 */
+  position: absolute; /* 위치를 absolute로 설정 */
+  top: 50%; /* 부모 요소의 50% 위치로 이동 */
+  left: 50%; /* 부모 요소의 50% 위치로 이동 */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* 자기 자신의 50% 만큼 이동하여 중앙 정렬 */
 }
 
 .member-input {
