@@ -145,6 +145,7 @@ export default {
       const dayOfWeek = days[now.getDay()];
       return `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
     },
+
     getCurrentTime() {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, "0");
@@ -375,3 +376,4 @@ export default {
 	color: #2196F3;
 }
 </style>
+
