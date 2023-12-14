@@ -25,11 +25,7 @@
       <button class="login-button" type="submit">로그인</button>
     </form>
     <!-- 찬석 -->
-    <div
-      class="notify_bar"
-      v-if="notifyMessage"
-      @click="handleNotificationClick"
-    >
+    <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
       {{ notifyMessage }}
     </div>
 
@@ -238,10 +234,7 @@ export default {
   position: absolute; /* 위치를 absolute로 설정 */
   top: 50%; /* 부모 요소의 50% 위치로 이동 */
   left: 50%; /* 부모 요소의 50% 위치로 이동 */
-  transform: translate(
-    -50%,
-    -50%
-  ); /* 자기 자신의 50% 만큼 이동하여 중앙 정렬 */
+  transform: translate(-50%, -50%); /* 자기 자신의 50% 만큼 이동하여 중앙 정렬 */
 }
 
 .member-input {
