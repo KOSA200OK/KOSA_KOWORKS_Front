@@ -18,29 +18,29 @@
         <!--***************************일정 추가********************************-->
         <div class="modal-wrap" v-show="addModalCheck" >
             <div class="modal-container">
-                <div class="modal-header">
-                    <h3>일정추가</h3>
-                </div>
+                <!-- <div class="modal-header">
+                    <p>일정추가</p>
+                </div> -->
                 <form class="add-schedule" @submit.prevent="reserveHandler">
-                    <label>제목 : </label><input type="text" 
+                    <label>제목 </label><input type="text" 
                                             v-model="FormData.scheduleTitle"><br><br>
-                    <label>기간 : <input type="date"
+                    <label>기간</label><input type="date"
                                         name="startDate"
                                         v-model="startDate"
                                         required> ~ <input type="date"
                                                                     name="endDate"
                                                                     v-model="endDate"
                                                                     :min ="startDate"
-                                                                    required></label><br><br>
-                    <label>시간 : <input type="time"
+                                                                    required><br><br>
+                    <label>시간</label><input type="time"
                                         name="starttime"
                                         v-model="FormData.startTime"
                                         required> ~ <input type="time"
                                                                     name="endtime"
                                                                     v-model="FormData.endTime"
                                                                     :min ="FormData.startTime"
-                                                                    required></label><br><br><br>
-                    <label>메모 : </label><input type="text" 
+                                                                    required><br><br><br>
+                    <label>메모 </label><input type="text" 
                                             name="content" 
                                             v-model="FormData.content">
                 </form>
@@ -54,15 +54,15 @@
 </main>
 </template>
 <script>
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import ScheduleInfo from '@/pages/schedule/ScheduleInfo.vue'
 import { Calendar } from '@fullcalendar/core';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
-import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-icons/font/bootstrap-icons.css'
+import axios from 'axios'
 
 export default {
     name: 'Calendar',
@@ -73,7 +73,7 @@ export default {
         return {
             c : null,
             calendarOptions: {
-                plugins: [ dayGridPlugin, interactionPlugin, bootstrap5Plugin ],
+                plugins: [ bootstrap5Plugin, dayGridPlugin, interactionPlugin ],
                 initialView: 'dayGridMonth',
                 dateClick: this.handleDateClick,
                 events: [
@@ -97,7 +97,9 @@ export default {
                 headerToolbar: {
                     start : 'prev next',
                     center : 'title',
-                    end : 'addbutton'
+                    end : 'addbutton',
+                    prev : 'arrow-left-square-fill',
+                    next : 'arrow-right-square-fill'
                 },
             },
             addModalCheck : false,
@@ -204,15 +206,26 @@ export default {
 }
 </script>
 <style>
-
+/* .modal-header{
+    background-color: #4199fd;
+    border-radius: 10px 10px 0px 0px;
+}
+.modal-header > p{
+    padding-top: 20px;
+    padding-left: 20px;
+    color: white;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 20px;
+} */
 .event{
     cursor: pointer;
-    background-color: #e8eaff;
+    background-color: #e8ecff;
     width:100%;
     border-radius: 3px;
     padding : 2px;
     padding-left : 8px;
-    color : #070988;
+    color : #073f88;
 }
 .modal-wrap {
   position: fixed;
@@ -230,8 +243,8 @@ export default {
   transform: translate(-50%, -50%);
   width: 550px;
   background: #fff;
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 50px;
   box-sizing: border-box;
   box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 }
@@ -247,4 +260,13 @@ export default {
     margin-left : 20px;
 }
 
+label{
+    /* color : #02449b; */
+    font-weight: 700;
+    font-size: 15px;
+    padding-right : 40px;
+}
+.add-schedule>input{
+    border : 1px solid #d8d8d8;
+}
 </style>

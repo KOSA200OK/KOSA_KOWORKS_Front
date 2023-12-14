@@ -222,7 +222,6 @@ ul {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
-  border-radius: 15px; /* 말풍선을 둥글게 만들기 위한 border-radius 추가 */
   overflow: hidden; /* 말풍선이 내용을 감출 수 있도록 overflow 속성 추가 */
 }
 
@@ -250,6 +249,7 @@ ul {
 .my-message strong {
   order: 2;
   text-align: right; /* 내 메시지일 경우 오른쪽 정렬 */
+  margin-right: 10px;
 }
 
 .chat-item[style*="text-align: right"] strong {
@@ -272,4 +272,9 @@ ul::-webkit-scrollbar-track {
   background-color: #f0f0f0;
 }
 /*  */
+span {
+  font-size: 0.8em;
+  color: #888; /* 수정: 시간의 색깔을 회색으로 변경 */
+  margin-left: 5px; /* 수정: 시간과 메시지 사이의 여백 추가 */
+}
 </style>
