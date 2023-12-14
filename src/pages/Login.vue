@@ -26,7 +26,9 @@
     </form>
     <!-- 찬석 -->
     <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
-      {{ notifyMessage }}
+        <div class="notify_bar_title">알림</div>
+        <br>
+        <div>{{ notifyMessage }}</div>
     </div>
 
     <router-view v-if="isLoggedIn"></router-view>
@@ -90,12 +92,11 @@ export default {
     async startSSE() {
       if (this.isLoggedIn) {
         const id = localStorage.getItem("memberId");
-
         // String id = localStorage.getItem
         // EventSource를 이용해 SSE 구독 시작
         // this.eventSource = new EventSource(`${this.backURL}/subscribe/${this.id}`);
         this.eventSource = new EventSource(`${this.backURL}/subscribe/${id}`);
-
+        
         this.eventSource.addEventListener("sse", (event) => {
           console.log(event.data);
           console.log(event);
@@ -200,15 +201,13 @@ export default {
 
 .notify_bar {
   position: fixed;
-  right: 20px; /* 화면 오른쪽과의 여백 설정 */
-  bottom: 20px; /* 화면 하단과의 여백 설정 */
-  width: 400px;
+  right: 10px; /* 화면 오른쪽과의 여백 설정 */
+  bottom: 10px; /* 화면 하단과의 여백 설정 */
+  width: 390px;
   height: 100px;
   padding: 10px;
-  background-color: #1565c0;
-  border: 2px solid whitesmoke;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgb(75, 140, 184);
+  border: 2px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   font-family: Arial, sans-serif;
   color: white;
@@ -216,6 +215,17 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 999;
+
+  background-color: rgba(59, 126, 216, 1);
+  /* background:  rgba(255,255,255,0.1); */
+  border-radius: 10px 10px 10px 10px ;
+}
+.notify_bar_title {
+    position: absolute;
+    left: 10px; /* 왼쪽과의 여백 설정 */
+    top: 10px; /* 위쪽과의 여백 설정 */
+    font-weight: normal;
+    font-size: 12px;
 }
 
 /*  */

@@ -16,7 +16,7 @@
                   required>
             <button class="dateselectbutton" @click="dateSelectHandler">확인</button>
         </div>
-        <table v-if="carlist">
+        <table v-if="carlist" class="carlist-table">
             <thead>
                 <tr>
                     <th>차대번호</th>
@@ -25,7 +25,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="hover-effect">
                 <CarListItem
                             :d="data" 
                             :c="c"
@@ -149,22 +149,40 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); */
-    margin-left : 300px;
+    /* margin-left : 300px; */
 }
-.carlist>table{
-    width : 1000px;
-    margin-top : 100px;
-    border-top:solid 3px #363840;
-    border-bottom:solid 3px #363840;
-}
-th{
-    padding : 25px;
+.carlist-table {
+  font-family: "Arial", sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-left: 6%;
+  width: 1450px;
+  border-collapse: collapse;
 }
 
-th{
-    font-size: 15px;
-    border-bottom: solid 3px #363840;
+.carlist-table th {
+  padding: 25px;
+  font-size: 15px;
+  background-color: #f5f5f5;
 }
+
+.carlist-table td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.carlist-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.hover-effect tbody:hover {
+  background-color: #eaeaea;
+}
+
 .myrentlistbutton{
     width : 200px;
     padding : 10px;
