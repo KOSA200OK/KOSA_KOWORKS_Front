@@ -24,24 +24,22 @@
 				</div>
 			</div>
 			<div>
-				<div v-if="departmentId === '4'" class="item stuff">
+				<div v-if="departmentId === '4'" class="item car">
 					<h3>차량 신청내역</h3>
 					<div class="box">
-						<div>
-							<span>승인대기 : </span>
-							<!-- <span>{{ 승인대기 }}</span> -->
-						</div>
-						<div>
-							<span>대여중 : </span>
-							<!-- <span>{{ 대여중 }}</span> -->
-						</div>
-						<div>
-							<span>미반납 : </span>
-							<!-- <span>{{ 미반납 }}</span> -->
-						</div>
+
+						<div>승인대기</div>
+						<div>2건</div>
+
+						<div>대여중</div>
+						<div>0건</div>
+
+						<div>미반납</div>
+						<div>0건</div>
+
 					</div>
 				</div>
-				<div v-else class="item stuff">
+				<div v-else class="item car">
 					<h3>차량 신청현황</h3>
 					<div class="box">
 						<div>
@@ -62,16 +60,16 @@
 			<div>
 				<div v-if="departmentId === '4'" class="item stuff">
 					<h3>비품 요청내역</h3>
-					<div class="box">
-						<div>미처리 비품 요청</div>
-						<div>{{ unprocessedReqSize }} 건</div>
+					<div class="box stuffBox">
+						<div class="stuff-text">미처리 비품 요청</div>
+						<div class="reqSize">{{ unprocessedReqSize }} 건</div>
 					</div>
 				</div>
 				<div v-else class="item stuff">
 					<h3>비품 요청현황</h3>
-					<div class="box">
-						<div>처리 대기중인 비품 요청</div>
-						<div>{{ waitproccessReqSize }} 건</div>
+					<div class="box stuffBox">
+						<div class="stuff-text">처리 대기중인 비품 요청</div>
+						<div class="reqSize">{{ waitproccessReqSize }} 건</div>
 					</div>
 				</div>
 			</div>
@@ -277,7 +275,7 @@ export default {
 	}
 };
 </script>
-<style>
+<style scoped>
 .gridContainer {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -331,10 +329,9 @@ export default {
 	margin: 5px;
 	font-size: 14px;
 	cursor: pointer;
-	border: 2px solid #1565c0;
-	/* 테두리 색상 지정 */
+	border: 2px solid #2196F3;
 	background-color: transparent;
-	color: #1565c0;
+	color: #2196F3;
 	border-radius: 25px;
 	transition: background-color 0.3s ease;
 }
@@ -362,13 +359,36 @@ export default {
 }
 
 .timeBox div {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .timeBox span {
-  text-align: center; 
-  flex: 1; 
+	text-align: center;
+	flex: 1;
 }
 
+.stuff .box div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.stuffBox {
+	padding-top: 120px;
+	padding-bottom: 120px;
+}
+
+.stuffBox div {
+	padding-bottom: 40px;
+}
+
+.reqSize {
+	font-size: 25px;
+}
+
+.stuff-text {
+	color: #2196F3;
+}
 </style>
