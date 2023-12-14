@@ -14,7 +14,11 @@
       <button type="submit">Logout</button>
     </form> -->
     <!-- 찬석 -->
-    <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
+    <div
+      class="notify_bar"
+      v-if="notifyMessage"
+      @click="handleNotificationClick"
+    >
       {{ notifyMessage }}
     </div>
 
@@ -161,6 +165,7 @@ export default {
         // localStorage에서 departmentId 제거
         localStorage.removeItem("departmentId");
 
+        localStorage.removeItem("name");
         this.$router.push("/home");
         //화면 새로고침
         location.reload();
