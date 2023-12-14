@@ -1,108 +1,112 @@
 <template>
-  <main class="home-page">
-    <div class="gridContainer">
-      <div class="item attendance">
-        <!-- 찬석 -->
-        <h3>근태 현황</h3>
-        <div class="box">
-          <div class="currentDay">{{ currentDay }}</div>
-          <h3>{{ currentTime }}</h3>
-          <br />
-          <h3>출근 시간: {{ attendanceTime }}</h3>
-          <h3>퇴근 시간: {{ offTime }}</h3>
-          <button @click="attendanceHandler">출근</button>
-          <button @click="attendance2Handler">퇴근</button>
-        </div>
-      </div>
-      <div>
-        <div v-if="departmentId === '4'" class="item stuff">
-          <h3>차량 신청내역</h3>
-          <div class="box">
-            <div>
-              <span>승인대기 : </span>
-              <span>{{ 승인대기 }}</span>
-            </div>
-            <div>
-              <span>대여중 : </span>
-              <span>{{ 대여중 }}</span>
-            </div>
-            <div>
-              <span>미반납 : </span>
-              <span>{{ 미반납 }}</span>
-            </div>
-          </div>
-        </div>
-        <div v-else class="item stuff">
-          <h3>차량 신청현황</h3>
-          <div class="box">
-            <div>
-              <span>승인대기 : </span>
-              <!-- <span>{{ 승인대기 }}</span> -->
-            </div>
-            <div>
-              <span>대여중 : </span>
-              <!-- <span>{{ 대여중 }}</span> -->
-            </div>
-            <div>
-              <span>미반납 : </span>
-              <!-- <span>{{ 미반납 }}</span> -->
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div v-if="departmentId === '4'" class="item stuff">
-          <h3>비품 요청내역</h3>
-          <div class="box"></div>
-        </div>
-        <div v-else class="item stuff">
-          <h3>비품 요청현황</h3>
-          <div class="box"></div>
-        </div>
-      </div>
+ 	<main class="home-page">
+		<div class="gridContainer">
+			<div class="item attendance"> <!-- 찬석 -->
+				<h3>근태 현황</h3>
+				<div class="box">
+					<div class="currentDay">{{ currentDay }}</div>
+					<div class="currentTime">{{ currentTime }}</div>
+					<br>
+					<div class="timeBox">
+						<div>
+							<span>출근 시간</span>
+							<span>{{ attendanceTime }}</span>
+						</div>
+						<div>
+							<span>퇴근 시간</span>
+							<span>{{ offTime }}</span>
+						</div>
+					</div>
+					<div class="buttons">
+						<button @click="attendanceHandler">출근</button>
+						<button @click="attendance2Handler">퇴근</button>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div v-if="departmentId === '4'" class="item car">
+					<h3>차량 신청내역</h3>
+					<div class="box">
 
-      <div class="item notice">
-        <h3>최근 공지사항</h3>
-        <div class="box">
-          <button class="add-button" @click="addNotice">
-            <span class="material-icons">add</span>
-          </button>
-          <hr />
-        </div>
-      </div>
-      <div class="item calendar">
-        <h3>오늘의 일정</h3>
-        <div class="box">
-          <router-link class="go-schedule" to="/schedule/calendar">
-            <span class="material-icons">add</span>
-          </router-link>
-          <hr />
-          <div>
-            <TodayTodoItem
-              :t="t"
-              v-if="todayTodo !== null && todayTodo.length > 0"
-              v-for="t in todayTodo"
-              :key="t.id"
-            />
-            <div v-else>
-              <span>오늘의 일정이 없습니다</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 찬석 -->
-      <div class="item notification">
-        <h3>알림</h3>
-        <div class="box">
-          <ul>
-          <li v-for="(notification, index) in notifications" :key="index" class="notify_content">
-            {{ notification.content }} - {{ notification.createdAt }}
-          </li>
-        </ul>
-        </div>
-      </div>
-    </div>
-  </main>
+						<div>승인대기</div>
+						<div>2건</div>
+
+						<div>대여중</div>
+						<div>0건</div>
+
+						<div>미반납</div>
+						<div>0건</div>
+
+					</div>
+				</div>
+				<div v-else class="item car">
+					<h3>차량 신청현황</h3>
+					<div class="box">
+						<div>
+							<span>승인대기 : </span>
+							<!-- <span>{{ 승인대기 }}</span> -->
+						</div>
+						<div>
+							<span>대여중 : </span>
+							<!-- <span>{{ 대여중 }}</span> -->
+						</div>
+						<div>
+							<span>미반납 : </span>
+							<!-- <span>{{ 미반납 }}</span> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div v-if="departmentId === '4'" class="item stuff">
+					<h3>비품 요청내역</h3>
+					<div class="box stuffBox">
+						<div class="stuff-text">미처리 비품 요청</div>
+						<div class="reqSize">{{ unprocessedReqSize }} 건</div>
+					</div>
+				</div>
+				<div v-else class="item stuff">
+					<h3>비품 요청현황</h3>
+					<div class="box stuffBox">
+						<div class="stuff-text">처리 대기중인 비품 요청</div>
+						<div class="reqSize">{{ waitproccessReqSize }} 건</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="item notice">
+				<h3>최근 공지사항</h3>
+				<div class="box">
+					<button class="add-button" @click="addNotice">
+						<span class="material-icons">add</span>
+					</button>
+					<hr>
+				</div>
+			</div>
+			<div class="item calendar">
+				<h3>오늘의 일정</h3>
+				<div class="box">
+					<router-link class="go-schedule" to="/schedule/calendar">
+						<span class="material-icons">add</span>
+					</router-link>
+					<hr>
+					<div>
+						<TodayTodoItem :t="t" v-if="todayTodo !== null && todayTodo.length > 0" v-for="t in todayTodo"
+							:key="t.id" />
+						<div v-else>
+							<span>오늘의 일정이 없습니다</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item notification">
+				<h3>알림</h3>
+				<div class="box">
+
+				</div>
+			</div>
+		</div>
+	</main>
 </template>
 <script>
 import Sidebar from "@/components/Sidebar.vue";
@@ -253,9 +257,33 @@ export default {
           console.error("알림 데이터를 불러오는 중 에러 발생:", error);
         });
     },
+    //=====================비품 내역 ====================
+		UnproccessedReqHandler() {
+			const url = `${this.backURL}/stuff/unprocessedreq`
+			axios.get(url)
+				.then(response => {
+					this.unprocessedReqSize = response.data
+				})
+				.catch((Error) => {
+					console.log(Error)
+				})
+		},
+		WaitproccesseReqHandler() {
+			const memberId = localStorage.getItem('memberId');
+			const url = `${this.backURL}/stuff/waitproccess?memberId=${memberId}`
+			axios.get(url)
+				.then(response => {
+					this.waitproccessReqSize = response.data
+				})
+				.catch((Error) => {
+					console.log(Error)
+				})
+		}
   },
   created() {
     this.TodayTodoHandler();
+    this.UnproccessedReqHandler()
+		this.WaitproccesseReqHandler()
   },
 };
 </script>
