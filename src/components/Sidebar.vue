@@ -17,19 +17,13 @@
         <span class="text">{{ memberName }}님 환영합니다</span>
       </div>
       <div class="button">
-        <span class="material-icons" :class="{ 'bell-has-content': hasContent }"
-          >notifications</span
-        >
+        <span class="material-icons" :class="{ 'bell-has-content': hasContent }">notifications</span>
         <button @click="toggleOnOff" class="text">Bell</button>
         <!-- <span class="text">Bell</span> -->
       </div>
       <!-- 찬석  -->
       <div v-if="isStatusOn" class="notify">
-        <notificationItem
-          :n="n"
-          v-for="n in this.notificationList.content"
-          :key="n.id"
-        >
+        <notificationItem :n="n" v-for="n in this.notificationList.content" :key="n.id">
           {{ n.content }}
           예약 내용
         </notificationItem>
@@ -74,11 +68,7 @@
         <span class="material-icons">no_crash</span>
         <span class="text">차량 예약</span><br />
       </router-link>
-      <router-link
-        v-if="departmentId === '4'"
-        class="button"
-        to="/carrent/manage"
-      >
+      <router-link v-if="departmentId === '4'" class="button" to="/carrent/manage">
         <span class="material-icons">car_rental</span>
         <span class="text">차량 관리</span>
       </router-link>
@@ -86,11 +76,7 @@
         <span class="material-icons">add_box</span>
         <span class="text">비품 요청</span>
       </router-link>
-      <router-link
-        v-if="departmentId === '4'"
-        class="button"
-        to="/stuff/stuffmanage"
-      >
+      <router-link v-if="departmentId === '4'" class="button" to="/stuff/stuffmanage">
         <span class="material-icons">shelves</span>
         <span class="text">비품 요청 관리</span>
       </router-link>
@@ -186,7 +172,7 @@ export default {
     this.memberName = memberName;
     const departmentId = window.localStorage.getItem("departmentId");
     this.departmentId = departmentId;
-    console.log("부서" + this.departmentId);
+    console.log('부서' + this.departmentId)
 
     // 찬석
     const id = window.localStorage.getItem("memberId");
@@ -232,7 +218,6 @@ aside {
   flex-direction: column;
   width: calc(2rem + 32px); //최소 넓이 = 2rem + 아이콘 크기 32px
   min-height: 100vh; // 부모와 상관없이 화면 채움
-  border-radius: 0 25px 25px 0;
   overflow: hidden;
   padding: 1rem;
 
@@ -282,10 +267,11 @@ aside {
     }
   }
 
+
   h3,
   .button .text {
     display: none;
-    opacity: 0;
+     opacity: 0;
     transition: 0.3s ease-out;
   }
 
@@ -343,19 +329,20 @@ aside {
       .menu-toggle {
         transform: rotate(-180deg);
       }
+
     }
 
     h3,
-    .button .text {
-      display: flex;
-      opacity: 1;
-    }
-
-    .button {
-      .material-icons {
-        margin-right: 1rem;
+      .button .text {
+        display: flex;
+        opacity: 1;
       }
-    }
+
+      .button {
+        .material-icons {
+          margin-right: 1rem;
+        }
+      }
   }
 
   @media (max-width: 768px) {
@@ -387,7 +374,7 @@ aside {
 .notify {
   position: absolute;
   width: 400px;
-  margin-left: 12.8%;
+  margin-left: 245px;
   margin-top: 5px;
   padding: 10px;
   // background-color: var(--dark);
@@ -417,23 +404,7 @@ aside {
   /* 스크롤바 트랙 모양 */
 }
 
-/* 종 딸랑딸랑 움직이는 애니메이션 */
-@keyframes bellAnimation {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(30deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-/* 이모티콘에 애니메이션 적용 */
+/* contentList가 null이 아니면 종 이모티콘 색상 변경 */
 .material-icons.bell-has-content {
-  color: #ffcc00 !important;
-  animation: bellAnimation 0.5s ease-in-out infinite; /* 무한 반복하는 애니메이션 설정 */
-}
-
-</style>
+  color: yellow !important;
+}</style>

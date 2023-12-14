@@ -1,51 +1,51 @@
 <template>
 <main>
-    <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents" eventClick="scheduleDetailHandler">
+    <div>
+        <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents" eventClick="scheduleDetailHandler">
         <template v-slot:eventContent='arg'>
             <div class="event" @click="scheduleDetailHandler(arg)">
                 <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}
                 </b>
             </div>
         </template>
-    </FullCalendar>
-    <ScheduleInfo v-if="detailModalCheck" 
-                  :c="c"
-                  :detailModalCheck="detailModalCheck" 
-                  @closeModal="closeModal" />
-    <!--***************************일정 추가********************************-->
-    <div class="modal-wrap" v-show="addModalCheck" >
-        <div class="modal-container">
-            <form class="add-schedule" @submit.prevent="reserveHandler">
-                <label>제목 : </label><input type="text" 
-                                        v-model="FormData.scheduleTitle"><br><br>
-                <label>기간 : <input type="date"
-                                     name="startDate"
-                                     v-model="startDate"
-                                     required> ~ <input type="date"
-                                                                   name="endDate"
-                                                                   v-model="endDate"
-                                                                   :min ="startDate"
-                                                                   required></label><br><br>
-                <label>시간 : <input type="time"
-                                     name="starttime"
-                                     v-model="FormData.startTime"
-                                     required> ~ <input type="time"
-                                                                   name="endtime"
-                                                                   v-model="FormData.endTime"
-                                                                   :min ="FormData.startTime"
-                                                                   required></label><br><br><br>
-                <label>메모 : </label><input type="text" 
-                                        name="content" 
-                                        v-model="FormData.content">
-            </form>
-                <div class="modal-btn">
-                    <button type="submit" class="ok" @click="scheduleAddHandler">등록</button>
-                    <button class="cancel" @click="openModal">취소</button>
-                </div>
+        </FullCalendar>
+        <ScheduleInfo v-if="detailModalCheck" 
+                    :c="c"
+                    :detailModalCheck="detailModalCheck" 
+                    @closeModal="closeModal" />
+        <!--***************************일정 추가********************************-->
+        <div class="modal-wrap" v-show="addModalCheck" >
+            <div class="modal-container">
+                <form class="add-schedule" @submit.prevent="reserveHandler">
+                    <label>제목 : </label><input type="text" 
+                                            v-model="FormData.scheduleTitle"><br><br>
+                    <label>기간 : <input type="date"
+                                        name="startDate"
+                                        v-model="startDate"
+                                        required> ~ <input type="date"
+                                                                    name="endDate"
+                                                                    v-model="endDate"
+                                                                    :min ="startDate"
+                                                                    required></label><br><br>
+                    <label>시간 : <input type="time"
+                                        name="starttime"
+                                        v-model="FormData.startTime"
+                                        required> ~ <input type="time"
+                                                                    name="endtime"
+                                                                    v-model="FormData.endTime"
+                                                                    :min ="FormData.startTime"
+                                                                    required></label><br><br><br>
+                    <label>메모 : </label><input type="text" 
+                                            name="content" 
+                                            v-model="FormData.content">
+                </form>
+                    <div class="modal-btn">
+                        <button type="submit" class="ok" @click="scheduleAddHandler">등록</button>
+                        <button class="cancel" @click="openModal">취소</button>
+                    </div>
+            </div>
         </div>
-    </div>
-    <!--***************************일정 상세********************************-->
-    
+    </div>    
 </main>
 </template>
 <script>
@@ -78,6 +78,11 @@ export default {
                         },
                     }
                 ],
+                headerToolbar: {
+                    start : '',
+                    center : 'prev title next',
+                    end : ''
+                }
             },
             addModalCheck : false,
             detailModalCheck : false,
@@ -184,9 +189,9 @@ export default {
 </script>
 <style scoped>
 .event{
-    background-color: #bbebe9; 
+    background-color: #a6d5fc;
     width:100%;
-    border : none;
+    border : solid 1px #e3f2ff;
     border-radius: 3px;
     padding : 2px;
     padding-left : 8px;
