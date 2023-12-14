@@ -1,13 +1,19 @@
 <template>
 <main>
-    <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents">
+    <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents" eventClick="scheduleDetailHandler">
         <template v-slot:eventContent='arg'>
-            <div class="event">
-                <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}</b>
+            <div class="event" @click="scheduleDetailHandler(arg)">
+                <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}
+                </b>
             </div>
         </template>
     </FullCalendar>
-    <div class="modal-wrap" v-show="modalCheck" >
+    <ScheduleInfo v-if="detailModalCheck" 
+                  :c="c"
+                  :detailModalCheck="detailModalCheck" 
+                  @closeModal="closeModal" />
+    <!--***************************일정 추가********************************-->
+    <div class="modal-wrap" v-show="addModalCheck" >
         <div class="modal-container">
             <form class="add-schedule" @submit.prevent="reserveHandler">
                 <label>제목 : </label><input type="text" 
@@ -31,28 +37,32 @@
                 <label>메모 : </label><input type="text" 
                                         name="content" 
                                         v-model="FormData.content">
+            </form>
                 <div class="modal-btn">
                     <button type="submit" class="ok" @click="scheduleAddHandler">등록</button>
                     <button class="cancel" @click="openModal">취소</button>
                 </div>
-            </form>
         </div>
     </div>
+    <!--***************************일정 상세********************************-->
+    
 </main>
 </template>
 <script>
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import ScheduleInfo from '@/pages/schedule/ScheduleInfo.vue'
 import axios from 'axios'
 
 export default {
     name: 'Calendar',
     components: {
-        FullCalendar // make the <FullCalendar> tag available
+        FullCalendar, ScheduleInfo // make the <FullCalendar> tag available
     },
     data() {
         return {
+            c : null,
             calendarOptions: {
                 plugins: [ dayGridPlugin, interactionPlugin ],
                 initialView: 'dayGridMonth',
@@ -61,11 +71,16 @@ export default {
                     {
                         title: '',
                         start: '',
-                        end: ''
+                        end: '',
+                        extendedProps: {
+                            eventId: '',
+                            memo: ''
+                        },
                     }
                 ],
             },
-            modalCheck : false,
+            addModalCheck : false,
+            detailModalCheck : false,
             startDate : null,
             endDate : null,
             FormData: {
@@ -81,7 +96,7 @@ export default {
     },
     methods: {
         openModal(){
-            this.modalCheck = !this.modalCheck
+            this.addModalCheck = !this.addModalCheck
         },
         scheduleHandler(memberId){
             console.log(memberId)
@@ -93,7 +108,11 @@ export default {
                     this.calendarOptions.events = response.data.map(event => ({
                         title: event.scheduleTitle,
                         start: event.startTime,
-                        end: event.endTime
+                        end: event.endTime,
+                        extendedProps: {
+                            eventId : event.id,
+                            memo: event.content
+                        }
                     }));
                 }
                 console.log('캘린더옵션 events',this.calendarOptions.events)
@@ -140,12 +159,21 @@ export default {
             axios.post(url,data)
                 .then((Response)=>{
                     alert('성공')
-                    this.modalCheck = !this.modalCheck
-                    return false
+                    this.addModalCheck = !this.addModalCheck
+                    window.location.reload()
                 })
                 .catch((Error)=>{
                     console.log(Error)
                 })
+        },
+        scheduleDetailHandler(arg){
+            // console.log(arg.event.extendedProps);
+            // alert(arg.event.extendedProps.memo)
+            this.c = arg.event
+            this.detailModalCheck = !this.detailModalCheck
+        },
+        closeModal(value){
+            this.detailModalCheck = value
         }
     },
     created(){
