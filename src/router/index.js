@@ -44,6 +44,7 @@ const router = createRouter({
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },
     { path: "/attendance/date/:currentPage", component: Attendance },
+    // { path: "/attendance/today", component: Attendance },
     // /attendance/date/:currentPage
     // { path: "/attendance/:page", component: Attendance },
     { path: "/notice/noticelist", component: NoticeList },
