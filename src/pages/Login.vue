@@ -1,4 +1,3 @@
-<!--Login.vue-->
 <template>
   <div class="login-container">
     <h2 v-if="!isLoggedIn">Login</h2>
@@ -70,6 +69,7 @@ export default {
 
         this.$router.push("/home");
         this.$data.user = response.data;
+        location.reload();
       } catch (error) {
         console.error("로그인 실패:", error);
       }
@@ -160,7 +160,6 @@ export default {
 
         // localStorage에서 departmentId 제거
         localStorage.removeItem("departmentId");
-        localStorage.removeItem("name");
 
         this.$router.push("/home");
         //화면 새로고침
