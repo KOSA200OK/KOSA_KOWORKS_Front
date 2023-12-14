@@ -5,30 +5,40 @@
 				<h3>근태 현황</h3>
 				<div class="box">
 					<div class="currentDay">{{ currentDay }}</div>
-					<h3>{{ currentTime }}</h3>
+					<div class="currentTime">{{ currentTime }}</div>
 					<br>
-					<h3>출근 시간: {{ attendanceTime }}</h3>
-					<h3>퇴근 시간: {{ offTime }}</h3>
-					<button @click="attendanceHandler">출근</button>
-					<button @click="attendance2Handler">퇴근</button>
+					<div class="timeBox">
+						<div>
+							<span>출근 시간</span>
+							<span>{{ attendanceTime }}</span>
+						</div>
+						<div>
+							<span>퇴근 시간</span>
+							<span>{{ offTime }}</span>
+						</div>
+					</div>
+					<div class="buttons">
+						<button @click="attendanceHandler">출근</button>
+						<button @click="attendance2Handler">퇴근</button>
+					</div>
 				</div>
 			</div>
 			<div>
 				<div v-if="departmentId === '4'" class="item stuff">
 					<h3>차량 신청내역</h3>
 					<div class="box">
-						 <div>
+						<div>
 							<span>승인대기 : </span>
-							<span>{{ 승인대기 }}</span>
-						 </div>
-						 <div>
+							<!-- <span>{{ 승인대기 }}</span> -->
+						</div>
+						<div>
 							<span>대여중 : </span>
-							<span>{{ 대여중 }}</span>
-						 </div>
-						 <div>
+							<!-- <span>{{ 대여중 }}</span> -->
+						</div>
+						<div>
 							<span>미반납 : </span>
-							<span>{{ 미반납 }}</span>
-						 </div>
+							<!-- <span>{{ 미반납 }}</span> -->
+						</div>
 					</div>
 				</div>
 				<div v-else class="item stuff">
@@ -36,16 +46,16 @@
 					<div class="box">
 						<div>
 							<span>승인대기 : </span>
-							<span>{{ 승인대기 }}</span>
+							<!-- <span>{{ 승인대기 }}</span> -->
 						</div>
 						<div>
 							<span>대여중 : </span>
-							<span>{{ 대여중 }}</span>
+							<!-- <span>{{ 대여중 }}</span> -->
 						</div>
 						<div>
 							<span>미반납 : </span>
-							<span>{{ 미반납 }}</span>
-						 </div>
+							<!-- <span>{{ 미반납 }}</span> -->
+						</div>
 					</div>
 				</div>
 			</div>
@@ -53,13 +63,15 @@
 				<div v-if="departmentId === '4'" class="item stuff">
 					<h3>비품 요청내역</h3>
 					<div class="box">
-						 
+						<div>미처리 비품 요청</div>
+						<div>{{ unprocessedReqSize }} 건</div>
 					</div>
 				</div>
 				<div v-else class="item stuff">
 					<h3>비품 요청현황</h3>
 					<div class="box">
-
+						<div>처리 대기중인 비품 요청</div>
+						<div>{{ waitproccessReqSize }} 건</div>
 					</div>
 				</div>
 			</div>
@@ -112,6 +124,8 @@ export default {
 			todayTodo: null,
 			offTime: null,
 			departmentId: 0,
+			unprocessedReqSize: 0,
+			waitproccessReqSize: 0,
 		};
 	},
 	mounted() {
@@ -228,10 +242,38 @@ export default {
 					console.log(Error)
 				})
 
+		},
+		//=====================비품 내역 ====================
+		UnproccessedReqHandler() {
+			const url = `${this.backURL}/stuff/unprocessedreq`
+			axios.get(url)
+				.then(response => {
+					this.unprocessedReqSize = response.data
+				})
+				.catch((Error) => {
+					console.log(Error)
+				})
+
+		},
+
+		WaitproccesseReqHandler() {
+			const memberId = localStorage.getItem('memberId');
+			const url = `${this.backURL}/stuff/waitproccess?memberId=${memberId}`
+
+			axios.get(url)
+				.then(response => {
+					this.waitproccessReqSize = response.data
+				})
+				.catch((Error) => {
+					console.log(Error)
+				})
+
 		}
 	},
 	created() {
 		this.TodayTodoHandler()
+		this.UnproccessedReqHandler()
+		this.WaitproccesseReqHandler()
 	}
 };
 </script>
@@ -240,8 +282,6 @@ export default {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-template-rows: repeat(2, 400px);
-	/* grid-template-rows: repeat(2, minmax(400px, auto)); */
-	/* grid-template-rows: 250px 550px; */
 	row-gap: 40px;
 	column-gap: 20px;
 
@@ -272,4 +312,63 @@ export default {
 	box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.1);
 	padding: 20px;
 }
+
+.item h3 {
+	font-size: 16px;
+	font-weight: bold;
+	color: #1565c0;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-around;
+}
+
+.buttons button {
+	padding: 10px 20px;
+	margin: 5px;
+	font-size: 14px;
+	cursor: pointer;
+	border: 2px solid #1565c0;
+	/* 테두리 색상 지정 */
+	background-color: transparent;
+	color: #1565c0;
+	border-radius: 25px;
+	transition: background-color 0.3s ease;
+}
+
+.buttons button:hover {
+	background-color: rgba(21, 101, 192, 0.1);
+}
+
+.currentDay {
+	color: rgba(128, 128, 128, 0.8);
+}
+
+.currentTime {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.buttons button {
+	width: 100px;
+}
+
+.timeBox {
+	margin-top: 50px;
+	margin-bottom: 70px;
+}
+
+.timeBox div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.timeBox span {
+  text-align: center; 
+  flex: 1; 
+}
+
 </style>
