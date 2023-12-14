@@ -373,7 +373,7 @@ aside {
 	margin-top: 19%;
 	padding: 10px;
 	// background-color: var(--dark);
-	background-color: #1565C0;
+	background-color: #3b7ed8;
 	border: 1px solid white;
 	border-radius: 4px;
 	max-height: 450px;
