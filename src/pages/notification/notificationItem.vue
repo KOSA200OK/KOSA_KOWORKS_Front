@@ -10,7 +10,7 @@
                         {{ n.createdAt }}
                     </span>
                     <span class="material-symbols-outlined"
-                          v-on:click="cancel">
+                            v-on:click="cancel">
                         cancel
                     </span>
                 </div>
