@@ -240,7 +240,7 @@ export default {
         // 알림 데이터를 가져오는 메소드
     fetchNotifications() {
       const memberId = localStorage.getItem("memberId");
-      const url = `${this.backURL}/subscribe/?memberId=${memberId}`; // API 엔드포인트 URL을 채워넣으세요
+      const url = `${this.backURL}/subscribe/?memberId=${memberId}`;
 
       axios
         .get(url)

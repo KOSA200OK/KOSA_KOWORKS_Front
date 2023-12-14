@@ -72,15 +72,16 @@ export default {
                 { value: "2023-11", label: "11월" },
                 { value: "2023-12", label: "12월" },
             ],
+            memberId : `${this.memberId}`,
         };
     },
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----
         axiosHandler() {
             console.log("제발..{}", this.selectedMonth);
-            const memberId = localStorage.getItem("memberId");
+            // const memberId = localStorage.getItem("memberId");
 
-            const url = `${this.backURL}/attendance/all?memberId=${memberId}&currentPage=${this.currentPage}`;
+            const url = `${this.backURL}/attendance/all?memberId=${this.memberId}&currentPage=${this.currentPage}`;
             axios
                 .get(url)
                 .then((response) => {
@@ -280,7 +281,7 @@ tbody tr:hover {
     align-items: center;
     justify-content: flex-end; /* 오른쪽으로 보내기 */
     /* margin-right: 5%; */
-    margin-left: 1340px;
+    margin-left: 1370px;
 }
 
 .select-month {
@@ -297,7 +298,7 @@ tbody tr:hover {
     padding: 8px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #2ecc71;
+    background-color: #3498db;
     color: #fff;
     font-size: 14px;
     cursor: pointer;
