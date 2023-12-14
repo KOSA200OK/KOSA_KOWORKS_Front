@@ -383,7 +383,6 @@ aside {
     padding-right: 20px;
 	z-index: 999;
 }
-
 /* 스크롤바 스타일링 */
 .notify::-webkit-scrollbar {
 	width: 10px;
