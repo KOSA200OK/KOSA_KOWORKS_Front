@@ -26,7 +26,8 @@
                                             v-model="FormData.scheduleTitle"
                                             class="title"
                                             maxlength="15"
-                                            placeholder="15자 이내로 입력하세요"><br><br>
+                                            placeholder="15자 이내로 입력하세요"
+                                            required><br><br>
                     <label>기간</label><input type="date"
                                         name="startDate"
                                         v-model="startDate"
@@ -47,11 +48,11 @@
                                             v-model="FormData.content"
                                             maxlength="60"
                                             placeholder="60자 이내로 입력하세요"></textarea>
-                </form>
                     <div class="modal-btn">
                         <button type="submit" class="ok" @click="scheduleAddHandler">등록</button>
                         <button class="cancel" @click="openModal">취소</button>
                     </div>
+                </form>
             </div>
         </div>
     </div>    
@@ -209,7 +210,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 /* .modal-header{
     background-color: #4199fd;
     border-radius: 10px 10px 0px 0px;
