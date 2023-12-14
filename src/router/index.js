@@ -2,15 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "@/pages/Home.vue";
 import Attendance from "@/pages/attendance/AttendanceList.vue";
-import Address from "@/pages/address/AddressList.vue";
+import AddressList from "@/pages/address/AddressList.vue";
 import CarList from "@/pages/car/CarList.vue";
 import CarMyRentList from "@/pages/car/CarMyRentList.vue";
 import CarManage from "@/pages/car/CarManage.vue";
-// import CarManageList from '@/pages/car/CarManageList.vue'
-// import CarWaitingList from '@/pages/car/CarWaitingList.vue'
-// import CarRentList from '@/pages/car/CarRentList.vue'
-// import CarNoReturnList from '@/pages/car/CarNoReturnList.vue'
 import CarAllRentList from "@/pages/car/CarAllRentList.vue";
+import Calendar from "@/pages/schedule/Calendar.vue";
 import NoticeList from "@/pages/notice/NoticeList.vue";
 import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
@@ -27,7 +24,8 @@ const router = createRouter({
   routes: [
     { path: "/home", component: Home },
     // { path: '/attendancelist', component: AttendanceList },
-    { path: "/address/members", component: Address },
+    { path: "/address/addresslist/", component: AddressList },
+    { path: "/address/addresslist/:currentPage", component: AddressList },
     { path: "/chat/roomlist", component: RoomList },
     { path: "/chat/room/enter/:roomid", component: RoomDetail },
     // { path: '/calendar/list', component: Attendance },
@@ -40,20 +38,13 @@ const router = createRouter({
     { path: "/carrent/myrentlist/:currentPage", component: CarMyRentList },
     { path: "/carrent/manage", component: CarManage },
     { path: "/carrent/manage/:currentPage", component: CarManage },
-    // { path: "/carrent/manage/:currentPage", component: CarManage },
-    // { path: "/carrent/managelist", component: CarManageList },
-    // { path: "/carrent/managelist/:currentPage", component: CarManageList },
-    // { path: "/carrent/waitinglist", component: CarWaitingList },
-    // { path: "/carrent/waitinglist/:currentPage", component: CarWaitingList },
-    // { path: "/carrent/rentlist", component: CarRentList },
-    // { path: "/carrent/rentlist/:currentPage", component: CarRentList },
-    // { path: "/carrent/noreturnlist", component: CarNoReturnList },
-    // { path: "/carrent/noreturnlist/:currentPage", component: CarNoReturnList },
     { path: "/carrent/allrentlist", component: CarAllRentList },
     { path: "/carrent/allrentlist/:currentPage", component: CarAllRentList },
+    { path: "/schedule/calendar", component: Calendar},
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },
     { path: "/attendance/date/:currentPage", component: Attendance },
+    // { path: "/attendance/today", component: Attendance },
     // /attendance/date/:currentPage
     // { path: "/attendance/:page", component: Attendance },
     { path: "/notice/noticelist", component: NoticeList },

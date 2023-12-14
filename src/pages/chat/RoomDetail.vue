@@ -1,26 +1,40 @@
+<!-- RoomDetail.vue -->
 <template>
-  <div class="container" id="app" v-cloak>
-    <div class="detail-header">
-      <h2>{{ room.name }}</h2>
-    </div>
-    <div class="chat-input" ref="chatList">
+  <main>
+    <div class="roomdetail-container" id="app" v-cloak>
+      <div class="roomdetail-header">
+        <h2>{{ room.name }}</h2>
+      </div>
+      <div class="chat-input">
+        <input
+          type="text"
+          class="form-control"
+          v-model="message"
+          @keypress.enter="sendMessage"
+          placeholder="메시지를 입력하세요"
+        />
+        <button class="send-button" @click="sendMessage">보내기</button>
+      </div>
       <ul class="chat-list">
-        <li class="chat-item" v-for="message in messages" :key="message.id">
-          <strong>{{ message.sender }} - {{ message.message }}</strong>
+        <li
+          class="chat-item"
+          v-for="message in messages"
+          :key="message.id"
+          :class="{ 'my-message': message.sender === sender }"
+        >
+          <strong v-if="message.sender === sender">
+            <span>{{ message.timestamp }}</span> {{ message.message }}
+          </strong>
+          <strong v-else>
+            {{ message.sender }}-{{ message.message }}
+            <span>{{ message.timestamp }}</span>
+          </strong>
+          <!-- <span class="timestamp">{{ message.timestamp }}</span> -->
         </li>
       </ul>
+      <div></div>
     </div>
-    <div class="chat-input">
-      <input
-        type="text"
-        class="form-control"
-        v-model="message"
-        @keypress.enter="sendMessage"
-        placeholder="메시지를 입력하세요"
-      />
-      <button class="send-button" @click="sendMessage">보내기</button>
-    </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -41,14 +55,15 @@ export default {
       reconnectAttempts: 0, // 재시도 횟수를 데이터에 추가
     };
   },
+
   created() {
-    //어차피 DB에 id들어가있는걸 그대로 local에 저장해놓은거라, 아니면 파라미터로 넘겨도 됨
     this.roomId = localStorage.getItem("wschat.roomId");
     this.sender = localStorage.getItem("wschat.sender");
     this.findRoom();
     this.loadChatHistory(); // 페이지 초기화 시 채팅 내역 불러오기
     this.setupWebSocket(); // WebSocket 설정 메소드 호출
   },
+
   methods: {
     // 시작하자마자 방 찾기
     findRoom() {
@@ -56,41 +71,45 @@ export default {
         this.room = response.data;
       });
     },
+
     // 메시지 송신 처리
     sendMessage() {
+      const currentTime = new Date().toLocaleTimeString();
       this.ws.send(
         `/pub/chat/message`,
+        // 메시지를 보낼 때 {}여기에 담아서 보냄
         {},
         JSON.stringify({
           type: "TALK",
           roomId: this.roomId,
           sender: this.sender,
           message: this.message,
+          timestamp: currentTime,
         })
       );
-
       // 메시지 전송 시 채팅 내역 저장
       this.message = "";
       this.saveChatHistory();
     },
+
     // 메시지 수신 처리
     recvMessage(recv) {
       console.log("수신된 메시지:", recv);
+      const currentTime = new Date().toLocaleTimeString();
       this.messages.unshift({
         type: recv.type,
         sender: recv.type === "ENTER" ? "[알림]" : recv.sender,
         message: recv.message,
+        timestamp: currentTime,
       });
       // 메시지 수신 시 채팅 내역 저장
       this.saveChatHistory();
-      // 화면 갱신
-      // this.$forceUpdate();
     },
 
     loadChatHistory() {
-      // 추가 시작, 현재 방에 대한 채팅 내역을 로드
+      // 현재 방에 대한 채팅 내역을 로드
       const roomChatHistoryKey = `wschat.chatHistory.${this.roomId}`;
-      // 추가 끝
+
       const chatHistory = localStorage.getItem(roomChatHistoryKey);
       console.log(chatHistory);
       if (chatHistory) {
@@ -100,7 +119,7 @@ export default {
 
     saveChatHistory() {
       console.log("saveChatHistory message" + this.messages);
-      // 추가시작, 각 방에 대한 채팅 내역을 별도로 저장
+      // 각 방에 대한 채팅 내역을 별도로 저장
       const roomChatHistoryKey = `wschat.chatHistory.${this.roomId}`;
       localStorage.setItem(roomChatHistoryKey, JSON.stringify(this.messages));
 
@@ -113,6 +132,7 @@ export default {
       this.ws = Stomp.over(this.sock);
       this.connectWebSocket();
     },
+
     // WebSocket 연결
     connectWebSocket() {
       this.ws.connect(
@@ -145,25 +165,6 @@ export default {
         }
       );
     },
-
-    enterRoom(roomId) {
-      axios
-        .get(`${this.backURL}/pub/chat/room/enter/${roomId}`)
-        .then((response) => {
-          console.log(response.data);
-          this.room = response.data;
-
-          const sender = prompt("대화명을 입력하세요.");
-          if (sender !== "") {
-            localStorage.setItem("wschat.sender", sender);
-            localStorage.setItem("wschat.roomId", roomId);
-            location.href = `${this.backURL}/chat/room/enter/${roomId}`;
-          }
-        })
-        .catch((error) => {
-          console.error("채팅방 입장 중 오류 발생:", error);
-        });
-    },
   },
 };
 </script>
@@ -172,32 +173,108 @@ export default {
 [v-cloak] {
   display: none;
 }
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* 화면 전체 높이로 설정 */
+.roomdetail-container {
+  max-width: 100%;
+  margin: 20px auto;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.chat-list {
-  overflow-y: auto;
-  flex: 1; /* 채팅 화면이 남은 공간을 모두 차지하도록 설정 */
-  max-height: 300px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-}
-
-.chat-item {
-  list-style: none;
-  padding: 10px;
-  margin: 0;
-  border-bottom: 1px solid #ccc;
+.roomdetail-header {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #495057;
 }
 
 .chat-input {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  flex-direction: row !important;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
   padding: 10px;
-  background-color: #fff;
-  border-top: 1px solid #ccc;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.send-button {
+  padding: 10px 15px;
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chat-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  overflow: hidden; /* 말풍선이 내용을 감출 수 있도록 overflow 속성 추가 */
+}
+
+.chat-item strong {
+  color: black;
+  display: block;
+}
+/* 채팅 아이템의 text-align 스타일을 오른쪽으로 정렬하도록 변경 */
+.chat-item[style*="text-align: right"] strong {
+  text-align: right;
+}
+
+/* 채팅 아이템의 text-align 스타일을 왼쪽으로 정렬하도록 변경 */
+.chat-item[style*="text-align: left"] strong {
+  order: 1;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto; /* 세로 스크롤 추가 */
+  max-height: 300px; /* 스크롤이 나타날 최대 높이 지정 (필요에 따라 조절) */
+}
+/* 채팅 오른쪽 왼쪽 */
+.my-message strong {
+  order: 2;
+  text-align: right; /* 내 메시지일 경우 오른쪽 정렬 */
+  margin-right: 10px;
+}
+
+.chat-item[style*="text-align: right"] strong {
+  order: 1;
+  text-align: right; /* 다른 사람의 메시지일 경우 왼쪽 정렬 */
+}
+/* 추가 */
+
+/* 스크롤바 스타일을 조정합니다. */
+ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+ul::-webkit-scrollbar-thumb {
+  background-color: #2196f3;
+  border-radius: 4px;
+}
+
+ul::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+/*  */
+span {
+  font-size: 0.8em;
+  color: #888; /* 수정: 시간의 색깔을 회색으로 변경 */
+  margin-left: 5px; /* 수정: 시간과 메시지 사이의 여백 추가 */
 }
 </style>

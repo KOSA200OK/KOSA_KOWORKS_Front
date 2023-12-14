@@ -2,7 +2,6 @@
     <div>
         <ul>
             <li>
-                <!-- {{ n.create    dAt }} -->
                 <div class="icon-cancel">
                     <span class="material-symbols-outlined">
                         highlight_text_cursor
@@ -11,7 +10,7 @@
                         {{ n.createdAt }}
                     </span>
                     <span class="material-symbols-outlined"
-                          v-on:click="cancel">
+                            v-on:click="cancel">
                         cancel
                     </span>
                 </div>
@@ -34,7 +33,10 @@ export default {
         };
     },
     methods: {
-        cancel() {
+        cancel(event) {
+            // 부모 컴포넌트에서 발생하는 이벤트 중지
+            event.stopPropagation();
+            
             const idValue = this.n.id
             const url = `${this.backURL}/subscribe/${idValue}`
             axios.delete(url)
@@ -48,9 +50,13 @@ export default {
                 if (index !== -1) {
                     // notificationList.content 배열에서 삭제된 알림 제거
                     this.$parent.notificationList.content.splice(index, 1);
+                    if (this.$parent.notificationList.content.length === 0) {
+                        window.location.reload();
+                    }
                 }
 
-                window.location.reload();
+                // window.location.reload();
+
 
                 })
                 .catch(error => {

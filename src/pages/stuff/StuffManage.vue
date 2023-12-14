@@ -59,37 +59,22 @@
                         <th>비품명</th>
                         <th>현재재고</th>
                         <th>요청수량</th>
-                        <th>요청사유</th>
                         <th>처리현황</th>
-                        <th>반려사유</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 비품 데이터를 반복하여 출력 -->
-                    <tr @click="trClickHandler(reqList.id)" v-for="(reqList, index) in reqList" :key="index">
-                        <td>{{ reqList.reqDate }}</td>
-                        <td>{{ reqList.member.name }}</td>
-                        <td>{{ reqList.member.department.name }}</td>
-                        <td>{{ reqList.stuff.id }}</td>
-                        <td>{{ reqList.stuff.name }}</td>
-                        <td>{{ reqList.stuff.stock }}</td>
-                        <td>{{ reqList.quantity }}</td>
-                        <td>{{ reqList.purpose }}</td>
-                        <td
-                            :class="{ 'processing': reqList.status === 0, 'completed': reqList.status === 1, 'rejected': reqList.status === 2 }">
-                            {{ reqList.status === 0 ? '처리대기' : reqList.status === 1 ? '승인완료' : '승인반려' }}
-                        </td>
-                        <td>{{ reqList.reject }}</td>
-                    </tr>
+                    <RequestManageItem :request="request" v-if="reqList" v-for="request in reqList" :key="request.id" />
                 </tbody>
             </table>
         </div>
     </main>
 </template>
 <script>
+import RequestManageItem from '@/pages/stuff/RequestManageItem.vue'
 import axios from 'axios'
 export default {
     name: 'StuffManage',
+    components: { RequestManageItem },
     data() {
         return {
             category: 'default', // 대분류 선택값
@@ -99,37 +84,17 @@ export default {
             stuffId: 'default',
             startDate: null,
             endDate: null,
-            departmentId: 0, 
-            reqList: [
-                {
-                    "id": 32,
-                    "stuff": {
-                        "id": "S0001",
-                        "name": "A4",
-                        "stock": 10
-                    },
-                    "member": {
-                        "id": "0001",
-                        "department": {
-                            "id": 1,
-                            "name": "개발1팀"
-                        },
-                        "name": "서재원",
-                        "password": "1",
-                        "position": "사원",
-                        "tel": "01077771111"
-                    },
-                    "reqDate": "2023-12-04",
-                    "quantity": 5,
-                    "status": 1,
-                    "purpose": "테스트 2",
-                    "reject": null
-                }
-            ],
+            departmentId: 0,
+            reqList: [],
         }
     },
     methods: {
         loadData() {
+            if (!this.startDate || !this.endDate) {
+                alert('시작 날짜와 종료 날짜를 선택하세요.');
+                return;
+            }
+
             const url = `${this.backURL}/stuff/requestmanage`;
 
             const params = {
@@ -149,14 +114,20 @@ export default {
                 withCredentials: true
             })
                 .then(response => {
+                    alert('목록 로드 성공')
                     this.reqList = response.data;
                 })
                 .catch(error => {
+                    alert('목록 로드 실패')
                     console.error('데이터를 불러오는 중 에러 발생:', error);
                 });
         },
         trClickHandler(reqId) {
             console.log('클릭한 tr의 데이터:', reqId);
+
+
+            this.selectedRowData = this.reqList;
+            this.isModalVisible = true;
         },
     },
 }
@@ -164,7 +135,9 @@ export default {
 <style scoped>
 .table-container {
     max-height: 700px;
-    /* max-height: 50%; */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
 }
 
@@ -172,29 +145,24 @@ table {
     width: 99.5%;
     border-collapse: collapse;
     margin-top: 20px;
-    box-shadow: 3px 3px 3px 3px #555555
 }
 
-th,
 td {
-    /* border: 1px solid #dddddd; */
-    border: none;
+    padding: 10px;
     text-align: center;
-    padding: 12px;
+    border-bottom: 1px solid #ddd;
 }
 
-th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    color: #333;
+thead {
+    background-color: #f5f5f5;
 }
 
-td {
-    background-color: #ffffff;
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-tr:hover{
-    background-color: aqua;
+tbody tr:hover {
+    background-color: #eaeaea;
 }
 
 /* 처리현황에 따른 스타일링 */
@@ -207,15 +175,15 @@ tr:hover{
 }
 
 .processing {
-    background-color: rgba(255, 165, 0, 0.7);
+    background-color: #E9BC00;
 }
 
 .completed {
-    background-color: rgba(0, 128, 0, 0.7);
+    background-color: #58CB64;
 }
 
 .rejected {
-    background-color: rgba(255, 0, 0, 0.7);
+    background-color: #FE813C;
 }
 
 .form-container {

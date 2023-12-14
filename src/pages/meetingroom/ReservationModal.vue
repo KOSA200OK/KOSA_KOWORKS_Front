@@ -15,8 +15,8 @@
             </button>
         </div>
         <br><br><br><br>
+        
         <!-- Modal body -->
-
         <!--희의실 정보-->
         <div class="meetingroominfo">
             <div class="title"><h3>회의실 정보</h3></div><br><br>
