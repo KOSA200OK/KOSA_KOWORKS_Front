@@ -4,10 +4,18 @@
     <form class="login-form" v-if="!isLoggedIn" @submit.prevent="login">
       <!-- <label for="id">사원번호: </label> -->
       <img class="login-img" :src="`../images/logo.png`" alt="logo" />
-      <input v-model="id" type="text" id="id" required placeholder="사원번호" />
+      <input
+        class="member-input"
+        v-model="id"
+        type="text"
+        id="id"
+        required
+        placeholder="사원번호"
+      />
 
       <!-- <label for="password">비밀번호: </label> -->
       <input
+        class="password-input"
         v-model="password"
         type="password"
         id="password"
@@ -188,14 +196,10 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .login-container {
   background-color: white;
   width: 100vw;
-  height: 100vh; /* 화면 전체 높이로 설정 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .notify_bar {
@@ -230,10 +234,25 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
   text-align: center;
-  margin: 0 auto;
+  margin: 0 auto; /* 가운데 정렬을 위한 margin 속성 추가 */
+  position: absolute; /* 위치를 absolute로 설정 */
+  top: 50%; /* 부모 요소의 50% 위치로 이동 */
+  left: 50%; /* 부모 요소의 50% 위치로 이동 */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* 자기 자신의 50% 만큼 이동하여 중앙 정렬 */
 }
 
-input {
+.member-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.password-input {
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
@@ -253,13 +272,11 @@ input {
   font-size: 18px;
   margin-top: 20px; /* 버튼 위쪽 여백 추가 */
 }
-/*  */
+
 .login-img {
   width: 100px;
   height: auto;
 }
-/*  */
-/*  */
 </style>
 
 <!-- test -->

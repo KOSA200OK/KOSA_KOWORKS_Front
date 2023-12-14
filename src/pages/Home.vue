@@ -13,12 +13,57 @@
 					<button @click="attendance2Handler">퇴근</button>
 				</div>
 			</div>
-			<div class="item stuff">
-				<h3>비품 신청현황</h3>
-				<div class="box">
-
+			<div>
+				<div v-if="departmentId === '4'" class="item stuff">
+					<h3>차량 신청내역</h3>
+					<div class="box">
+						 <div>
+							<span>승인대기 : </span>
+							<span>{{ 승인대기 }}</span>
+						 </div>
+						 <div>
+							<span>대여중 : </span>
+							<span>{{ 대여중 }}</span>
+						 </div>
+						 <div>
+							<span>미반납 : </span>
+							<span>{{ 미반납 }}</span>
+						 </div>
+					</div>
+				</div>
+				<div v-else class="item stuff">
+					<h3>차량 신청현황</h3>
+					<div class="box">
+						<div>
+							<span>승인대기 : </span>
+							<span>{{ 승인대기 }}</span>
+						</div>
+						<div>
+							<span>대여중 : </span>
+							<span>{{ 대여중 }}</span>
+						</div>
+						<div>
+							<span>미반납 : </span>
+							<span>{{ 미반납 }}</span>
+						 </div>
+					</div>
 				</div>
 			</div>
+			<div>
+				<div v-if="departmentId === '4'" class="item stuff">
+					<h3>비품 요청내역</h3>
+					<div class="box">
+						 
+					</div>
+				</div>
+				<div v-else class="item stuff">
+					<h3>비품 요청현황</h3>
+					<div class="box">
+
+					</div>
+				</div>
+			</div>
+
 			<div class="item notice">
 				<h3>최근 공지사항</h3>
 				<div class="box">
@@ -29,9 +74,19 @@
 				</div>
 			</div>
 			<div class="item calendar">
-				<h3>일정</h3>
+				<h3>오늘의 일정</h3>
 				<div class="box">
-
+					<router-link class="go-schedule" to="/schedule/calendar">
+						<span class="material-icons">add</span>
+					</router-link>
+					<hr>
+					<div>
+						<TodayTodoItem :t="t" v-if="todayTodo !== null && todayTodo.length > 0" v-for="t in todayTodo"
+							:key="t.id" />
+						<div v-else>
+							<span>오늘의 일정이 없습니다</span>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="item notification">
@@ -45,22 +100,31 @@
 </template>
 <script>
 import Sidebar from "../components/Sidebar.vue";
+import TodayTodoItem from "@/pages/schedule/TodayTodoItem.vue";
 import axios from 'axios'
 export default {
-	components: { Sidebar },
+	components: { Sidebar, TodayTodoItem },
 	data() {
 		return {
 			currentDay: this.getCurrentDay(),
 			currentTime: this.getCurrentTime(),
 			attendanceTime: null,
+			todayTodo: null,
 			offTime: null,
-
+			departmentId: 0,
 		};
 	},
 	mounted() {
 		setInterval(() => {
 			this.currentTime = this.getCurrentTime();
 		}, 1000);
+
+		this.departmentId = localStorage.getItem('departmentId');
+
+		// 찬석
+		const memberId = localStorage.getItem('memberId');
+		this.fetchAttendanceData(memberId);
+
 	},
 	methods: {
 		getCurrentDay() {
@@ -82,7 +146,7 @@ export default {
 		},
 
 
-		// ======================= 출근 버튼 ================================
+		// ======================= 출근 버튼, 찬석 ================================
 		attendanceHandler() {
 			const id = localStorage.getItem('memberId');
 
@@ -110,7 +174,7 @@ export default {
 					console.error('출근 요청 실패', error);
 				});
 		},
-		// ======================= 퇴근 버튼 ===============================
+		// ======================= 퇴근 버튼, 찬석 ===============================
 		attendance2Handler() {
 			const id = localStorage.getItem('memberId');
 
@@ -133,8 +197,42 @@ export default {
 				.catch((error) => {
 					console.error('퇴근 요청 실패', error);
 				});
+		},
+		// ============= 출근, 퇴근 데이터 출력 찬석 ==========================
+		fetchAttendanceData(memberId) {
+			// const id = localStorage.getItem('memberId');
+
+			const url = `${this.backURL}/attendance/today?memberId=${memberId}`;
+
+			axios.get(url)
+				.then((response) => {
+					const data = response.data;
+					this.attendanceTime = data.startTime;
+					this.offTime = data.endTime;
+				})
+				.catch((error) => {
+					console.error('출근 및 퇴근 시간 조회 실패', error);
+				});
+		},
+		// ======================= 오늘의 일정 ===============================
+		TodayTodoHandler() {
+			const memberId = localStorage.getItem("memberId")
+			const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`
+			axios.get(url, { params: this.data })
+				.then(response => {
+					console.log(response.data)
+					this.todayTodo = response.data
+					console.log(this.todayTodo)
+				})
+				.catch((Error) => {
+					console.log(Error)
+				})
+
 		}
 	},
+	created() {
+		this.TodayTodoHandler()
+	}
 };
 </script>
 <style>
@@ -149,29 +247,29 @@ export default {
 
 }
 
-.attendance{
+.attendance {
 	grid-column-start: 1;
 }
 
-.notification{
+.notification {
 	grid-row-start: 2;
 	grid-column-end: span 2;
 }
 
-.notice{
+.notice {
 	grid-column: 3 / 5;
 	grid-row-start: 2;
 }
 
-.calendar{
+.calendar {
 	grid-column-start: 4;
 }
 
 .box {
-  height: 350px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+	height: 350px;
+	border: 1px solid #ccc;
+	border-radius: 15px;
+	box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.1);
+	padding: 20px;
 }
 </style>

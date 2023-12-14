@@ -200,14 +200,8 @@ export default {
         // }
         // this.axiosHandler()
 
-        console.log("created attendanceList");
-
-        console.log("월별1 : {}", this.selectedMonth);
-
         const isMonthlyClicked = this.selectedMonth !== "";
-
-        console.log("월별2 : {}", isMonthlyClicked);
-
+        
         if (isMonthlyClicked) {
             console.log("월별3 : {}", isMonthlyClicked);
 

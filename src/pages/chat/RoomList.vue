@@ -1,42 +1,46 @@
 <template>
   <!-- v-cloak 디렉티브를 사용하여 앱이 로딩될 때까지 템플릿을 감춤 -->
-  <div class="roomlist-container" id="app" v-cloak>
-    <div class="roomlist-header">
-      <h3>채팅방 목록</h3>
+  <main>
+    <div class="roomlist-container" id="app" v-cloak>
+      <div class="roomlist-header">
+        <h3>채팅방 목록</h3>
+      </div>
+      <!-- 채팅방 검색 -->
+      <div class="search-form">
+        <!-- <label for="roomSearch" class="sr-only">채팅방 검색</label> -->
+        <input
+          class="roomsearch-input"
+          id="roomSearch"
+          type="text"
+          v-model="search"
+          placeholder="채팅방을 검색하세요"
+        />
+      </div>
+      <!-- 채팅방 만들기 -->
+      <div class="chatroom-form">
+        <!-- <label for="roomName" class="sr-only">방제목</label> -->
+        <input
+          class="roomname-input"
+          id="roomName"
+          type="text"
+          v-model="room_name"
+          placeholder="만들고싶은 채팅방제목을 입력하세요"
+          @keyup.enter="createRoom"
+        />
+        <button class="roomlist-button" @click="createRoom">채팅방 개설</button>
+      </div>
+      <ul class="chatroom-list">
+        <li
+          class="chatroom-item"
+          v-for="item in filteredChatrooms"
+          :key="item.roomId"
+          @click="enterRoom(item.roomId)"
+        >
+          {{ item.name }}
+        </li>
+      </ul>
     </div>
-    <!-- 채팅방 검색 -->
-    <div class="search-form">
-      <!-- <label for="roomSearch" class="sr-only">채팅방 검색</label> -->
-      <input
-        id="roomSearch"
-        type="text"
-        v-model="search"
-        placeholder="채팅방을 검색하세요"
-      />
-    </div>
-    <!-- 채팅방 만들기 -->
-    <div class="chatroom-form">
-      <!-- <label for="roomName" class="sr-only">방제목</label> -->
-      <input
-        id="roomName"
-        type="text"
-        v-model="room_name"
-        placeholder="만들고싶은 채팅방제목을 입력하세요"
-        @keyup.enter="createRoom"
-      />
-      <button @click="createRoom">채팅방 개설</button>
-    </div>
-    <ul class="chatroom-list">
-      <li
-        class="chatroom-item"
-        v-for="item in filteredChatrooms"
-        :key="item.roomId"
-        @click="enterRoom(item.roomId)"
-      >
-        {{ item.name }}
-      </li>
-    </ul>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -122,9 +126,9 @@ export default {
   display: none;
 }
 .roomlist-container {
-  max-width: 70%;
+  max-width: 100%;
   margin: 50px auto;
-  background-color: #acc8e5;
+  background-color: #1565c0;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
@@ -150,16 +154,22 @@ export default {
   margin-bottom: 10px; /* 입력창 간 간격을 조절 */
 }
 
-input {
+.roomsearch-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.roomname-input {
   flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-button {
+.roomlist-button {
   padding: 10px;
-  background-color: #0d1c2b;
+  background-color: #2196f3;
   color: #fff;
   border: none;
   border-radius: 5px;

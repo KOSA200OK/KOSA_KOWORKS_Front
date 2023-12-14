@@ -236,7 +236,7 @@ aside {
   overflow: hidden;
   padding: 1rem;
 
-  background-color: #1565C0; //var(--dark); //var()는 사용자 지정 속성
+  background-color: #1565c0; //var(--dark); //var()는 사용자 지정 속성
   color: var(--light);
 
   transition: 0.2s ease-out; //토글 속도
@@ -387,7 +387,7 @@ aside {
 .notify {
   position: absolute;
   width: 400px;
-  margin-left: 245px;
+  margin-left: 12.8%;
   margin-top: 5px;
   padding: 10px;
   // background-color: var(--dark);
@@ -417,8 +417,23 @@ aside {
   /* 스크롤바 트랙 모양 */
 }
 
-/* contentList가 null이 아니면 종 이모티콘 색상 변경 */
-.material-icons.bell-has-content {
-  color: yellow !important;
+/* 종 딸랑딸랑 움직이는 애니메이션 */
+@keyframes bellAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(30deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
+
+/* 이모티콘에 애니메이션 적용 */
+.material-icons.bell-has-content {
+  color: #ffcc00 !important;
+  animation: bellAnimation 0.5s ease-in-out infinite; /* 무한 반복하는 애니메이션 설정 */
+}
+
 </style>
