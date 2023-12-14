@@ -50,7 +50,7 @@
                                             placeholder="60자 이내로 입력하세요"></textarea>
                     <div class="modal-btn">
                         <button type="submit" class="ok" @click="scheduleAddHandler">등록</button>
-                        <button class="cancel" @click="openModal">취소</button>
+                        <button class="cancel" @click="closeAddModal">취소</button>
                     </div>
                 </form>
             </div>
@@ -125,6 +125,13 @@ export default {
     methods: {
         openModal(){
             this.addModalCheck = !this.addModalCheck
+        },
+        closeAddModal(){
+            this.addModalCheck = !this.addModalCheck
+            this.FormData.startTime = null
+            this.FormData.endTime = null
+            this.FormData.scheduleTitle = null
+            this.FormData.content = null
         },
         scheduleHandler(memberId){
             console.log(memberId)
@@ -231,6 +238,7 @@ export default {
     padding : 2px;
     padding-left : 8px;
     color : #073f88;
+    overflow: hidden;
 }
 .modal-wrap {
   position: fixed;
