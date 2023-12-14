@@ -23,7 +23,10 @@
                 </div> -->
                 <form class="add-schedule" @submit.prevent="reserveHandler">
                     <label>제목 </label><input type="text" 
-                                            v-model="FormData.scheduleTitle"><br><br>
+                                            v-model="FormData.scheduleTitle"
+                                            class="title"
+                                            maxlength="15"
+                                            placeholder="15자 이내로 입력하세요"><br><br>
                     <label>기간</label><input type="date"
                                         name="startDate"
                                         v-model="startDate"
@@ -39,10 +42,11 @@
                                                                     name="endtime"
                                                                     v-model="FormData.endTime"
                                                                     :min ="FormData.startTime"
-                                                                    required><br><br><br>
-                    <label>메모 </label><input type="text" 
-                                            name="content" 
-                                            v-model="FormData.content">
+                                                                    required><br><br>
+                    <label>메모 </label><textarea class="content" 
+                                            v-model="FormData.content"
+                                            maxlength="60"
+                                            placeholder="60자 이내로 입력하세요"></textarea>
                 </form>
                     <div class="modal-btn">
                         <button type="submit" class="ok" @click="scheduleAddHandler">등록</button>
@@ -249,9 +253,22 @@ export default {
   box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 }
 .modal-btn{
-    position: relative;
-    left: 50%;
     margin-top : 50px;
+    text-align: center;
+}
+.ok, .cancel{
+    background-color: #58d3e9;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.ok:hover {
+    background-color: #58b5c5;
+}
+.cancel:hover {
+    background-color: #58b5c5;
 }
 .ok{
     margin-right : 20px;
@@ -265,8 +282,24 @@ label{
     font-weight: 700;
     font-size: 15px;
     padding-right : 40px;
+    vertical-align: top;
 }
 .add-schedule>input{
     border : 1px solid #d8d8d8;
+    height : 35px;
+    font-size : 13px;
+}
+.title{
+    width: 300px;
+}
+.content{
+    border : 1px solid #d8d8d8;
+    border-radius: 5px;
+    font-size : 15px;
+    width: 300px;
+    height: 100px;
+    resize: none;
+    font-size : 13px;
+    padding: 10px;
 }
 </style>
