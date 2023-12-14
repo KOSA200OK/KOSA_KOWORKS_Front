@@ -343,17 +343,17 @@ aside {
         transform: rotate(-180deg);
       }
     }
-  }
 
-  h3,
-  .button .text {
-    display: flex;
-    opacity: 1;
-  }
+    h3,
+    .button .text {
+      display: flex;
+      opacity: 1;
+    }
 
-  .button {
-    .material-icons {
-      margin-right: 1rem;
+    .button {
+      .material-icons {
+        margin-right: 1rem;
+      }
     }
   }
 
