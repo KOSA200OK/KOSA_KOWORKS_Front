@@ -1,15 +1,29 @@
 <template>
-    <div class="login-container">
-        <!-- <h2 v-if="!isLoggedIn">Login</h2> -->
-        <form class="login-form" v-if="!isLoggedIn" @submit.prevent="login">
-            <!-- <label for="id">사원번호: </label> -->
-            <img class="login-img" :src="`../images/logo.png`" alt="logo" />
-            <input v-model="id" type="text" id="id" required placeholder="사원번호" />
+     <div class="login-container">
+    <!-- <h2 v-if="!isLoggedIn">Login</h2> -->
+    <form class="login-form" v-if="!isLoggedIn" @submit.prevent="login">
+      <!-- <label for="id">사원번호: </label> -->
+      <img class="login-img" :src="`../images/logo.png`" alt="logo" />
+      <input
+        class="member-input"
+        v-model="id"
+        type="text"
+        id="id"
+        required
+        placeholder="사원번호"
+      />
 
-            <!-- <label for="password">비밀번호: </label> -->
-            <input v-model="password" type="password" id="password" required placeholder="비밀번호" />
-            <button class="login-button" type="submit">로그인</button>
-        </form>
+      <!-- <label for="password">비밀번호: </label> -->
+      <input
+        class="password-input"
+        v-model="password"
+        type="password"
+        id="password"
+        required
+        placeholder="비밀번호"
+      />
+      <button class="login-button" type="submit">로그인</button>
+    </form>
         <!-- 찬석 -->
         <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
             {{ notifyMessage }}
@@ -178,57 +192,67 @@ export default {
     },
 };
 </script>
-<style>
+<style scoped>
 .login-container {
-    background-color: white;
-    width: 100vw;
-    height: 100vh;
-    /* 화면 전체 높이로 설정 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: white;
+  width: 100vw;
 }
 
 .notify_bar {
-    margin-top: 880px;
-    margin-left: 1460px;
+    position: fixed;
+    right: 20px; /* 화면 오른쪽과의 여백 설정 */
+    bottom: 20px; /* 화면 하단과의 여백 설정 */
     width: 400px;
     height: 100px;
     padding: 10px;
-    background-color: #1565C0; /* 배경색 지정 */
-    border: 2px solid whitesmoke; /* 테두리 설정 */
+    background-color: #1565C0;
+    border: 2px solid whitesmoke;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgb(75, 140, 184);
-    text-align: center; /* 텍스트 가운데 정렬 */
+    text-align: center;
     font-family: Arial, sans-serif;
     color: white;
-    position: absolute;
-
     display: flex;
-    justify-content: center; /* 수평 가운데 정렬 */
-    align-items: center; /* 수직 가운데 정렬 */
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
 /*  */
 .login-form {
-    max-width: 400px;
-    width: 100%;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
-    text-align: center;
-    margin: 0 auto;
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  text-align: center;
+  margin: 0 auto; /* 가운데 정렬을 위한 margin 속성 추가 */
+  position: absolute; /* 위치를 absolute로 설정 */
+  top: 50%; /* 부모 요소의 50% 위치로 이동 */
+  left: 50%; /* 부모 요소의 50% 위치로 이동 */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* 자기 자신의 50% 만큼 이동하여 중앙 정렬 */
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+.member-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.password-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .login-button {
@@ -244,15 +268,8 @@ input {
     /* 버튼 위쪽 여백 추가 */
 }
 
-/*  */
 .login-img {
     width: 100px;
     height: auto;
 }
-
-/*  */
-/*  */
-
 </style>
-
-<!-- test -->

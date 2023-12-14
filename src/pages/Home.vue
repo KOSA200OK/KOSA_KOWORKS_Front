@@ -18,19 +18,36 @@
 				</button>
 				<hr>
 			</div>
-			<div class="item calendar">C</div>
+			<div class="item calendar">
+				<h3>오늘의 일정</h3>
+				<router-link class="go-schedule" to="/schedule/calendar">
+					<span class="material-icons">add</span>
+				</router-link>
+				<hr>
+				<div>
+					<TodayTodoItem  :t="t"
+									v-if="todayTodo!==null  && todayTodo.length > 0"
+									v-for="t in todayTodo"
+									:key="t.id"/>
+					<div v-else>
+						<span>오늘의 일정이 없습니다</span>
+					</div>
+				</div>
+			</div>
 		</div>
 	</main>
 </template>
 <script>
 import Sidebar from "../components/Sidebar.vue";
+import TodayTodoItem from "@/pages/schedule/TodayTodoItem.vue";
 import axios from 'axios'
 export default {
-	components: { Sidebar },
+	components: { Sidebar, TodayTodoItem },
 	data() {
 		return {
 			currentTime: this.getCurrentTime(),
-			attendanceTime: null,
+			attendanceTime: null, 
+			todayTodo : null,
 			offTime: null,
 
 		};
@@ -127,7 +144,25 @@ export default {
 					console.error('출근 및 퇴근 시간 조회 실패', error);
 				});
 		},
+		// ======================= 오늘의 일정 ===============================
+		TodayTodoHandler(){
+			const memberId = localStorage.getItem("memberId")
+			const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`
+			axios.get(url,{params : this.data})
+				 .then(response=>{
+					console.log(response.data)
+					this.todayTodo = response.data
+					console.log(this.todayTodo)
+				})
+				.catch((Error)=>{
+					console.log(Error)
+				})
+
+		}
 	},
+	created(){
+		this.TodayTodoHandler()
+	}
 };
 </script>
 <style>
@@ -172,6 +207,11 @@ export default {
 	padding: 20px;
 }
 
+.calendar h3{
+	text-align: center;
+	padding: 20px;
+}
+
 .item button {
 	display: inline-block;
 	padding: 10px 20px;
@@ -212,4 +252,5 @@ export default {
 .item button+button {
 	margin-left: 10px;
 }
+
 </style>
