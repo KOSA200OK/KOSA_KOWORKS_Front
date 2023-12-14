@@ -6,9 +6,9 @@
 				<br>
 				<h3>{{ currentTime }}</h3>
 				<br>
-				<h3 v-bind="attendanceTime">출근 시간: {{ attendanceTime }}</h3>
-				<h3 v-bind="offTime">퇴근 시간: {{ offTime }}</h3>
-				<button @click="attendanceHandler">출근</button> 
+				<h3>출근 시간: {{ attendanceTime }}</h3>
+				<h3>퇴근 시간: {{ offTime }}</h3>
+				<button @click="attendanceHandler">출근</button>
 				<button @click="attendance2Handler">퇴근</button>
 			</div>
 			<div class="item notice">
@@ -30,16 +30,19 @@ export default {
 	data() {
 		return {
 			currentTime: this.getCurrentTime(),
-			attendanceTime: null, 
+			attendanceTime: null,
 			offTime: null,
 
 		};
 	},
 	mounted() {
-			setInterval(() => {
-				this.currentTime = this.getCurrentTime();
-			}, 1000);
-		},
+		setInterval(() => {
+			this.currentTime = this.getCurrentTime();
+		}, 1000);
+
+		const memberId = localStorage.getItem('memberId');
+		this.fetchAttendanceData(memberId);
+	},
 	methods: {
 		getCurrentTime() {
 			const now = new Date();
@@ -55,7 +58,7 @@ export default {
 		},
 
 
-		// ======================= 출근 버튼 ================================
+		// ======================= 출근 버튼, 찬석 ================================
 		attendanceHandler() {
 			const id = localStorage.getItem('memberId');
 
@@ -83,7 +86,7 @@ export default {
 					console.error('출근 요청 실패', error);
 				});
 		},
-		// ======================= 퇴근 버튼 ===============================
+		// ======================= 퇴근 버튼, 찬석 ===============================
 		attendance2Handler() {
 			const id = localStorage.getItem('memberId');
 
@@ -106,7 +109,22 @@ export default {
 				.catch((error) => {
 					console.error('퇴근 요청 실패', error);
 				});
-		}
+		},
+		fetchAttendanceData(memberId) {
+			// const id = localStorage.getItem('memberId');
+	
+			const url = `${this.backURL}/attendance/today?memberId=${memberId}`;
+	
+			axios.get(url)
+				.then((response) => {
+					const data = response.data;
+					this.attendanceTime = data.startTime;
+					this.offTime = data.endTime;
+				})
+				.catch((error) => {
+					console.error('출근 및 퇴근 시간 조회 실패', error);
+				});
+		},
 	},
 };
 </script>
@@ -134,47 +152,47 @@ export default {
 
 }
 
-.notice{
+.notice {
 	position: relative;
 }
 
-.calendar{
+.calendar {
 	grid-column-start: 2;
-	grid-row : 1 / 3;
+	grid-row: 1 / 3;
 }
 
-.notice span{
+.notice span {
 	color: black;
 }
 
-.notice h3{
+.notice h3 {
 	text-align: center;
 	padding: 20px;
 }
 
 .item button {
-  display: inline-block;
-  padding: 10px 20px;
-  margin-top: 15px;
-  border: 2px solid #3498db; 
-  border-radius: 5px;
-  background-color: transparent; 
-  color: #3498db; 
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+	display: inline-block;
+	padding: 10px 20px;
+	margin-top: 15px;
+	border: 2px solid #3498db;
+	border-radius: 5px;
+	background-color: transparent;
+	color: #3498db;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
 }
 
 .item button:hover {
-  background-color: #3498db; 
-  color: #fff; 
+	background-color: #3498db;
+	color: #fff;
 }
 
 .item .add-button {
 	display: inline-block;
 	position: absolute;
 	top: 0;
-	right: 0; 
+	right: 0;
 	padding: 10px;
 	border: none;
 	border-radius: 50%;
@@ -189,7 +207,7 @@ export default {
 	background-color: #2980b9;
 }
 
-.item button + button {
-  margin-left: 10px;
+.item button+button {
+	margin-left: 10px;
 }
 </style>
