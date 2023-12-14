@@ -6,8 +6,8 @@
 				<br>
 				<h3>{{ currentTime }}</h3>
 				<br>
-				<!-- <h3 v-bind="attendanceTime">출근 시간: {{ attendanceTime }}</h3>
-				<h3>퇴근시간</h3> -->
+				<h3 v-bind="attendanceTime">출근 시간: {{ attendanceTime }}</h3>
+				<h3 v-bind="offTime">퇴근 시간: {{ offTime }}</h3>
 				<button @click="attendanceHandler">출근</button> 
 				<button @click="attendance2Handler">퇴근</button>
 			</div>
@@ -20,11 +20,6 @@
 			</div>
 			<div class="item calendar">C</div>
 		</div>
-
-		<!-- <div>
-			<button @click="attendanceHandler"> 출근 </button>
-			<button @click="attendance2Handler">퇴근</button>
-		</div> -->
 	</main>
 </template>
 <script>
@@ -36,6 +31,8 @@ export default {
 		return {
 			currentTime: this.getCurrentTime(),
 			attendanceTime: null, 
+			offTime: null,
+
 		};
 	},
 	mounted() {
@@ -118,7 +115,7 @@ export default {
 	display: grid;
 	grid-template-columns: 3fr 5fr;
 	/* grid-template-rows: repeat(2, minmax(400px, auto)); */
-	grid-template-rows: 200px 600px;
+	grid-template-rows: 250px 550px;
 	row-gap: 30px;
 	column-gap: 20px;
 
