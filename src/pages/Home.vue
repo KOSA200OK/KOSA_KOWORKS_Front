@@ -40,6 +40,7 @@ export default {
 			this.currentTime = this.getCurrentTime();
 		}, 1000);
 
+		// 찬석
 		const memberId = localStorage.getItem('memberId');
 		this.fetchAttendanceData(memberId);
 	},
@@ -110,6 +111,7 @@ export default {
 					console.error('퇴근 요청 실패', error);
 				});
 		},
+		// ============= 출근, 퇴근 데이터 출력 찬석 ==========================
 		fetchAttendanceData(memberId) {
 			// const id = localStorage.getItem('memberId');
 	
