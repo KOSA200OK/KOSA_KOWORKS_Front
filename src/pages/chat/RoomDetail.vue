@@ -205,7 +205,7 @@ input {
 
 .send-button {
   padding: 10px 15px;
-  background-color: #009ea8;
+  background-color: #2196f3;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -264,7 +264,7 @@ ul::-webkit-scrollbar {
 }
 
 ul::-webkit-scrollbar-thumb {
-  background-color: #acc8e5;
+  background-color: #2196f3;
   border-radius: 4px;
 }
 

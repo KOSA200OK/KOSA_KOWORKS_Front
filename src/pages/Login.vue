@@ -4,10 +4,18 @@
     <form class="login-form" v-if="!isLoggedIn" @submit.prevent="login">
       <!-- <label for="id">사원번호: </label> -->
       <img class="login-img" :src="`../images/logo.png`" alt="logo" />
-      <input v-model="id" type="text" id="id" required placeholder="사원번호" />
+      <input
+        class="member-input"
+        v-model="id"
+        type="text"
+        id="id"
+        required
+        placeholder="사원번호"
+      />
 
       <!-- <label for="password">비밀번호: </label> -->
       <input
+        class="password-input"
         v-model="password"
         type="password"
         id="password"
@@ -188,14 +196,10 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .login-container {
   background-color: white;
   width: 100vw;
-  height: 100vh; /* 화면 전체 높이로 설정 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .notify_bar {
@@ -233,7 +237,15 @@ export default {
   margin: 0 auto;
 }
 
-input {
+.member-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.password-input {
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
@@ -253,13 +265,11 @@ input {
   font-size: 18px;
   margin-top: 20px; /* 버튼 위쪽 여백 추가 */
 }
-/*  */
+
 .login-img {
   width: 100px;
   height: auto;
 }
-/*  */
-/*  */
 </style>
 
 <!-- test -->
