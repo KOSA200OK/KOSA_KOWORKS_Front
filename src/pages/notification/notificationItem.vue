@@ -33,7 +33,10 @@ export default {
         };
     },
     methods: {
-        cancel() {
+        cancel(event) {
+            // 부모 컴포넌트에서 발생하는 이벤트 중지
+            event.stopPropagation();
+            
             const idValue = this.n.id
             const url = `${this.backURL}/subscribe/${idValue}`
             axios.delete(url)
