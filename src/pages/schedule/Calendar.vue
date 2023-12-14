@@ -1,13 +1,15 @@
 <template>
 <main>
-    <div>
+    <div class="calendar">
         <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents" eventClick="scheduleDetailHandler">
+
         <template v-slot:eventContent='arg'>
             <div class="event" @click="scheduleDetailHandler(arg)">
                 <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}
                 </b>
             </div>
         </template>
+
         </FullCalendar>
         <ScheduleInfo v-if="detailModalCheck" 
                     :c="c"
@@ -16,6 +18,9 @@
         <!--***************************일정 추가********************************-->
         <div class="modal-wrap" v-show="addModalCheck" >
             <div class="modal-container">
+                <div class="modal-header">
+                    <h3>일정추가</h3>
+                </div>
                 <form class="add-schedule" @submit.prevent="reserveHandler">
                     <label>제목 : </label><input type="text" 
                                             v-model="FormData.scheduleTitle"><br><br>
@@ -53,7 +58,11 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import ScheduleInfo from '@/pages/schedule/ScheduleInfo.vue'
+import { Calendar } from '@fullcalendar/core';
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import axios from 'axios'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 export default {
     name: 'Calendar',
@@ -64,7 +73,7 @@ export default {
         return {
             c : null,
             calendarOptions: {
-                plugins: [ dayGridPlugin, interactionPlugin ],
+                plugins: [ dayGridPlugin, interactionPlugin, bootstrap5Plugin ],
                 initialView: 'dayGridMonth',
                 dateClick: this.handleDateClick,
                 events: [
@@ -78,11 +87,18 @@ export default {
                         },
                     }
                 ],
+                themeSystem: 'bootstrap5',
+                customButtons:{
+                    addbutton: {
+                        text: '일정추가',
+                        click: this.openModal
+                    }
+                },
                 headerToolbar: {
-                    start : '',
-                    center : 'prev title next',
-                    end : ''
-                }
+                    start : 'prev next',
+                    center : 'title',
+                    end : 'addbutton'
+                },
             },
             addModalCheck : false,
             detailModalCheck : false,
@@ -187,15 +203,16 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style>
+
 .event{
-    background-color: #a6d5fc;
+    cursor: pointer;
+    background-color: #e8eaff;
     width:100%;
-    border : solid 1px #e3f2ff;
     border-radius: 3px;
     padding : 2px;
     padding-left : 8px;
-    color : rgb(7, 7, 7);
+    color : #070988;
 }
 .modal-wrap {
   position: fixed;
@@ -229,4 +246,5 @@ export default {
 .cancel{
     margin-left : 20px;
 }
+
 </style>
