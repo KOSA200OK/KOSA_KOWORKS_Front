@@ -26,9 +26,12 @@
 				<hr>
 				<div>
 					<TodayTodoItem  :t="t"
-									v-if="todayTodo"
+									v-if="todayTodo!==null  && todayTodo.length > 0"
 									v-for="t in todayTodo"
 									:key="t.id"/>
+					<div v-else>
+						<span>오늘의 일정이 없습니다</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -154,7 +157,7 @@ export default {
 				.catch((Error)=>{
 					console.log(Error)
 				})
-				
+
 		}
 	},
 	created(){
