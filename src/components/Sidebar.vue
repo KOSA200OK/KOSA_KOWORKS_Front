@@ -218,10 +218,11 @@ aside {
   flex-direction: column;
   width: calc(2rem + 32px); //최소 넓이 = 2rem + 아이콘 크기 32px
   min-height: 100vh; // 부모와 상관없이 화면 채움
+  border-radius: 0 25px 25px 0;
   overflow: hidden;
   padding: 1rem;
 
-  background-color: #009ea8; //var(--dark); //var()는 사용자 지정 속성
+  background-color: #1565C0; //var(--dark); //var()는 사용자 지정 속성
   color: var(--light);
 
   transition: 0.2s ease-out; //토글 속도
