@@ -20,15 +20,15 @@
           <div class="box">
             <div>
               <span>승인대기 : </span>
-              <span>{{ 승인대기 }}</span>
+              <span>{{waitingCnt}}</span>
             </div>
             <div>
               <span>대여중 : </span>
-              <span>{{ 대여중 }}</span>
+              <span>{{rentCnt}}</span>
             </div>
             <div>
               <span>미반납 : </span>
-              <span>{{ 미반납 }}</span>
+              <span>{{noReturnCnt}}</span>
             </div>
           </div>
         </div>
@@ -37,15 +37,15 @@
           <div class="box">
             <div>
               <span>승인대기 : </span>
-              <span>{{ 승인대기 }}</span>
+              <span>{{myWaitingCnt}}</span>
             </div>
             <div>
               <span>대여중 : </span>
-              <span>{{ 대여중 }}</span>
+              <span>{{myRentCnt}}</span>
             </div>
             <div>
               <span>미반납 : </span>
-              <span>{{ 미반납 }}</span>
+              <span>{{myNoReturnCnt}}</span>
             </div>
           </div>
         </div>
@@ -111,6 +111,12 @@ export default {
       todayTodo: null,
       offTime: null,
       departmentId: 0,
+      waitingCnt: null,
+      rentCnt: 0,
+      noReturnCnt: 0,
+      myWaitingCnt: 0,
+      myRentCnt: 0,
+      myNoReturnCnt: 0
     };
   },
   mounted() {
@@ -123,6 +129,9 @@ export default {
     // 찬석
     const memberId = localStorage.getItem("memberId");
     this.fetchAttendanceData(memberId);
+        this.TodayTodoHandler();
+    this.CarRentCountHandler();
+    this.MyCarRentCountHandler();
   },
   methods: {
     getCurrentDay() {
@@ -212,7 +221,7 @@ export default {
           console.error("출근 및 퇴근 시간 조회 실패", error);
         });
     },
-    // ======================= 오늘의 일정 ===============================
+    // ======================= 오늘의 일정 원희===============================
     TodayTodoHandler() {
       const memberId = localStorage.getItem("memberId");
       const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`;
@@ -227,9 +236,44 @@ export default {
           console.log(Error);
         });
     },
+    // ======================= 차량 관리 현황 원희===============================
+    CarRentCountHandler(){
+      const url = `${this.backURL}/carrent/maincarrent`;
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          this.waitingCnt = response.data.waitingCnt;
+          this.rentCnt = response.data.rentCnt;
+          this.noReturnCnt = response.data.noReturnCnt;
+          console.log(this.waitingCnt);
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    },
+    // ======================= 나의 차량 신청 현황 원희===============================
+    MyCarRentCountHandler(){
+      const memberId = localStorage.getItem("memberId");
+      const url = `${this.backURL}/carrent/mainmycarrent?memberId=${memberId}`;
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          this.myWaitingCnt = response.data.myWaitingCnt;
+          this.myRentCnt = response.data.myRentCnt;
+          this.myNoReturnCnt = response.data.myNoReturnCnt;
+          console.log(this.myWaitingCnt);
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    }
   },
   created() {
     this.TodayTodoHandler();
+    this.CarRentCountHandler();
+    this.MyCarRentCountHandler();
   },
 };
 </script>

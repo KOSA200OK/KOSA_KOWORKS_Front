@@ -194,7 +194,7 @@ export default {
 </script>
 <style scoped>
 .login-container {
-  background-color: white;
+  background-color: white; /*rgb(243, 245, 247);*/
   width: 100vw;
 }
 
