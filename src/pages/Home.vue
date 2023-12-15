@@ -1,5 +1,5 @@
 <template>
-	<main class="home-page">
+ 	<main class="home-page">
 		<div class="gridContainer">
 			<div class="item attendance"> <!-- 찬석 -->
 				<h3>근태 현황</h3>
@@ -24,38 +24,41 @@
 				</div>
 			</div>
 			<div>
-				<div v-if="departmentId === '4'" class="item car">
-					<h3>차량 신청내역</h3>
-					<div class="box">
-
-						<div>승인대기</div>
-						<div>2건</div>
-
-						<div>대여중</div>
-						<div>0건</div>
-
-						<div>미반납</div>
-						<div>0건</div>
-
-					</div>
-				</div>
-				<div v-else class="item car">
-					<h3>차량 신청현황</h3>
-					<div class="box">
-						<div>
-							<span>승인대기 : </span>
-							<!-- <span>{{ 승인대기 }}</span> -->
-						</div>
-						<div>
-							<span>대여중 : </span>
-							<!-- <span>{{ 대여중 }}</span> -->
-						</div>
-						<div>
-							<span>미반납 : </span>
-							<!-- <span>{{ 미반납 }}</span> -->
-						</div>
-					</div>
-				</div>
+				<div v-if="departmentId === '4'" class="item stuff">
+          <h3>차량 신청내역</h3>
+          <div class="box">
+            <div>
+              <span>승인대기 : </span>
+              <span>{{waitingCnt}}</span>
+            </div>
+            <div>
+              <span>대여중 : </span>
+              <span>{{rentCnt}}</span>
+            </div>
+            <div>
+              <span>미반납 : </span>
+              <span>{{noReturnCnt}}</span>
+            </div>
+          </div>
+        </div>
+        <div v-else class="item stuff">
+          <h3>차량 신청현황</h3>
+          <div class="box">
+            <div>
+              <span>승인대기 : </span>
+              <span>{{myWaitingCnt}}</span>
+            </div>
+            <div>
+              <span>대여중 : </span>
+              <span>{{myRentCnt}}</span>
+            </div>
+            <div>
+              <span>미반납 : </span>
+              <span>{{myNoReturnCnt}}</span>
+            </div>
+          </div>
+        </div>
+				
 			</div>
 			<div>
 				<div v-if="departmentId === '4'" class="item stuff">
@@ -124,6 +127,12 @@ export default {
 			departmentId: 0,
 			unprocessedReqSize: 0,
 			waitproccessReqSize: 0,
+      waitingCnt: 0,
+      rentCnt: 0,
+      noReturnCnt: 0,
+      myWaitingCnt: 0,
+      myRentCnt: 0,
+      myNoReturnCnt: 0
 		};
 	},
 	mounted() {
@@ -136,6 +145,10 @@ export default {
     // 찬석
     const memberId = localStorage.getItem("memberId");
     this.fetchAttendanceData(memberId);
+    this.fetchNotifications();
+        this.TodayTodoHandler();
+    this.CarRentCountHandler();
+    this.MyCarRentCountHandler();
   },
   methods: {
     getCurrentDay() {
@@ -214,47 +227,48 @@ export default {
 
       const url = `${this.backURL}/attendance/today?memberId=${memberId}`;
 
-			axios
-				.put(url, memberData)
-				.then((response) => {
-					alert('퇴근 완료! 조심히가세요~');
-				})
-				.catch((error) => {
-					console.error('퇴근 요청 실패', error);
-				});
-		},
-		// ============= 출근, 퇴근 데이터 출력 찬석 ==========================
-		fetchAttendanceData(memberId) {
-			// const id = localStorage.getItem('memberId');
+      axios
+        .get(url)
+        .then((response) => {
+          const data = response.data;
+          this.attendanceTime = data.startTime;
+          this.offTime = data.endTime;
+        })
+        .catch((error) => {
+          console.error("출근 및 퇴근 시간 조회 실패", error);
+        });
+    },
+    // ======================= 오늘의 일정 원희===============================
+    TodayTodoHandler() {
+      const memberId = localStorage.getItem("memberId");
+      const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`;
+      axios
+        .get(url, { params: this.data })
+        .then((response) => {
+          console.log(response.data);
+          this.todayTodo = response.data;
+          console.log(this.todayTodo);
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    },
+    // ============================== 알림, 찬석 ================================
+        // 알림 데이터를 가져오는 메소드
+    fetchNotifications() {
+      const memberId = localStorage.getItem("memberId");
+      const url = `${this.backURL}/subscribe/?memberId=${memberId}`;
 
-			const url = `${this.backURL}/attendance/today?memberId=${memberId}`;
-
-			axios.get(url)
-				.then((response) => {
-					const data = response.data;
-					this.attendanceTime = data.startTime;
-					this.offTime = data.endTime;
-				})
-				.catch((error) => {
-					console.error('출근 및 퇴근 시간 조회 실패', error);
-				});
-		},
-		// ======================= 오늘의 일정 ===============================
-		TodayTodoHandler() {
-			const memberId = localStorage.getItem("memberId")
-			const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`
-			axios.get(url, { params: this.data })
-				.then(response => {
-					console.log(response.data)
-					this.todayTodo = response.data
-					console.log(this.todayTodo)
-				})
-				.catch((Error) => {
-					console.log(Error)
-				})
-
-		},
-		//=====================비품 내역 ====================
+      axios
+        .get(url)
+        .then((response) => {
+          this.notifications = response.data;
+        })
+        .catch((error) => {
+          console.error("알림 데이터를 불러오는 중 에러 발생:", error);
+        });
+    },
+    //=====================비품 내역 ====================
 		UnproccessedReqHandler() {
 			const url = `${this.backURL}/stuff/unprocessedreq`
 			axios.get(url)
@@ -264,13 +278,10 @@ export default {
 				.catch((Error) => {
 					console.log(Error)
 				})
-
 		},
-
 		WaitproccesseReqHandler() {
 			const memberId = localStorage.getItem('memberId');
 			const url = `${this.backURL}/stuff/waitproccess?memberId=${memberId}`
-
 			axios.get(url)
 				.then(response => {
 					this.waitproccessReqSize = response.data
@@ -278,14 +289,48 @@ export default {
 				.catch((Error) => {
 					console.log(Error)
 				})
-
-		}
-	},
-	created() {
-		this.TodayTodoHandler()
-		this.UnproccessedReqHandler()
+		},
+    // ======================= 차량 관리 현황 원희===============================
+    CarRentCountHandler(){
+      const url = `${this.backURL}/carrent/maincarrent`;
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          this.waitingCnt = response.data.waitingCnt;
+          this.rentCnt = response.data.rentCnt;
+          this.noReturnCnt = response.data.noReturnCnt;
+          console.log(this.waitingCnt);
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    },
+    // ======================= 나의 차량 신청 현황 원희===============================
+    MyCarRentCountHandler(){
+      const memberId = localStorage.getItem("memberId");
+      const url = `${this.backURL}/carrent/mainmycarrent?memberId=${memberId}`;
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          this.myWaitingCnt = response.data.myWaitingCnt;
+          this.myRentCnt = response.data.myRentCnt;
+          this.myNoReturnCnt = response.data.myNoReturnCnt;
+          console.log(this.myWaitingCnt);
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    }
+  },
+  created() {
+    this.TodayTodoHandler();
+    this.CarRentCountHandler();
+    this.MyCarRentCountHandler();
+    this.UnproccessedReqHandler()
 		this.WaitproccesseReqHandler()
-	}
+  },
 };
 </script>
 <style scoped>
@@ -405,3 +450,4 @@ export default {
 	color: #2196F3;
 }
 </style>
+

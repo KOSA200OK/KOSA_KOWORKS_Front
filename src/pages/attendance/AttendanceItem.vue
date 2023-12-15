@@ -71,22 +71,25 @@ td {
 
 .completed {
   /* Styles for '퇴근' */
-  background-color: #cceeff;
+  /* background-color: #cceeff; */
   color: #0040ff;
+  font-weight: bolder;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .late {
   /* Styles for '지각' */
-  background-color: #fff3cd;
+  /* background-color: #fff3cd; */
   color: #856404;
+  font-weight: bolder;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .absent {
   /* Styles for '결근' */
-  background-color: #ffd6cc; 
+  /* background-color: #ffd6cc;  */
   color: #ff0000;
+  font-weight: bolder;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
 }
 

@@ -77,15 +77,16 @@ export default {
         margin-bottom: 8px;
         padding: 4px;
         width: 300px;
-        height: 60px;
+        height: 80px;
         background-color:  #ffffff;
         /* border: 1px solid black; */
         border-radius: 4px;
-        font-family: 'Noto Serif KR', serif;
+        /* font-family: Noto Serif KR', serif; */
     }
     li {
+        margin-top: 5px;
         text-align: center;
-        font-family: 'Noto Serif KR', serif;
+        /* font-family: 'Noto Serif KR', serif; */
         font-size: 13px;
         color: black;
     }
@@ -93,11 +94,12 @@ export default {
         font-family: 'Noto Serif KR', serif;
         text-align: left;
         /* order: 1; 오른쪽에 위치 */
-        margin-right: 190px;
+        margin-right: 160px;
+        font-size: 13px;
     }
     /* 아이콘 */ 
     .material-symbols-outlined {
-        font-size: 13px;
+        font-size: 19px;
         /* margin-top: px; */
         padding: 2px;
     font-variation-settings:
