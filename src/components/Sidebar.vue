@@ -98,7 +98,7 @@
 <script>
 // 찬석
 // import notificationItem from '../pages/notification/notificationItem.vue'
-import notificationItem from "../pages/notification/notificationItem.vue";
+import notificationItem from "@/pages/notification/notificationItem.vue";
 import axios from "axios";
 import { ref } from "vue";
 
