@@ -1,5 +1,5 @@
 <template>
-    <div v-if="departmentId === '4'" class="item stuff">
+    <div v-if="departmentId === '4'" class="item car">
         <h3>차량 신청내역</h3>
         <div class="box">
             <div>
@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    <div v-else class="item stuff">
+    <div v-else class="item car">
         <h3>차량 신청현황</h3>
         <div class="box">
             <div>
@@ -110,6 +110,14 @@ export default {
 	margin-left: 10px;
 	margin-bottom: 10px;
 }
+
+.car .box div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 .carCnt {
   font-size: 25px;
 }

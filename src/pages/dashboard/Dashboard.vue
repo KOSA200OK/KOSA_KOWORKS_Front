@@ -136,6 +136,9 @@ export default {
   grid-column-start: 4;
 }
 
+hr {
+  margin: 5px;
+}
 .box {
   height: 350px;
   border: 1px solid #ccc;
