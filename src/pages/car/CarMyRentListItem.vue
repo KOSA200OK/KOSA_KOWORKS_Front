@@ -3,24 +3,26 @@
         <td @click="openModal">{{m.reqDate}}</td>
         <td @click="openModal">{{m.purpose}}</td>
         <td @click="openModal">{{m.startDate}} ~ {{m.endDate}}</td>
-        <td><span v-if="m.status==1 && formatToYYMMDD(new Date())<=m.endDate">승인완료</span>
+        <td><span class="tag" v-if="m.status==2 && currentDate<=m.endDate" style="background-color: rgb(25, 189, 74);">승인</span>
             <span class="tag" v-if="m.status==0" style="background-color: rgb(255, 217, 0);">대기</span>
-            <span class="tag" v-if="m.status==2" style="background-color: rgb(252, 49, 49);">반려</span></td>
+            <span class="tag" v-if="m.status==1" style="background-color: rgb(252, 49, 49);">반려</span>
+            <span class="tag" v-if="m.status==2 && currentDate>m.endDate" style="background-color: rgb(252, 49, 49);">미반납</span></td>
         <td>
             <button class="applycancelbutton" v-if="m.status==0" @click="applyCancel">취소</button>
         </td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck" >
         <div class="modal-container">
+            <button class="cancel" @click="openModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg></button>
             <div class="applydetail">
-                <span>차량번호 : {{m.carNo}}</span><br><br>
-                <span>차종 : {{m.carType}}</span><br><br>
-                <span>대여기간 : {{m.startDate}} ~ {{m.endDate}}</span><br><br><br>
-                <span>대여목적 : {{m.purpose}}</span><br><br><br>
-                <span v-if="m.status==2">반려사유 : {{m.reject}}</span>
-                <div class="modal-btn">
-                    <button class="cancel" @click="openModal">취소</button>
-                </div>
+                <label>차량번호</label><span style="font-size: 15px;">{{m.carNo}}</span><br><br>
+                <label>차종</label><span style="font-size: 15px; margin-left:30px;">{{m.carType}}</span><br><br><br>
+                <label>대여기간</label><span style="font-size: 15px;">{{m.startDate}} ~ {{m.endDate}}</span><br><br><br>
+                <label>대여목적</label><span>{{m.purpose}}</span><br><br><br>
+                <label>반려사유</label><span v-if="m.status==2">{{m.reject}}</span>
             </div>
         </div>
     </div>
@@ -32,6 +34,7 @@ export default {
     props:["m"],
     data(){
         return {
+            currentDate : new Date(),
             reqDate : '',
             modalCheck : false
         }
@@ -40,25 +43,33 @@ export default {
         openModal() {
             this.modalCheck = !this.modalCheck
         },
-        formatToYYMMDD(date) {
-            const year = String(date.getFullYear()).slice(2)
+        formatYYYYmmdd(date){
+            const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
-            return `${year}/${month}/${day}`;
+
+            return `${year}-${month}-${day}`
         },
         applyCancel(){
             const url = `${this.backURL}/carrent/cancelreserve/${this.m.id}`
-            axios.delete(url)
-            .then(response=>{
-                console.log(response.status)
-                alert("취소되었습니다.")
-                window.location.reload()
-            })
-            .catch((Error)=>{
-                console.log(Error)
-            })
+
+            if(confirm("취소하시겠습니까?")){
+                axios.delete(url)
+                .then(response=>{
+                    console.log(response.status)
+                    alert("취소되었습니다.")
+                    window.location.reload()
+                })
+                .catch((Error)=>{
+                    console.log(Error)
+                })
+            }
         }
+    },
+    created(){
+        this.currentDate = this.formatYYYYmmdd(this.currentDate)
     }
+
 }
 </script>
 <style scoped>
@@ -105,7 +116,11 @@ td {
     left: 50%;
     margin-top : 50px;
 }
-button{
+.cancel{
+    float: right;
+    color: #58d3e9;
+}
+.applycancelbutton{
     margin-left: 25px;
     background-color: #58d3e9;
     color: white;
@@ -114,7 +129,10 @@ button{
     border-radius: 5px;
     cursor: pointer;
 }
-button:hover{
+.applycancelbutton:hover{
+    background-color: #58b5c5;
+}
+.cancel:hover{
     background-color: #58b5c5;
 }
 .tag{
