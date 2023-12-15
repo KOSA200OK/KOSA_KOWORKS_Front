@@ -18,11 +18,12 @@
                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg></button>
             <div class="applydetail">
-                <label>차량번호</label><span style="font-size: 15px;">{{m.carNo}}</span><br><br>
-                <label>차종</label><span style="font-size: 15px; margin-left:30px;">{{m.carType}}</span><br><br><br>
-                <label>대여기간</label><span style="font-size: 15px;">{{m.startDate}} ~ {{m.endDate}}</span><br><br><br>
-                <label>대여목적</label><span>{{m.purpose}}</span><br><br><br>
-                <label>반려사유</label><span v-if="m.status==2">{{m.reject}}</span>
+                <label>신청날짜</label><span style="font-size: 15px;">{{m.reqDate}}</span><br><br>
+                <label>차량번호</label><span style="font-size: 15px;">{{m.car.carNo}}</span><br><br>
+                <label>차종</label><span style="font-size: 15px; margin-left:30px;">{{m.car.carType}}</span><br><br>
+                <label>대여기간</label><span style="font-size: 15px;">{{m.startDate}} ~ {{m.endDate}}</span><br><br>
+                <label>대여목적</label><span>{{m.purpose}}</span><br><br>
+                <label v-if="m.status==1">반려사유</label><span v-if="m.status==1" style="font-size: 15px;">{{m.reject}}</span>
             </div>
         </div>
     </div>
@@ -68,6 +69,7 @@ export default {
     },
     created(){
         this.currentDate = this.formatYYYYmmdd(this.currentDate)
+        console.log(this.m)
     }
 
 }
@@ -107,9 +109,13 @@ td {
   width: 550px;
   background: #fff;
   border-radius: 10px;
-  padding: 20px;
+  padding: 50px;
+  padding-top : 30px;
   box-sizing: border-box;
   box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)
+}
+.applydetail{
+    margin-top : 30px;
 }
 .modal-btn{
     position: relative;
@@ -133,7 +139,7 @@ td {
     background-color: #58b5c5;
 }
 .cancel:hover{
-    background-color: #58b5c5;
+    color: #58b5c5;
 }
 .tag{
     background-color: rgb(252, 49, 49);
@@ -143,5 +149,12 @@ td {
     padding-top: 5px;
     padding-bottom:5px;
     font-size: 12px;
+}
+label{
+    /* color : #02449b; */
+    font-weight: 700;
+    font-size: 15px;
+    padding-right : 40px;
+    vertical-align: top;
 }
 </style>
