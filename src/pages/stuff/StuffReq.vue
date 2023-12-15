@@ -65,7 +65,7 @@
         <hr>
         <br>
         <div class="req-container">
-            <StuffReqSend :memberId="memberId" @submitRequest="sendRequest" />
+            <StuffReqSend :memberId="memberId" />
         </div>
     </main>
 </template>
@@ -145,32 +145,21 @@ export default {
     max-height: 300px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
     overflow-y: auto;
 }
 
-table {
-    width: 99.5%;
+.table-container>table{
+    width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
-
-td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
-
 thead {
     background-color: #f5f5f5;
 }
-
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tbody tr:hover {
-    background-color: #eaeaea;
+th{
+    text-align: center;
 }
 
 .form-container {
@@ -198,7 +187,7 @@ select {
 
 .load-button {
     height: 35px;
-    background-color: #58d3e9;
+    background-color: #2196F3;
     border: none;
     color: white;
     padding: 5px;
@@ -211,12 +200,12 @@ select {
 }
 
 .load-button:hover {
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .req-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5px; /* 필요에 따라 조절하세요 */
+  margin-top: 5px; 
 }
 </style>

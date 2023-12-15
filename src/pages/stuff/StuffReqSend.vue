@@ -109,13 +109,12 @@ export default {
                 )
                 .then((response) => {
                     alert('요청 성공')
+                    window.location.reload();
                     console.log('서버 응답:', response.data);
-                    console.log(data)
                 })
                 .catch((error) => {
                     alert('요청 실패')
                     console.error('서버 요청 실패:', error);
-                    console.log(data)
                 });
         },
     },
@@ -131,25 +130,30 @@ export default {
     background-color: #f5f5f5;
 }
 
+table {
+    margin: 0 auto;
+}
+
 .form-group {
     margin-bottom: 20px;
 } 
 
 .submit-button {
-    background-color: #58d3e9;
+    background-color: #2196F3;
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    float: right;
 }
 
 .submit-button:hover {
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .input-item {
-    padding-right: 30px;
-    /* 원하는 간격으로 조절 */
+    font-weight: bold;
+    padding-right: 80px;
 }
 
 table {

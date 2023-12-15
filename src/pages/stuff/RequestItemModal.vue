@@ -5,12 +5,33 @@
                 <span class="material-symbols-outlined">close</span>
             </button>
             <h3>요청 정보</h3>
-            <div class="info-item"><span class="label">요청날짜:</span> {{ request.reqDate }}</div>
+            <table>
+                <tr>
+                    <td class="label">요청날짜</td>
+                    <td>{{ request.reqDate }}</td>
+                </tr>
+            </table>
+            <br>
             <h3>요청 비품정보</h3>
-            <div class="info-item"><span class="label">품번:</span> {{ request.stuff.id }}</div>
-            <div class="info-item"><span class="label">품명:</span> {{ request.stuff.name }}</div>
-            <div class="info-item"><span class="label">요청수량:</span> {{ request.quantity }}</div>
-            <div class="info-item"><span class="label">요청 사유:</span> {{ request.purpose }}</div>
+            <table>
+                <tr>
+                    <td class="label">품목번호</td>
+                    <td>{{ request.stuff.id }}</td>
+                </tr>
+                <tr>
+                    <td class="label">품목명</td>
+                    <td>{{ request.stuff.name }}</td>
+                </tr>
+                <tr>
+                    <td class="label">요청수량</td>
+                    <td>{{ request.quantity }}</td>
+                </tr>
+                <tr>
+                    <td class="label">요청사유</td>
+                    <td>{{ request.purpose }}</td>
+                </tr>
+            </table>
+            <br>
             <div v-if="request.status === 2">
                 <div class="info-item">
                     <div class="info-item"><span class="label">반려 사유:</span> {{ request.reject }}</div>
@@ -75,11 +96,11 @@ export default {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
-    text-align: left;
 }
 
-.close-button:hover {
-    background-color: #ddd;
+.modal-content h3 {
+    font-size: 20px;
+    color: #2196F3;
 }
 
 .close-button {
@@ -90,6 +111,7 @@ export default {
     background: none;
     cursor: pointer;
     font-size: 20px;
+    margin-left: 330px;
 }
 
 .info-item {
@@ -97,22 +119,23 @@ export default {
 }
 
 .label {
+    width: 130px;
     font-weight: bold;
     margin-right: 5px;
 }
 
+
 .cancel-button {
-    background-color: #58d3e9;
-    /* 취소 버튼 배경색 */
+    background-color: #2196F3;
     color: white;
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    float: right;
 }
 
 .cancel-button:hover {
-    background-color: #58b5c5;
-    /* 취소 버튼 호버 배경색 */
+    background-color: #2189df;
 }
 </style>

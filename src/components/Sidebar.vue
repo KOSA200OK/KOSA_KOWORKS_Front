@@ -191,7 +191,6 @@ export default {
     this.memberName = memberName;
     const departmentId = window.localStorage.getItem("departmentId");
     this.departmentId = departmentId;
-    console.log("부서" + this.departmentId);
 
     // 찬석
     const id = window.localStorage.getItem("memberId");
