@@ -29,7 +29,6 @@
             {{ message.sender }}-{{ message.message }}
             <span>{{ message.timestamp }}</span>
           </strong>
-          <!-- <span class="timestamp">{{ message.timestamp }}</span> -->
         </li>
       </ul>
     </div>
@@ -169,7 +168,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 [v-cloak] {
   display: none;
 }
