@@ -35,7 +35,7 @@
 					<div class="todoBox">
 						<TodayTodoItem :t="t" v-if="todayTodo !== null && todayTodo.length > 0" v-for="t in todayTodo"
 							:key="t.id" />
-						<div v-else>
+						<div v-else class="no" > 
 							<span>오늘의 일정이 없습니다</span>
 						</div>
 					</div>
@@ -182,12 +182,14 @@ hr {
 
 .notificationBox {
 	height: 290px;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
-.noNotification{
+.noNotification {
 	display: flex;
 	justify-content: center;
+	color: #2196F3;
+	padding: 133px;
 }
 </style>
 
