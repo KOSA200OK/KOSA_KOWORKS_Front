@@ -1,4 +1,4 @@
-<template>
+g<template>
   <div class="modal">
     <div class="modal-content">
       <button class="close-button" @click="closeModal">
