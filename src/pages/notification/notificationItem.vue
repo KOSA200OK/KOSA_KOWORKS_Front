@@ -25,7 +25,7 @@
 import axios from 'axios';
 
 export default {
-    name: 'notificationItem',
+    name: 'NotificationItem',
     props:["n"],
     data() {
         return {
