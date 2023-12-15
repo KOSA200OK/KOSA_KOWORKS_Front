@@ -1,12 +1,14 @@
 <template lang="">
     <tr>
-        <td>{{m.reqDate}}</td>
-        <td class = "purpose" @click="openModal">{{m.purpose}}</td>
-        <td>{{m.startDate}} ~ {{m.endDate}}</td>
-        <td><span v-if="m.status==1 && formatToYYMMDD(new Date())<=m.endDate && formatToYYMMDD(new Date())>=m.startDate || m.status==1 && formatToYYMMDD(new Date())<=m.startDate">승인완료</span>
-            <span v-if="m.status==0">승인대기</span>
+        <td @click="openModal">{{m.reqDate}}</td>
+        <td @click="openModal">{{m.purpose}}</td>
+        <td @click="openModal">{{m.startDate}} ~ {{m.endDate}}</td>
+        <td><span v-if="m.status==1 && formatToYYMMDD(new Date())<=m.endDate">승인완료</span>
+            <span class="tag" v-if="m.status==0" style="background-color: rgb(255, 217, 0);">대기</span>
+            <span class="tag" v-if="m.status==2" style="background-color: rgb(252, 49, 49);">반려</span></td>
+        <td>
             <button class="applycancelbutton" v-if="m.status==0" @click="applyCancel">취소</button>
-            <span v-if="m.status==2">반려</span></td>
+        </td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck" >
         <div class="modal-container">
@@ -60,16 +62,21 @@ export default {
 }
 </script>
 <style scoped>
-td{
-    padding : 25px;
-    font-size: 15px;
-    border-top : dotted 2px;
-    border-color : #dfdfdf;
-    text-align: center;
+tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
-.purpose {
+tr:hover {
+    background-color: #fcfcfc;
+}
+td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: px solid #ddd;
+    border-top : dotted 1px #cccccc;
+    font-size: 15px;
     cursor : pointer;
 }
+
 .applycancelbutton {
     margin-left: "20px";
 }
@@ -97,5 +104,26 @@ td{
     position: relative;
     left: 50%;
     margin-top : 50px;
+}
+button{
+    margin-left: 25px;
+    background-color: #58d3e9;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover{
+    background-color: #58b5c5;
+}
+.tag{
+    background-color: rgb(252, 49, 49);
+    color: white;
+    border-radius:15px;
+    padding: 20px;
+    padding-top: 5px;
+    padding-bottom:5px;
+    font-size: 12px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template lang="">
     <!-- <h1>{{startPage}}, {{endPage}}</h1> -->
     <div class="pagegroup">
-        <ul class="pagination">
+        <ul class="pagination mx-auto">
             <li class="page-item">
                 <router-link 
                     v-if= "startPage > 1"
@@ -64,15 +64,23 @@ export default {
 }
 </script>
 <style scoped>
-
+    .pagegroup{
+        margin-top : 100px;
+        text-align: center;
+    }
     ul.pagination{
         list-style-type: none;
         padding:0;
-        margin:0;
         text-align: center;
+        display: inline-block;
+        margin: 0;
     }
     li.page-item{
+        /* display: inline; */
         display: inline-block;
         padding-right: 30px;
+    }
+    .page-link{
+        cursor: pointer;
     }
 </style>
