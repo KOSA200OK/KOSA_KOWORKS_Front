@@ -24,38 +24,41 @@
 				</div>
 			</div>
 			<div>
-				<div v-if="departmentId === '4'" class="item car">
-					<h3>차량 신청내역</h3>
-					<div class="box">
-
-						<div>승인대기</div>
-						<div>2건</div>
-
-						<div>대여중</div>
-						<div>0건</div>
-
-						<div>미반납</div>
-						<div>0건</div>
-
-					</div>
-				</div>
-				<div v-else class="item car">
-					<h3>차량 신청현황</h3>
-					<div class="box">
-						<div>
-							<span>승인대기 : </span>
-							<!-- <span>{{ 승인대기 }}</span> -->
-						</div>
-						<div>
-							<span>대여중 : </span>
-							<!-- <span>{{ 대여중 }}</span> -->
-						</div>
-						<div>
-							<span>미반납 : </span>
-							<!-- <span>{{ 미반납 }}</span> -->
-						</div>
-					</div>
-				</div>
+				<div v-if="departmentId === '4'" class="item stuff">
+          <h3>차량 신청내역</h3>
+          <div class="box">
+            <div>
+              <span>승인대기 : </span>
+              <span>{{waitingCnt}}</span>
+            </div>
+            <div>
+              <span>대여중 : </span>
+              <span>{{rentCnt}}</span>
+            </div>
+            <div>
+              <span>미반납 : </span>
+              <span>{{noReturnCnt}}</span>
+            </div>
+          </div>
+        </div>
+        <div v-else class="item stuff">
+          <h3>차량 신청현황</h3>
+          <div class="box">
+            <div>
+              <span>승인대기 : </span>
+              <span>{{myWaitingCnt}}</span>
+            </div>
+            <div>
+              <span>대여중 : </span>
+              <span>{{myRentCnt}}</span>
+            </div>
+            <div>
+              <span>미반납 : </span>
+              <span>{{myNoReturnCnt}}</span>
+            </div>
+          </div>
+        </div>
+				
 			</div>
 			<div>
 				<div v-if="departmentId === '4'" class="item stuff">
@@ -124,6 +127,12 @@ export default {
 			departmentId: 0,
 			unprocessedReqSize: 0,
 			waitproccessReqSize: 0,
+      waitingCnt: 0,
+      rentCnt: 0,
+      noReturnCnt: 0,
+      myWaitingCnt: 0,
+      myRentCnt: 0,
+      myNoReturnCnt: 0
 		};
 	},
 	mounted() {
@@ -136,8 +145,10 @@ export default {
     // 찬석
     const memberId = localStorage.getItem("memberId");
     this.fetchAttendanceData(memberId);
-    // 찬석 - 알림 호출
     this.fetchNotifications();
+        this.TodayTodoHandler();
+    this.CarRentCountHandler();
+    this.MyCarRentCountHandler();
   },
   methods: {
     getCurrentDay() {
@@ -227,7 +238,7 @@ export default {
           console.error("출근 및 퇴근 시간 조회 실패", error);
         });
     },
-    // ======================= 오늘의 일정 ===============================
+    // ======================= 오늘의 일정 원희===============================
     TodayTodoHandler() {
       const memberId = localStorage.getItem("memberId");
       const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`;
@@ -278,10 +289,45 @@ export default {
 				.catch((Error) => {
 					console.log(Error)
 				})
-		}
+		},
+    // ======================= 차량 관리 현황 원희===============================
+    CarRentCountHandler(){
+      const url = `${this.backURL}/carrent/maincarrent`;
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          this.waitingCnt = response.data.waitingCnt;
+          this.rentCnt = response.data.rentCnt;
+          this.noReturnCnt = response.data.noReturnCnt;
+          console.log(this.waitingCnt);
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    },
+    // ======================= 나의 차량 신청 현황 원희===============================
+    MyCarRentCountHandler(){
+      const memberId = localStorage.getItem("memberId");
+      const url = `${this.backURL}/carrent/mainmycarrent?memberId=${memberId}`;
+      axios
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          this.myWaitingCnt = response.data.myWaitingCnt;
+          this.myRentCnt = response.data.myRentCnt;
+          this.myNoReturnCnt = response.data.myNoReturnCnt;
+          console.log(this.myWaitingCnt);
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    }
   },
   created() {
     this.TodayTodoHandler();
+    this.CarRentCountHandler();
+    this.MyCarRentCountHandler();
     this.UnproccessedReqHandler()
 		this.WaitproccesseReqHandler()
   },
