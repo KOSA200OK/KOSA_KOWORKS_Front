@@ -42,7 +42,7 @@ export default {
             minEndDate: this.getCurrentDate(),
             formData: {
                 member: {
-                    id: "0002"
+                    id: ''
                 },
                 car: {
                     id: this.c.id
@@ -79,6 +79,8 @@ export default {
             this.formData.purpose = this.purpose
         },
         reserveHandler(){
+            this.formData.member.id = localStorage.getItem("memberId")
+            console.log(this.formData.member.id)
             // this.formData.startDate = this.formatToYYMMDD(new Date(this.startDate));
             // this.formData.endDate = this.formatToYYMMDD(new Date(this.endDate));
             this.formData.startDate = this.d.startDate
