@@ -2,46 +2,43 @@
 <main>
         <div class="manageheader">
             <ul>
-                <li><span class="managehome" @click="menuHandler(0)">차량 관리</span></li>
-                <li><router-link class="headermenu" to="/carrent/allrentlist">신청 내역</router-link></li>
-                <li><router-link class="headermenu" to="/carrent/allrentlist">승인대기</router-link></li>
-                <li><router-link class="headermenu" to="/carrent/allrentlist">대여중</router-link></li>
-                <li><router-link class="headermenu" to="/carrent/allrentlist">미반납</router-link></li>
+                <li class="current"><span class="headermenu-c" @click="menuHandler(0)">차량 관리</span></li>
+                <li class="other"><router-link class="headermenu" to="/carrent/allrentlist">신청 내역</router-link></li>
             </ul>
         </div>
         <h3>차량 관리</h3>
-    <div class="carmanage" style="text-align: center;">
-        <div class="managesection">
+    <div class="carmanage" style="text-align: center; width: 100%; height:100%;">
             <div class="optionbuttons">
                 <div class="optionbutton" @click="menuHandler(1)">
                     <div class="option-text">
-                        <router-link class="waiting" to="/carrent/manage/">승인대기</router-link><br><br>
+                        <router-link class="a" to="/carrent/manage/">승인대기</router-link><br><br>
                         <span :bind="waitingcnt">{{waitingcnt}}</span>
                     </div>
                 </div>
                 <div class="optionbutton" @click="menuHandler(2)">
                     <div class="option-text">
-                        <router-link class="renting" to="/carrent/manage/">대여중</router-link><br><br>
+                        <router-link class="a" to="/carrent/manage/">대여중</router-link><br><br>
                         <span :bind="rentcnt">{{rentcnt}}</span>
                     </div>
                 </div>
                 <div class="optionbutton" @click="menuHandler(3)">
                     <div class="option-text">
-                        <router-link class="noreturn" to="/carrent/manage/">미반납</router-link><br><br>
+                        <router-link class="a" to="/carrent/manage/">미반납</router-link><br><br>
                         <span :bind="noreturncnt">{{noreturncnt}}</span>
                     </div>
                 </div>
             </div>
+            <div class="mapdiv">
             <CarsMap v-if="carlist!==null && menu==0"
                     :c="carlist"
                     :menu="menu"/>
+            </div>
             <CarManageList v-if="menu==0"
                             :rentlist="rentlist"
                             :noreturnlist="noreturnlist"/>
             <CarWaitingList v-if="menu==1"/>
             <CarRentList v-if="menu==2"/>
             <CarNoReturnList v-if="menu==3"/>
-        </div>
     </div>
 </main>
 </template>
@@ -127,46 +124,13 @@ h3{
     font-weight: bold;
     text-shadow: 1px 1px 1px #ccc;
 }
-.managehome{
-    cursor:pointer;
-    text-decoration: none;
-    font-size: 25px;
-    font-weight: 1000;
-    color : rgb(57, 97, 97);
-}
-ul {
-  list-style: none;
-  display: flex; 
-  padding: 0;       
-  float : right;
-  margin-right : 100px;
-  margin-top : 50px;
-}
-
-li {
-  margin-right: 10px; /* 각 항목 사이 간격 설정 */
-}
-/* .managesection{
-    margin-left : 200px;
-
-} */
-a{
-    text-decoration: none;
-    font-size: 25px;
-    font-weight: 1000;
-    color : rgb(57, 97, 97);
-}
-.managesection>table{
-    width : 95%;
-    margin-bottom: 200px;
-    border: solid 1px #ebe9e9;
-    border-radius: 20px;
-    box-shadow: 0 19px 38px #f3f3f3;
-}
 .optionbuttons{
     text-align: center;
-    margin-left : 16%;
+    width:100%;
     margin-top : 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .optionbutton{
     width : 200px;
@@ -178,10 +142,57 @@ a{
     border : solid 10px transparent;/*#1fd3d37a ;*/
     cursor : pointer;
     border-radius : 50%;
-    background-image: linear-gradient(#fff, #fff), linear-gradient(90deg, rgba(56,209,209,1) 0%, rgba(205,252,252,1) 35%, rgba(153,223,237,1) 100%);
+    /* background-image: linear-gradient(#fff, #fff), linear-gradient(90deg, rgba(56,209,209,1) 0%, rgba(205,252,252,1) 35%, rgba(153,223,237,1) 100%); */
+    background-image : linear-gradient(#fff, #fff), linear-gradient(90deg, rgba(87,162,249,1) 0%, rgba(221,242,255,1) 35%, rgba(153,217,237,1) 100%);
     background-origin: border-box;
     background-clip: content-box, border-box;
-    box-shadow: 0 5px 30px #ddf4f7;
+    box-shadow: 0 5px 30px #ddebf7;
+}
+
+ul{
+    list-style-type: none;
+    padding:0;
+    text-align: center;
+    display: inline-block;
+    margin: 0;
+}
+
+li.current{
+    background-color: #1565c0;
+    border : solid 1px rgb(190, 205, 255);
+}
+li.other{
+    background-color: white;
+    border: solid 1px rgb(200, 200, 201);
+}
+li{
+    /* display: inline; */
+    width: 150px;
+    height : 50px;
+    display: inline-block;
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 6px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+li.other:hover{
+    background-color:#fbfbfc;
+}
+.headermenu{
+    text-decoration: none;
+    color: rgb(23, 29, 110);
+    font-weight: 600;
+}
+.headermenu-c{
+    color: rgb(247, 247, 247);
+    font-weight: 600;
+}
+.a{
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 1000;
+    color : rgb(57, 88, 97);
 }
 .option-text{
     padding-top : 50px;
@@ -190,11 +201,13 @@ a{
     text-decoration: none;
     font-size: 30px;
     font-weight: 1000;
-    color : rgb(35, 153, 153);
+    color : rgb(35, 120, 153);
 }
-th{
-    padding : 20px;
-    font-size: 13px;
-    background-color : #f5f8f8;
+.mapdiv{
+    text-align: center; 
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
