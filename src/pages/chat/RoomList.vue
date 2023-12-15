@@ -7,7 +7,7 @@
       </div>
       <!-- 채팅방 검색 -->
       <div class="search-form">
-        <!-- <label for="roomSearch" class="sr-only">채팅방 검색</label> -->
+        <span>&#128269;</span>
         <input
           class="roomsearch-input"
           id="roomSearch"
@@ -18,7 +18,6 @@
       </div>
       <!-- 채팅방 만들기 -->
       <div class="chatroom-form">
-        <!-- <label for="roomName" class="sr-only">방제목</label> -->
         <input
           class="roomname-input"
           id="roomName"
@@ -49,17 +48,16 @@ import axios from "axios";
 export default {
   data() {
     return {
-      // room_name, chatrooms, search 초기화
       room_name: "",
       chatrooms: [],
       search: "",
-      memberId: "", // 사번 저장
+      memberId: "",
     };
   },
   // 페이지가 로드될 때 findAllRoom 메소드를 호출
   created() {
     this.findAllRoom();
-    // 추가: 로컬 스토리지에서 직원 번호를 불러오기
+    // 로컬 스토리지에서 직원 번호를 불러오기
     this.memberId = localStorage.getItem("memberId") || "";
   },
   //채팅방 검색 기능
@@ -67,7 +65,7 @@ export default {
     // 검색어에 따라 필터된 채팅방 목록을 반환합니다.
     filteredChatrooms() {
       return this.chatrooms.filter((room) => {
-        // 방 이름 또는 검색어가 포함된 경우만 반환합니다.
+        // 검색어가 방 이름에 포함된 경우만 반환합니다.
         return room.name.includes(this.search);
       });
     },
@@ -79,7 +77,8 @@ export default {
       try {
         // 응답을 받아와서 chatrooms에 대입
         const response = await axios.get(`${this.backURL}/chat/rooms`);
-        this.chatrooms = response.data;
+        // 중복 방지: 기존 목록에 새로운 목록을 덧붙임
+        this.chatrooms.push(...response.data);
       } catch (error) {
         console.error("채팅방 조회에 실패했습니다", error);
       }
@@ -90,7 +89,6 @@ export default {
         alert("방 제목을 입력하세요.");
         return;
       }
-
       try {
         const params = new URLSearchParams();
         params.append("name", this.room_name);
@@ -101,15 +99,15 @@ export default {
         //방 이름 초기화
         this.room_name = "";
 
-        // 업데이트된 채팅방 목록을 다시 가져옴
-        this.findAllRoom();
+        // 중복 방지: 새로 생성된 방을 목록에 추가
+        this.chatrooms.push(response.data);
       } catch (error) {
         alert("채팅방 개설에 실패했습니다.");
       }
     },
 
     enterRoom(roomId) {
-      // 추가: 직원 번호를 입력 받지 않고 로컬 스토리지에서 불러오기
+      // 직원 번호를 입력 받지 않고 로컬 스토리지에서 불러오기
       const sender = this.memberId;
       if (sender !== "") {
         localStorage.setItem("wschat.sender", sender);
@@ -185,15 +183,24 @@ ul {
 }
 
 .chatroom-item {
-  padding: 10px;
+  padding: 15px;
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  border-radius: 0; /* 직사각형 모양으로 변경 */
+  margin-bottom: 0; /* 간격 제거 */
   cursor: pointer;
   transition: background-color 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* 선택한 채팅방 제외 나머지 채팅방에 하단 선 추가 */
+.chatroom-item:not(:last-child) {
+  border-bottom: 1px solid #ddd;
 }
 
+.chatroom-item:hover {
+  background-color: #f0f0f0;
+}
 .chatroom-item:hover {
   background-color: #0e1c2a;
 }
