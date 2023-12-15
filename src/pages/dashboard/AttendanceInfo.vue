@@ -1,0 +1,183 @@
+<template>
+    <div>
+        <div class="currentDay">{{ currentDay }}</div>
+        <div class="currentTime">{{ currentTime }}</div>
+        <br>
+        <div class="timeBox">
+            <div>
+                <span>출근 시간</span>
+                <span>{{ attendanceTime }}</span>
+            </div>
+            <div>
+                <span>퇴근 시간</span>
+                <span>{{ offTime }}</span>
+            </div>
+        </div>
+        <div class="buttons">
+            <button @click="attendanceHandler">출근</button>
+            <button @click="attendance2Handler">퇴근</button>
+        </div>
+    </div>
+</template>
+  
+<script>
+import axios from "axios";
+export default {
+    data() {
+        return {
+            currentDay: this.getCurrentDay(),
+			currentTime: this.getCurrentTime(),
+            attendanceTime: null,
+            offTime: null,
+        }
+    },
+    props: {
+    },
+    methods: {
+        getCurrentDay() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, "0");
+            const day = now.getDate().toString().padStart(2, "0");
+            const days = ["일", "월", "화", "수", "목", "금", "토"];
+            const dayOfWeek = days[now.getDay()];
+            return `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
+        },
+
+        getCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, "0");
+            const minutes = now.getMinutes().toString().padStart(2, "0");
+            const seconds = now.getSeconds().toString().padStart(2, "0");
+            return `${hours}시 ${minutes}분 ${seconds}초`;
+        },
+
+        attendanceHandler() {
+            const id = localStorage.getItem("memberId");
+
+            const url = `${this.backURL}/attendance`;
+            const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+            const currentTime = new Date(); // 현재 시간을 가져옴
+            const memberData = {
+                memberId: memberId,
+                currentTime: currentTime,
+                member: {
+                    id: id, // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+                },
+            };
+
+            axios
+                .post(url, memberData)
+                .then((response) => {
+                    alert("출근 완료");
+                })
+                .catch((error) => {
+                    console.error("출근 요청 실패", error);
+                });
+        },
+
+        attendance2Handler() {
+            const id = localStorage.getItem("memberId");
+
+            const url = `${this.backURL}/attendance`;
+            const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+            const currentTime = new Date(); // 현재 시간을 가져옴
+            const memberData = {
+                memberId: memberId,
+                currentTime: currentTime,
+                member: {
+                    id: id, // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
+                },
+            };
+
+            axios
+                .put(url, memberData)
+                .then((response) => {
+                    alert("퇴근 완료! 조심히가세요~");
+                })
+                .catch((error) => {
+                    console.error("퇴근 요청 실패", error);
+                });
+        },
+
+        fetchAttendanceData(memberId) {
+            // const id = localStorage.getItem('memberId');
+
+            const url = `${this.backURL}/attendance/today?memberId=${memberId}`;
+
+            axios
+                .get(url)
+                .then((response) => {
+                    const data = response.data;
+                    this.attendanceTime = data.startTime;
+                    this.offTime = data.endTime;
+                })
+                .catch((error) => {
+                    console.error("출근 및 퇴근 시간 조회 실패", error);
+                });
+        },
+    },
+
+    mounted() {
+        setInterval(() => {
+            this.currentTime = this.getCurrentTime();
+        }, 1000);
+
+        const memberId = localStorage.getItem("memberId");
+        this.fetchAttendanceData(memberId);
+    },
+    created() {
+        
+    },
+}
+</script>
+  
+<style scoped>
+
+.buttons {
+	display: flex;
+	justify-content: space-around;
+}
+
+.buttons button {
+    width: 100px;
+	padding: 10px 20px;
+	margin: 5px;
+	font-size: 14px;
+	cursor: pointer;
+	border: 2px solid #2196F3;
+	background-color: transparent;
+	color: #2196F3;
+	border-radius: 25px;
+	transition: background-color 0.3s ease;
+}
+
+.buttons button:hover {
+	background-color: rgba(21, 101, 192, 0.1);
+}
+
+.currentDay {
+	color: rgba(128, 128, 128, 0.8);
+}
+
+.currentTime {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.timeBox {
+	margin-top: 50px;
+	margin-bottom: 70px;
+}
+
+.timeBox div {
+	display: flex;
+	justify-content: space-between;
+}
+
+.timeBox span {
+	text-align: center;
+	flex: 1;
+}
+
+</style>

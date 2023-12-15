@@ -133,7 +133,7 @@ export default {
 
 .form-group {
     margin-bottom: 20px;
-}
+} 
 
 .submit-button {
     background-color: #58d3e9;
