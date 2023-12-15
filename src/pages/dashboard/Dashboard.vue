@@ -53,7 +53,7 @@
 <script>
 import Sidebar from "@/components/Sidebar.vue";
 import TodayTodoItem from "@/pages/schedule/TodayTodoItem.vue";
-import NotificationItem from "@/pages/dashboard/NotificationItem_d.vue";
+import NotificationItem from "@/pages/dashboard/NotificationItemDash.vue";
 import AttendanceInfo from "@/pages/dashboard/AttendanceInfo.vue";
 import CarStatus from "@/pages/dashboard/CarStatus.vue";
 import StuffStatus from "@/pages/dashboard/StuffStatus.vue";
