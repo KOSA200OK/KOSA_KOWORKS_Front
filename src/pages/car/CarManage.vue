@@ -1,17 +1,17 @@
 <template lang="">
-    <div class="carmanage">
+<main>
         <div class="manageheader">
             <ul>
                 <li><span class="managehome" @click="menuHandler(0)">차량 관리</span></li>
                 <li><router-link class="headermenu" to="/carrent/allrentlist">신청 내역</router-link></li>
+                <li><router-link class="headermenu" to="/carrent/allrentlist">승인대기</router-link></li>
+                <li><router-link class="headermenu" to="/carrent/allrentlist">대여중</router-link></li>
+                <li><router-link class="headermenu" to="/carrent/allrentlist">미반납</router-link></li>
             </ul>
         </div>
+        <h3>차량 관리</h3>
+    <div class="carmanage" style="text-align: center;">
         <div class="managesection">
-            <!-- <div class="optionbuttons">
-                <div class="option-text">
-                    <router-link class="allrentlist" to="/carrent/allrentlist">신청 내역</router-link>
-                </div>
-            </div> -->
             <div class="optionbuttons">
                 <div class="optionbutton" @click="menuHandler(1)">
                     <div class="option-text">
@@ -43,6 +43,7 @@
             <CarNoReturnList v-if="menu==3"/>
         </div>
     </div>
+</main>
 </template>
 <script>
 import CarManageList from '@/pages/car/CarManageList.vue'
@@ -114,9 +115,17 @@ export default {
 </script>
 <style scoped>
 .manageheader{
-    height: 130px;
-    background-color: white;
-    border-bottom : solid 1px rgb(202, 216, 216);
+    margin-left: 6%;
+}
+h3{
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
 }
 .managehome{
     cursor:pointer;
@@ -137,17 +146,10 @@ ul {
 li {
   margin-right: 10px; /* 각 항목 사이 간격 설정 */
 }
-.managesection{
+/* .managesection{
     margin-left : 200px;
-    /* position: absolute; */
-    /* top: 50%; */
-    /* left: 50%; */
-    /* transform: translate(-50%, -50%); */
-    /* width: 90%; */
-    /* margin-left:45px; */
-    /* height: 100vh; */
-    /* overflow: scroll; */
-}
+
+} */
 a{
     text-decoration: none;
     font-size: 25px;
@@ -162,6 +164,7 @@ a{
     box-shadow: 0 19px 38px #f3f3f3;
 }
 .optionbuttons{
+    text-align: center;
     margin-left : 16%;
     margin-top : 30px;
 }
