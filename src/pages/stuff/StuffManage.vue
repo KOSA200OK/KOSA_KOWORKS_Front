@@ -211,7 +211,7 @@ select {
 
 .load-button {
     height: 35px;
-    background-color: #58d3e9;
+    background-color: #2196F3;
     border: none;
     color: white;
     padding: 5px;
@@ -224,6 +224,6 @@ select {
 }
 
 .load-button:hover {
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 </style>

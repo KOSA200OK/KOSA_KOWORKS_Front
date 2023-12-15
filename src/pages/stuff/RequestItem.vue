@@ -79,4 +79,5 @@ td {
 .rejected {
     background-color: #FE813C;
 }
+
 </style>

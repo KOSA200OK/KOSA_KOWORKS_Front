@@ -65,7 +65,7 @@
         <hr>
         <br>
         <div class="req-container">
-            <StuffReqSend :memberId="memberId" @submitRequest="sendRequest" />
+            <StuffReqSend :memberId="memberId" />
         </div>
     </main>
 </template>
@@ -155,6 +155,12 @@ table {
     margin-top: 20px;
 }
 
+th {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
 td {
     padding: 10px;
     text-align: center;
@@ -198,7 +204,7 @@ select {
 
 .load-button {
     height: 35px;
-    background-color: #58d3e9;
+    background-color: #2196F3;
     border: none;
     color: white;
     padding: 5px;
@@ -211,7 +217,7 @@ select {
 }
 
 .load-button:hover {
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .req-container {
   display: flex;
