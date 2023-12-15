@@ -1,19 +1,19 @@
 <template>
- 	<main class="home-page">
+	<main class="home-page">
 		<div class="gridContainer">
 			<div class="item attendance"> <!-- 찬석 -->
 				<h3>근태 현황</h3>
 				<div class="box">
-          <AttendanceInfo/>
+					<AttendanceInfo />
 				</div>
 			</div>
 
 			<div>
-        <CarStatus />
+				<CarStatus />
 			</div>
 
 			<div>
-        <StuffStatus />
+				<StuffStatus />
 			</div>
 
 			<div class="item notice">
@@ -44,7 +44,13 @@
 			<div class="item notification">
 				<h3>알림</h3>
 				<div class="box">
-          <NotificationItem v-for="n in notifications" :key="n.id" :notification="n" />
+					<div class="notificationBox">
+						<NotificationItem v-if="notifications !== null && notifications.length > 0"
+							v-for="n in notifications" :key="n.id" :notification="n" @click="notificationClick(n)" />
+						<div v-else class="noNotification">
+							<span>알림이 없습니다</span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -67,45 +73,58 @@ export default {
 		};
 	},
 	mounted() {
-    this.fetchNotifications();
-    this.TodayTodoHandler();
-  },
-  methods: {
+		this.fetchNotifications();
+		this.TodayTodoHandler();
+	},
+	methods: {
 
-    // ======================= 오늘의 일정 원희===============================
-    TodayTodoHandler() {
-      const memberId = localStorage.getItem("memberId");
-      const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`;
-      axios
-        .get(url, { params: this.data })
-        .then((response) => {
-          this.todayTodo = response.data;
-        })
-        .catch((Error) => {
-          console.log(Error);
-        });
-    },
-    // ============================== 알림, 찬석 ================================
-        // 알림 데이터를 가져오는 메소드
-    fetchNotifications() {
-      const memberId = localStorage.getItem("memberId");
-      const url = `${this.backURL}/subscribe/?memberId=${memberId}`;
+		// ======================= 오늘의 일정 원희===============================
+		TodayTodoHandler() {
+			const memberId = localStorage.getItem("memberId");
+			const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`;
+			axios
+				.get(url, { params: this.data })
+				.then((response) => {
+					this.todayTodo = response.data;
+				})
+				.catch((Error) => {
+					console.log(Error);
+				});
+		},
+		// ============================== 알림, 찬석 ================================
+		// 알림 데이터를 가져오는 메소드
+		fetchNotifications() {
+			const memberId = localStorage.getItem("memberId");
+			const url = `${this.backURL}/subscribe/?memberId=${memberId}`;
 
-      axios
-        .get(url)
-        .then((response) => {
-          this.notifications = response.data;
-          console.log('notifications =' + notifications)
-        })
-        .catch((error) => {
-          console.error("알림 데이터를 불러오는 중 에러 발생:", error);
-        });
-    },
-  },
-  created() {
-    this.TodayTodoHandler();
-    this.fetchNotifications();
-  },
+			axios
+				.get(url)
+				.then((response) => {
+					this.notifications = response.data;
+				})
+				.catch((error) => {
+					console.error("알림 데이터를 불러오는 중 에러 발생:", error);
+				});
+		},
+
+		notificationClick(n) {
+			console.log("타입 : ", n.type);
+			switch (n.type) {
+				case 'CAR':
+					this.$router.push('/carrent/myrentlist');
+					break;
+				case 'MEETING':
+					this.$router.push('/meetingroom/myreservation');
+					break;
+				default:
+					break;
+			}
+		}
+	},
+	created() {
+		this.TodayTodoHandler();
+		this.fetchNotifications();
+	},
 };
 </script>
 <style scoped>
@@ -119,32 +138,33 @@ export default {
 }
 
 .attendance {
-  grid-column-start: 1;
+	grid-column-start: 1;
 }
 
 .notification {
-  grid-row-start: 2;
-  grid-column-end: span 2;
+	grid-row-start: 2;
+	grid-column-end: span 2;
 }
 
 .notice {
-  grid-column: 3 / 5;
-  grid-row-start: 2;
+	grid-column: 3 / 5;
+	grid-row-start: 2;
 }
 
 .calendar {
-  grid-column-start: 4;
+	grid-column-start: 4;
 }
 
 hr {
-  margin: 5px;
+	margin: 5px;
 }
+
 .box {
-  height: 350px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+	height: 350px;
+	border: 1px solid #ccc;
+	border-radius: 15px;
+	box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.1);
+	padding: 20px;
 }
 
 .item h3 {
@@ -156,8 +176,18 @@ hr {
 }
 
 .todoBox {
-  height: 280px;
-  overflow-y: scroll;
+	height: 280px;
+	overflow-y: scroll;
+}
+
+.notificationBox {
+	height: 290px;
+	overflow-y: scroll;
+}
+
+.noNotification{
+	display: flex;
+	justify-content: center;
 }
 </style>
 

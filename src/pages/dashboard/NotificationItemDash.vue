@@ -2,7 +2,7 @@
   <li class="notify_content">
     <span>[{{ notification.createdAt }}]</span> &nbsp;
     <span>{{ notification.content }}</span>
-    <span class="material-symbols-outlined deleteBt" v-on:click="cancel()">
+    <span class="material-symbols-outlined deleteBt" v-on:click="cancel($event)">
       close_small
     </span>
   </li>
@@ -20,10 +20,10 @@ export default {
 
   methods: {
     cancel(event) {
-      // 부모 컴포넌트에서 발생하는 이벤트 중지
-      event.stopPropagation();
+                  // 부모 컴포넌트에서 발생하는 이벤트 중지
+                  event.stopPropagation();
 
-      const idValue = this.n.id
+      const idValue = this.notification.id
       const url = `${this.backURL}/subscribe/${idValue}`
       axios.delete(url)
         .then(response => {
@@ -31,22 +31,19 @@ export default {
           console.log('DELETE 요청 성공', response.data);
 
           // 알림 목록에서 삭제된 알림의 인덱스 찾기
-          const index = this.$parent.notificationList.content.findIndex(item => item.id === this.n.id);
+          const index = this.$parent.notifications.findIndex(item => item.id === this.notification.id);
 
           if (index !== -1) {
             // notificationList.content 배열에서 삭제된 알림 제거
-            this.$parent.notificationList.content.splice(index, 1);
-            if (this.$parent.notificationList.content.length === 0) {
+            this.$parent.notifications.splice(index, 1);
+            if (this.$parent.notifications.length === 0) {
               window.location.reload();
             }
           }
 
-          // window.location.reload();
-
-
         })
         .catch(error => {
-          console.log('DELETE 요청 실패', response.data);
+          console.log('DELETE 요청 실패');
         })
     },
   },

@@ -161,6 +161,7 @@ export default {
 			this.isStatusOn = !this.isStatusOn;
 			console.log("isStatusOn 값:", this.isStatusOn);
 		},
+		
 		notificationClick(n) {
 			console.log("타입 : ", n.type);
 			switch(n.type) {
