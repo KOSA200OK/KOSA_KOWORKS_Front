@@ -13,7 +13,10 @@
           @keypress.enter="sendMessage"
           placeholder="메시지를 입력하세요"
         />
-        <button class="send-button" @click="sendMessage">보내기</button>
+
+        <button class="send-button" @click="sendMessage">
+          <span class="material-symbols-outlined"> forward_to_inbox </span>
+        </button>
       </div>
       <ul class="chat-list">
         <li
@@ -29,10 +32,8 @@
             {{ message.sender }}-{{ message.message }}
             <span>{{ message.timestamp }}</span>
           </strong>
-          <!-- <span class="timestamp">{{ message.timestamp }}</span> -->
         </li>
       </ul>
-      <div></div>
     </div>
   </main>
 </template>
@@ -127,6 +128,7 @@ export default {
     },
 
     // WebSocket 설정
+    // back의 registerStompEndpoints에서 endpoint를 /ws-stomp로 설정해서 /ws-stomp를 사용
     setupWebSocket() {
       this.sock = new SockJS(`${this.backURL}/ws-stomp`);
       this.ws = Stomp.over(this.sock);
@@ -212,23 +214,11 @@ input {
   cursor: pointer;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.chat-item {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  overflow: hidden; /* 말풍선이 내용을 감출 수 있도록 overflow 속성 추가 */
-}
-
 .chat-item strong {
   color: black;
   display: block;
 }
+
 /* 채팅 아이템의 text-align 스타일을 오른쪽으로 정렬하도록 변경 */
 .chat-item[style*="text-align: right"] strong {
   text-align: right;
@@ -238,12 +228,25 @@ ul {
 .chat-item[style*="text-align: left"] strong {
   order: 1;
 }
-ul {
+
+.chat-list {
   list-style: none;
   padding: 0;
   margin: 0;
   overflow-y: auto; /* 세로 스크롤 추가 */
   max-height: 300px; /* 스크롤이 나타날 최대 높이 지정 (필요에 따라 조절) */
+}
+.chat-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-list::-webkit-scrollbar-thumb {
+  background-color: #2196f3;
+  border-radius: 4px;
+}
+
+.chat-list::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
 }
 /* 채팅 오른쪽 왼쪽 */
 .my-message strong {
@@ -256,25 +259,38 @@ ul {
   order: 1;
   text-align: right; /* 다른 사람의 메시지일 경우 왼쪽 정렬 */
 }
-/* 추가 */
-
-/* 스크롤바 스타일을 조정합니다. */
-ul::-webkit-scrollbar {
-  width: 8px;
+/*  */
+.chat-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  background-color: #caf0f8;
 }
 
-ul::-webkit-scrollbar-thumb {
-  background-color: #2196f3;
-  border-radius: 4px;
+.chat-item .sender {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-ul::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
+.timestamp {
+  font-size: 0.8em;
+  color: #888;
+  margin-left: 5px;
+  align-self: flex-end; /* 시간을 오른쪽으로 정렬 */
 }
 /*  */
+/* 스크롤바 스타일을 조정합니다. */
+
 span {
   font-size: 0.8em;
   color: #888; /* 수정: 시간의 색깔을 회색으로 변경 */
   margin-left: 5px; /* 수정: 시간과 메시지 사이의 여백 추가 */
+}
+
+.material-symbols-outlined {
+  color: #f0f0f0;
+  font-size: 1.5em;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 </style>
