@@ -83,8 +83,11 @@ export default {
         rejectHandler(){
             this.formData.reject = this.reject
             const url = `${this.backURL}/carrent/reject`
-            const data = this.formData
-            axios.post(url,data)
+            // const data = this.formData
+            axios.put(url,{
+                id : this.w.id,
+                reject: this.formData.reject
+            })
                 .then((Response)=>{
                     if(Response.status==200){
                     alert('반려되었습니다.')
@@ -94,6 +97,19 @@ export default {
                 .catch((Error)=>{
                     console.log(Error)
                 })
+            // this.formData.reject = this.reject
+            // const url = `${this.backURL}/carrent/reject`
+            // const data = this.formData
+            // axios.post(url,data)
+            //     .then((Response)=>{
+            //         if(Response.status==200){
+            //         alert('반려되었습니다.')
+            //         window.location.reload()
+            //     }
+            //     })
+            //     .catch((Error)=>{
+            //         console.log(Error)
+            //     })
         }
         
     }
