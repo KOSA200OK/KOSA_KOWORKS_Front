@@ -403,5 +403,6 @@ export default {
 .stuff-text {
 	color: #2196F3;
 }
+
 </style>
 
