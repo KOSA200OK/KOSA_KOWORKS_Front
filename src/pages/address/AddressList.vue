@@ -5,7 +5,7 @@
       <input
         v-model="search"
         type="text"
-        placeholder="이름 또는 직급 또는 부서명을 입력하세요."
+        placeholder="이름, 직급 또는 부서명을 입력하세요"
         class="search-input"
       />
       <button @click="findAll" class="search-button">조회</button>
