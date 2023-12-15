@@ -105,7 +105,11 @@
 			<div class="item notification">
 				<h3>알림</h3>
 				<div class="box">
-
+					<ul>
+						<li v-for="(notification, index) in notifications" :key="index" class="notify_content">
+							{{ notification.content }} - {{ notification.createdAt }}
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -132,7 +136,8 @@ export default {
       noReturnCnt: 0,
       myWaitingCnt: 0,
       myRentCnt: 0,
-      myNoReturnCnt: 0
+      myNoReturnCnt: 0,
+	  memberId : `${this.memberId}`,
 		};
 	},
 	mounted() {
@@ -256,8 +261,8 @@ export default {
     // ============================== 알림, 찬석 ================================
         // 알림 데이터를 가져오는 메소드
     fetchNotifications() {
-      const memberId = localStorage.getItem("memberId");
-      const url = `${this.backURL}/subscribe/?memberId=${memberId}`;
+    //   const memberId = localStorage.getItem("memberId");
+      const url = `${this.backURL}/subscribe/?memberId=${this.memberId}`;
 
       axios
         .get(url)
@@ -449,5 +454,6 @@ export default {
 .stuff-text {
 	color: #2196F3;
 }
+
 </style>
 
