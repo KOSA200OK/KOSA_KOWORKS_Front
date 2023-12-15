@@ -37,9 +37,9 @@
     </div>
     <h3>Menu</h3>
     <div class="menu">
-      <router-link class="button" to="/home">
-        <span class="material-icons">home</span>
-        <span class="text">메인</span>
+      <router-link class="button" to="/dashboard">
+        <span class="material-icons">apps</span>
+        <span class="text">대시보드</span>
       </router-link>
       <router-link class="button" to="/attendance">
         <span class="material-icons">check_circle</span>
@@ -73,7 +73,11 @@
         <span class="material-icons">no_crash</span>
         <span class="text">차량 예약</span><br />
       </router-link>
-      <router-link v-if="departmentId === '4'" class="button" to="/carrent/manage">
+      <router-link
+        v-if="departmentId === '4'"
+        class="button"
+        to="/carrent/manage"
+      >
         <span class="material-icons">car_rental</span>
         <span class="text">차량 관리</span>
       </router-link>
@@ -81,7 +85,11 @@
         <span class="material-icons">add_box</span>
         <span class="text">비품 요청</span>
       </router-link>
-      <router-link v-if="departmentId === '4'" class="button" to="/stuff/stuffmanage">
+      <router-link
+        v-if="departmentId === '4'"
+        class="button"
+        to="/stuff/stuffmanage"
+      >
         <span class="material-icons">shelves</span>
         <span class="text">비품 요청 관리</span>
       </router-link>
@@ -101,7 +109,7 @@
 <script>
 // 찬석
 // import notificationItem from '../pages/notification/notificationItem.vue'
-import notificationItem from "../pages/notification/notificationItem.vue";
+import notificationItem from "@/pages/notification/notificationItem.vue";
 import axios from "axios";
 import { ref } from "vue";
 
@@ -205,7 +213,9 @@ export default {
           // this.notificationList = response.data
           this.notificationList.content = response.data;
           // this.notificationList = { content: response.data }; // 객체 내에 content 속성으로 데이터 할당
-          const contentList = this.notificationList.content.map((item) => item.content);
+          const contentList = this.notificationList.content.map(
+            (item) => item.content
+          );
 
           console.log(this.notificationList);
           console.log("list : ", contentList);
