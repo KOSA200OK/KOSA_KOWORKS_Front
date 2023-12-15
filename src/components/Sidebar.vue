@@ -34,9 +34,9 @@
 		</div>
 		<h3>Menu</h3>
 		<div class="menu">
-			<router-link class="button" to="/home">
-				<span class="material-icons">home</span>
-				<span class="text">메인</span>
+			<router-link class="button" to="/dashboard">
+				<span class="material-icons">apps</span>
+				<span class="text">대시보드</span>
 			</router-link>
 			<router-link class="button" to="/attendance">
 				<span class="material-icons">check_circle</span>

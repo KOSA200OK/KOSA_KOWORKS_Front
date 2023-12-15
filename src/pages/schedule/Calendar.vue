@@ -1,6 +1,6 @@
 <template>
 <main>
-    <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents" eventClick="scheduleDetailHandler">
+    <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarOptions.events" eventClick="scheduleDetailHandler">
         <template v-slot:eventContent='arg'>
             <div class="event" @click="scheduleDetailHandler(arg)">
                 <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}
