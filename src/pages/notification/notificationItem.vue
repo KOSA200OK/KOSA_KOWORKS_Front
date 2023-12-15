@@ -1,9 +1,7 @@
-<template> 
-    <main></main>
+<template>
     <div>
         <ul>
             <li>
-                <!-- {{ n.create    dAt }} -->
                 <div class="icon-cancel">
                     <span class="material-symbols-outlined">
                         highlight_text_cursor
@@ -12,7 +10,7 @@
                         {{ n.createdAt }}
                     </span>
                     <span class="material-symbols-outlined"
-                          v-on:click="cancel">
+                            v-on:click="cancel">
                         cancel
                     </span>
                 </div>
@@ -27,7 +25,7 @@
 import axios from 'axios';
 
 export default {
-    name: 'notificationItem',
+    name: 'NotificationItem',
     props:["n"],
     data() {
         return {
@@ -35,7 +33,10 @@ export default {
         };
     },
     methods: {
-        cancel() {
+        cancel(event) {
+            // 부모 컴포넌트에서 발생하는 이벤트 중지
+            event.stopPropagation();
+            
             const idValue = this.n.id
             const url = `${this.backURL}/subscribe/${idValue}`
             axios.delete(url)
@@ -49,9 +50,13 @@ export default {
                 if (index !== -1) {
                     // notificationList.content 배열에서 삭제된 알림 제거
                     this.$parent.notificationList.content.splice(index, 1);
+                    if (this.$parent.notificationList.content.length === 0) {
+                        window.location.reload();
+                    }
                 }
 
-                window.location.reload();
+                // window.location.reload();
+
 
                 })
                 .catch(error => {
@@ -72,15 +77,16 @@ export default {
         margin-bottom: 8px;
         padding: 4px;
         width: 300px;
-        height: 60px;
+        height: 80px;
         background-color:  #ffffff;
         /* border: 1px solid black; */
         border-radius: 4px;
-        font-family: 'Noto Serif KR', serif;
+        /* font-family: Noto Serif KR', serif; */
     }
     li {
+        margin-top: 5px;
         text-align: center;
-        font-family: 'Noto Serif KR', serif;
+        /* font-family: 'Noto Serif KR', serif; */
         font-size: 13px;
         color: black;
     }
@@ -88,11 +94,12 @@ export default {
         font-family: 'Noto Serif KR', serif;
         text-align: left;
         /* order: 1; 오른쪽에 위치 */
-        margin-right: 190px;
+        margin-right: 160px;
+        font-size: 13px;
     }
     /* 아이콘 */ 
     .material-symbols-outlined {
-        font-size: 13px;
+        font-size: 19px;
         /* margin-top: px; */
         padding: 2px;
     font-variation-settings:

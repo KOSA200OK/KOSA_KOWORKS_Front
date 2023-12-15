@@ -1,4 +1,4 @@
-<template>
+g<template>
   <div class="modal">
     <div class="modal-content">
       <button class="close-button" @click="closeModal">
@@ -16,7 +16,7 @@
       <div v-if="request.status === 0">
         <div class="info-item">
           <label for="rejectReason">반려 사유:</label>
-          <textarea id="rejectReason" v-model="reject" rows="4" cols="50" placeholder="반려 사유를 입력하세요"></textarea>
+          <textarea id="rejectReason" v-model="reject" rows="4" cols="50" placeholder="반려 사유를 입력하세요" required></textarea>
         </div>
         <div class="button-group">
           <button class="approve-button" @click="approveRequest">승인</button>
@@ -44,11 +44,16 @@ export default {
       this.$emit('close');
     },
     approveRequest() {
+      if (this.request.quantity > this.request.stuff.stock) {
+        alert('승인 가능한 수량이 없습니다.');
+        return;
+      }
+
       const params = {
         id: this.request.id,
         stuff: {
-                    id: this.request.stuff.id,
-                },
+          id: this.request.stuff.id,
+        },
         quantity: this.request.quantity,
         status: 1,
       };
@@ -68,7 +73,7 @@ export default {
         });
       this.closeModal();
     },
-    
+
     rejectRequest() {
       const params = {
         id: this.request.id,

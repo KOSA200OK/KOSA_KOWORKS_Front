@@ -103,6 +103,46 @@ import axios from "axios";
 import { ref } from "vue";
 
 export default {
+<<<<<<< HEAD
+  // 찬석
+  name: "Sidebar",
+  components: { notificationItem },
+  data() {
+    return {
+      is_expanded: localStorage.getItem("is_expanded") === "true",
+      memberName: "",
+      departmentId: 0,
+      //찬석
+      isStatusOn: false,
+      notificationList: { content: [] },
+      scrollPostion: 0,
+      hasContent: false, // 종 색깔
+    };
+  },
+  methods: {
+    toggleMenu() {
+      this.is_expanded = !this.is_expanded;
+      localStorage.setItem("is_expanded", this.is_expanded);
+    },
+    // 찬석
+    toggleOnOff: function () {
+      this.isStatusOn = !this.isStatusOn;
+      console.log("isStatusOn 값:", this.isStatusOn);
+    },
+  },
+  computed: {
+    getClassObject() {
+      return { "is-expanded": this.is_expanded };
+    },
+  },
+
+  created() {
+    //재원
+    const memberName = window.localStorage.getItem("name");
+    this.memberName = memberName;
+    const departmentId = window.localStorage.getItem("departmentId");
+    this.departmentId = departmentId;
+=======
 	// 찬석
 	name: "Sidebar",
 	components: { notificationItem },
@@ -124,6 +164,7 @@ export default {
 			this.is_expanded = !this.is_expanded;
 			localStorage.setItem("is_expanded", this.is_expanded);
 		},
+>>>>>>> 94cd935bef366f5aee5dac99d27555c614de2268
 
 		async logout() {
 			try {
@@ -188,6 +229,7 @@ export default {
 		this.memberName = memberName;
 		const departmentId = window.localStorage.getItem("departmentId");
 		this.departmentId = departmentId;
+		console.log("부서" + this.departmentId);
 
 		// 찬석
 		const id = window.localStorage.getItem("memberId");

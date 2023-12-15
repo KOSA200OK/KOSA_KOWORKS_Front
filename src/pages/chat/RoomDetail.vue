@@ -1,7 +1,8 @@
+<!-- RoomDetail.vue -->
 <template>
   <main>
-    <div class="detail-container" id="app" v-cloak>
-      <div class="detail-header">
+    <div class="roomdetail-container" id="app" v-cloak>
+      <div class="roomdetail-header">
         <h2>{{ room.name }}</h2>
       </div>
       <div class="chat-input">
@@ -168,12 +169,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 [v-cloak] {
   display: none;
 }
-.container {
-  max-width: 400px;
+.roomdetail-container {
+  max-width: 100%;
   margin: 20px auto;
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
@@ -182,7 +183,7 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.header {
+.roomdetail-header {
   text-align: center;
   margin-bottom: 20px;
   color: #495057;
@@ -204,7 +205,7 @@ input {
 
 .send-button {
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #2196f3;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -218,12 +219,14 @@ ul {
 }
 
 .chat-item {
-  padding: 10px;
-  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  overflow: hidden; /* 말풍선이 내용을 감출 수 있도록 overflow 속성 추가 */
 }
 
 .chat-item strong {
-  color: #007bff;
+  color: black;
   display: block;
 }
 /* 채팅 아이템의 text-align 스타일을 오른쪽으로 정렬하도록 변경 */
@@ -246,10 +249,32 @@ ul {
 .my-message strong {
   order: 2;
   text-align: right; /* 내 메시지일 경우 오른쪽 정렬 */
+  margin-right: 10px;
 }
 
 .chat-item[style*="text-align: right"] strong {
   order: 1;
   text-align: right; /* 다른 사람의 메시지일 경우 왼쪽 정렬 */
+}
+/* 추가 */
+
+/* 스크롤바 스타일을 조정합니다. */
+ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+ul::-webkit-scrollbar-thumb {
+  background-color: #2196f3;
+  border-radius: 4px;
+}
+
+ul::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+/*  */
+span {
+  font-size: 0.8em;
+  color: #888; /* 수정: 시간의 색깔을 회색으로 변경 */
+  margin-left: 5px; /* 수정: 시간과 메시지 사이의 여백 추가 */
 }
 </style>

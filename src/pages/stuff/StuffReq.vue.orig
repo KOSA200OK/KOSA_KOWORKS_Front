@@ -1,6 +1,7 @@
 <template>
     <main>
-        <h3 class="title">비품 요청 내역</h3>
+        <h3 class="title">비품 요청 목록조회</h3>
+        <br>
         <div class="form-container">
             <div class="form-group">
                 <label for="startDatePicker">시작 날짜:</label>
@@ -9,13 +10,6 @@
             <div class="form-group">
                 <label for="endDatePicker">종료 날짜:</label>
                 <input type="date" id="endDatePicker" v-model="endDate" />
-            </div>
-            <div class="form-group">
-                <label for="departmentSelect">부서명:</label>
-                <select id="departmentSelect" v-model="departmentId">
-                    <option value="1">개발 1팀</option>
-                    <option value="3">개발 3팀</option>
-                </select>
             </div>
             <div class="form-group">
                 <label for="statusSelect">요청상태:</label>
@@ -48,33 +42,41 @@
             </div>
             <button @click="loadData" class="load-button">목록 로드</button>
         </div>
+
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
                         <th>요청날짜</th>
-                        <th>사원이름</th>
-                        <th>부서명</th>
                         <th>비품번호</th>
                         <th>비품명</th>
-                        <th>현재재고</th>
                         <th>요청수량</th>
+                        <th>요청사유</th>
                         <th>처리현황</th>
+                        <th>반려사유</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <RequestManageItem :request="request" v-if="reqList" v-for="request in reqList" :key="request.id" />
+                    <RequestItem :request="request" v-if="reqList" v-for="request in reqList" :key="request.id" />
                 </tbody>
             </table>
         </div>
+        <br>
+        <hr>
+        <br>
+        <div class="req-container">
+            <StuffReqSend :memberId="memberId" @submitRequest="sendRequest" />
+        </div>
     </main>
 </template>
+  
 <script>
-import RequestManageItem from '@/pages/stuff/RequestManageItem.vue'
+import StuffReqSend from '@/pages/stuff/StuffReqSend.vue'
+import RequestItem from '@/pages/stuff/RequestItem.vue'
 import axios from 'axios'
 export default {
-    name: 'StuffManage',
-    components: { RequestManageItem },
+    name: 'StuffReq',
+    components: { RequestItem, StuffReqSend },
     data() {
         return {
             category: 'default', // 대분류 선택값
@@ -82,10 +84,21 @@ export default {
             memberId: null,
             status: 3,
             stuffId: 'default',
-            startDate: null,
-            endDate: null,
-            departmentId: 0,
+            startDate: '',
+            endDate: '',
+            // 비품 데이터 예시
             reqList: [],
+        };
+    },
+    created() {
+        const memberIdValue = localStorage.getItem('memberId');
+
+        if (memberIdValue !== null) {
+            console.log('memberId의 값:', memberIdValue);
+
+            this.memberId = memberIdValue;
+        } else {
+            console.log('로컬 스토리지에 memberId에 해당하는 값이 없습니다.');
         }
     },
     methods: {
@@ -95,10 +108,10 @@ export default {
                 return;
             }
 
-            const url = `${this.backURL}/stuff/requestmanage`;
+            const url = `${this.backURL}/stuff/requestlist/case`;
 
             const params = {
-                departmentId: this.departmentId,
+                memberId: this.memberId,
                 status: this.status,
                 stuffId: this.stuffId,
                 startDate: this.startDate,
@@ -115,29 +128,28 @@ export default {
             })
                 .then(response => {
                     alert('목록 로드 성공')
+                    console.log(response)
                     this.reqList = response.data;
                 })
                 .catch(error => {
                     alert('목록 로드 실패')
-                    console.error('데이터를 불러오는 중 에러 발생:', error);
                 });
         },
-        trClickHandler(reqId) {
-            console.log('클릭한 tr의 데이터:', reqId);
-
-
-            this.selectedRowData = this.reqList;
-            this.isModalVisible = true;
-        },
     },
-}
+};
 </script>
+  
 <style scoped>
 .table-container {
-    max-height: 700px;
+<<<<<<< HEAD
+    height: 250px;
+=======
+    min-height: 200px;
+    max-height: 300px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+>>>>>>> 94cd935bef366f5aee5dac99d27555c614de2268
     overflow-y: auto;
 }
 
@@ -163,27 +175,6 @@ tbody tr:nth-child(even) {
 
 tbody tr:hover {
     background-color: #eaeaea;
-}
-
-/* 처리현황에 따른 스타일링 */
-.processing,
-.completed,
-.rejected {
-    font-weight: bold;
-    text-align: center;
-    padding: 8px;
-}
-
-.processing {
-    background-color: #E9BC00;
-}
-
-.completed {
-    background-color: #58CB64;
-}
-
-.rejected {
-    background-color: #FE813C;
 }
 
 .form-container {
@@ -225,5 +216,11 @@ select {
 
 .load-button:hover {
     background-color: #58b5c5;
+}
+.req-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px; /* 필요에 따라 조절하세요 */
 }
 </style>

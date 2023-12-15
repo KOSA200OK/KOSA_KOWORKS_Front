@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Home from "@/pages/Home.vue";
+import Dashboard from "@/pages/dashboard/Dashboard.vue";
 import Attendance from "@/pages/attendance/AttendanceList.vue";
 import AddressList from "@/pages/address/AddressList.vue";
 import CarList from "@/pages/car/CarList.vue";
@@ -22,7 +22,7 @@ import StuffManage from "@/pages/stuff/StuffManage.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/home", component: Home },
+    { path: "/dashboard", component: Dashboard },
     // { path: '/attendancelist', component: AttendanceList },
     { path: "/address/addresslist/", component: AddressList },
     { path: "/address/addresslist/:currentPage", component: AddressList },
@@ -44,6 +44,7 @@ const router = createRouter({
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },
     { path: "/attendance/date/:currentPage", component: Attendance },
+    // { path: "/attendance/today", component: Attendance },
     // /attendance/date/:currentPage
     // { path: "/attendance/:page", component: Attendance },
     { path: "/notice/noticelist", component: NoticeList },

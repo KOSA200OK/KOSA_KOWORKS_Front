@@ -1,25 +1,34 @@
 <template>
   <div class="login-container">
-    <h2 v-if="!isLoggedIn">Login</h2>
-    <form v-if="!isLoggedIn" @submit.prevent="login">
-      <label for="id">사원번호: </label>
-      <input v-model="id" type="text" id="id" required />
+    <!-- <h2 v-if="!isLoggedIn">Login</h2> -->
+    <form class="login-form" v-if="!isLoggedIn" @submit.prevent="login">
+      <!-- <label for="id">사원번호: </label> -->
+      <img class="login-img" :src="`../images/logo.png`" alt="logo" />
+      <input
+        class="member-input"
+        v-model="id"
+        type="text"
+        id="id"
+        required
+        placeholder="사원번호"
+      />
 
-      <label for="password">비밀번호: </label>
-      <input v-model="password" type="password" id="password" required />
-
-      <button type="submit">Login</button>
-    </form>
-    <form v-if="isLoggedIn" @submit.prevent="logout">
-      <button type="submit">Logout</button>
+      <!-- <label for="password">비밀번호: </label> -->
+      <input
+        class="password-input"
+        v-model="password"
+        type="password"
+        id="password"
+        required
+        placeholder="비밀번호"
+      />
+      <button class="login-button" type="submit">로그인</button>
     </form>
     <!-- 찬석 -->
-    <div
-      class="notify_bar"
-      v-if="notifyMessage"
-      @click="handleNotificationClick"
-    >
-      {{ notifyMessage }}
+    <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
+        <div class="notify_bar_title">알림</div>
+        <br>
+        <div>{{ notifyMessage }}</div>
     </div>
 
     <router-view v-if="isLoggedIn"></router-view>
@@ -71,8 +80,9 @@ export default {
         // SSE 구독 시작 ==
         this.startSSE();
 
-        this.$router.push("/home");
+        this.$router.push("/dashboard");
         this.$data.user = response.data;
+        location.reload();
       } catch (error) {
         console.error("로그인 실패:", error);
       }
@@ -82,12 +92,11 @@ export default {
     async startSSE() {
       if (this.isLoggedIn) {
         const id = localStorage.getItem("memberId");
-
         // String id = localStorage.getItem
         // EventSource를 이용해 SSE 구독 시작
         // this.eventSource = new EventSource(`${this.backURL}/subscribe/${this.id}`);
         this.eventSource = new EventSource(`${this.backURL}/subscribe/${id}`);
-
+        
         this.eventSource.addEventListener("sse", (event) => {
           console.log(event.data);
           console.log(event);
@@ -164,6 +173,7 @@ export default {
         // localStorage에서 departmentId 제거
         localStorage.removeItem("departmentId");
 
+        localStorage.removeItem("name");
         this.$router.push("/home");
         //화면 새로고침
         location.reload();
@@ -183,34 +193,90 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .login-container {
-  background-color: white;
+  background-color: white; /*rgb(243, 245, 247);*/
   width: 100vw;
 }
 
 .notify_bar {
-  margin-top: 880px;
-  margin-left: 1460px;
-  width: 400px;
+  position: fixed;
+  right: 10px; /* 화면 오른쪽과의 여백 설정 */
+  bottom: 10px; /* 화면 하단과의 여백 설정 */
+  width: 390px;
   height: 100px;
   padding: 10px;
-  /* 알림 내용과의 간격 조정을 위한 패딩 */
-  background-color: #009ea8;
-  /* 배경색 지정 */
-  border: 2px solid whitesmoke;
-  /* 테두리 설정 */
-  border-radius: 5px;
-  /* 둥근 테두리를 위한 속성 */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  /* 그림자 효과 */
+  border: 2px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  /* 텍스트 가운데 정렬 */
   font-family: Arial, sans-serif;
   color: white;
-  /* 텍스트 색상 */
-  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+
+  background-color: rgba(59, 126, 216, 1);
+  /* background:  rgba(255,255,255,0.1); */
+  border-radius: 10px 10px 10px 10px ;
+}
+.notify_bar_title {
+    position: absolute;
+    left: 10px; /* 왼쪽과의 여백 설정 */
+    top: 10px; /* 위쪽과의 여백 설정 */
+    font-weight: normal;
+    font-size: 12px;
+}
+
+/*  */
+.login-form {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  text-align: center;
+  margin: 0 auto; /* 가운데 정렬을 위한 margin 속성 추가 */
+  position: absolute; /* 위치를 absolute로 설정 */
+  top: 50%; /* 부모 요소의 50% 위치로 이동 */
+  left: 50%; /* 부모 요소의 50% 위치로 이동 */
+  transform: translate(-50%, -50%); /* 자기 자신의 50% 만큼 이동하여 중앙 정렬 */
+}
+
+.member-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.password-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 20px;
+  /* 버튼 위쪽 여백 추가 */
+}
+
+.login-img {
+  width: 100px;
+  height: auto;
 }
 </style>
-
-<!-- test -->
