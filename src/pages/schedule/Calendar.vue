@@ -1,7 +1,7 @@
 <template>
 <main>
     <div class="calendar">
-        <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarEvents" eventClick="scheduleDetailHandler">
+        <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarOptions.events" eventClick="scheduleDetailHandler">
 
         <template v-slot:eventContent='arg'>
             <div class="event" @click="scheduleDetailHandler(arg)">
@@ -21,7 +21,12 @@
                 <!-- <div class="modal-header">
                     <p>일정추가</p>
                 </div> -->
-                <form class="add-schedule" @submit.prevent="reserveHandler">
+                <button class="cancel" @click="closeAddModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+</svg></button>
+                <div class="formdiv">
+                <form class="add-schedule">
                     <label>제목 </label><input type="text" 
                                             v-model="FormData.scheduleTitle"
                                             class="title"
@@ -31,28 +36,29 @@
                     <label>기간</label><input type="date"
                                         name="startDate"
                                         v-model="startDate"
-                                        required> ~ <input type="date"
-                                                                    name="endDate"
-                                                                    v-model="endDate"
-                                                                    :min ="startDate"
-                                                                    required><br><br>
-                    <label>시간</label><input type="time"
+                                        required> <input type="time"
                                         name="starttime"
                                         v-model="FormData.startTime"
-                                        required> ~ <input type="time"
-                                                                    name="endtime"
-                                                                    v-model="FormData.endTime"
-                                                                    :min ="FormData.startTime"
-                                                                    required><br><br>
+                                        required><br><br>
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>~ <input type="date"
+                           name="endDate"
+                           v-model="endDate"
+                           :min ="startDate"
+                           required>
+                           <input type="time"
+                                  name="endtime"
+                                   v-model="FormData.endTime"
+                                   :min ="FormData.startTime"
+                                   required><br><br>
                     <label>메모 </label><textarea class="content" 
                                             v-model="FormData.content"
                                             maxlength="60"
                                             placeholder="60자 이내로 입력하세요"></textarea>
                     <div class="modal-btn">
                         <button type="submit" class="ok" @click="scheduleAddHandler">등록</button>
-                        <button class="cancel" @click="closeAddModal">취소</button>
                     </div>
                 </form>
+                </div>
             </div>
         </div>
     </div>    
@@ -258,14 +264,18 @@ export default {
   background: #fff;
   border-radius: 20px;
   padding: 50px;
+  padding-top : 30px;
   box-sizing: border-box;
   box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+.formdiv{
+    margin-top : 30px;
 }
 .modal-btn{
     margin-top : 50px;
     text-align: center;
 }
-.ok, .cancel{
+.ok{
     background-color: #58d3e9;
     color: white;
     padding: 10px 15px;
@@ -277,13 +287,14 @@ export default {
     background-color: #58b5c5;
 }
 .cancel:hover {
-    background-color: #58b5c5;
+    color : #58b5c5;
 }
 .ok{
     margin-right : 20px;
 }
 .cancel{
-    margin-left : 20px;
+    color : #58d3e9;
+    float: right;
 }
 
 label{
@@ -311,4 +322,5 @@ label{
     font-size : 13px;
     padding: 10px;
 }
+
 </style>
