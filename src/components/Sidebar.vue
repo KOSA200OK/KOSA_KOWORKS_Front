@@ -98,7 +98,7 @@
     <div class="flex"></div>
 
     <div class="menu">
-      <div class="button" @click="logout">
+      <div class="button logoutBt" @click="logout">
         <span class="material-icons">logout</span>
         <span class="text">로그아웃</span>
       </div>
@@ -172,6 +172,7 @@ export default {
       this.isStatusOn = !this.isStatusOn;
       console.log("isStatusOn 값:", this.isStatusOn);
     },
+
     notificationClick(n) {
       console.log("타입 : ", n.type);
       switch (n.type) {
@@ -428,5 +429,9 @@ aside {
   color: #ffcc00 !important;
   animation: bellAnimation 0.5s ease-in-out infinite;
   /* 무한 반복하는 애니메이션 설정 */
+}
+
+.logoutBt {
+  cursor: pointer;
 }
 </style>

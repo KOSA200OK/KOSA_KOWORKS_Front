@@ -3,11 +3,12 @@
   <main>
     <div class="roomlist-container" id="app" v-cloak>
       <div class="roomlist-header">
-        <h3>채팅방 목록</h3>
+        <span class="material-symbols-outlined"> forum </span>
+        <h3 class="roomlist-title">채팅방 목록</h3>
       </div>
       <!-- 채팅방 검색 -->
       <div class="search-form">
-        <span>&#128269;</span>
+        <span class="material-symbols-outlined"> search </span>
         <input
           class="roomsearch-input"
           id="roomSearch"
@@ -130,7 +131,8 @@ export default {
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(214, 14, 64, 0.1);
+  overflow: hidden;
 }
 
 .roomlist-header {
@@ -173,15 +175,27 @@ export default {
   border-radius: 5px;
   cursor: pointer;
 }
-
-ul {
+/* scroll 설정 */
+.chatroom-list {
   list-style: none;
   padding: 0;
   margin: 0;
   overflow-y: auto; /* 세로 스크롤 추가 */
-  max-height: 400px; /* 스크롤이 나타날 최대 높이 지정 (필요에 따라 조절) */
+  max-height: 300px; /* 스크롤이 나타날 최대 높이 지정 (필요에 따라 조절) */
+}
+.chatroom-list::-webkit-scrollbar {
+  width: 8px;
 }
 
+.chatroom-list::-webkit-scrollbar-thumb {
+  background-color: #2196f3;
+  border-radius: 4px;
+}
+
+.chatroom-list::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+/*  */
 .chatroom-item {
   padding: 15px;
   background-color: #fff;
@@ -202,6 +216,13 @@ ul {
   background-color: #f0f0f0;
 }
 .chatroom-item:hover {
-  background-color: #0e1c2a;
+  background-color: #caf0f8;
+}
+.roomlist-title {
+  color: #f0f0f0;
+}
+.material-symbols-outlined {
+  color: #f0f0f0;
+  margin-right: 8px;
 }
 </style>

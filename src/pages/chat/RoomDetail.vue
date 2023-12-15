@@ -13,7 +13,10 @@
           @keypress.enter="sendMessage"
           placeholder="메시지를 입력하세요"
         />
-        <button class="send-button" @click="sendMessage">보내기</button>
+
+        <button class="send-button" @click="sendMessage">
+          <span class="material-symbols-outlined"> forward_to_inbox </span>
+        </button>
       </div>
       <ul class="chat-list">
         <li
@@ -211,19 +214,6 @@ input {
   cursor: pointer;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.chat-item {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  overflow: hidden; /* 말풍선이 내용을 감출 수 있도록 overflow 속성 추가 */
-}
-
 .chat-item strong {
   color: black;
   display: block;
@@ -239,14 +229,25 @@ ul {
   order: 1;
 }
 
-ul {
+.chat-list {
   list-style: none;
   padding: 0;
   margin: 0;
   overflow-y: auto; /* 세로 스크롤 추가 */
   max-height: 300px; /* 스크롤이 나타날 최대 높이 지정 (필요에 따라 조절) */
 }
+.chat-list::-webkit-scrollbar {
+  width: 8px;
+}
 
+.chat-list::-webkit-scrollbar-thumb {
+  background-color: #2196f3;
+  border-radius: 4px;
+}
+
+.chat-list::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
 /* 채팅 오른쪽 왼쪽 */
 .my-message strong {
   order: 2;
@@ -263,24 +264,12 @@ ul {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
-  overflow: hidden;
+  background-color: #caf0f8;
 }
 
 .chat-item .sender {
   font-weight: bold;
   margin-bottom: 5px;
-}
-
-.chat-item .message-bubble {
-  background-color: #e1ffc7; /* 말풍선 배경색 */
-  border-radius: 10px; /* 말풍선 모서리 둥글게 */
-  padding: 10px; /* 말풍선 안의 여백 */
-  position: relative;
-}
-
-.my-message .message-bubble {
-  background-color: #a9c2ff; /* 내 메시지의 말풍선 배경색 */
-  align-self: flex-end; /* 내 메시지는 오른쪽 정렬 */
 }
 
 .timestamp {
@@ -291,24 +280,17 @@ ul {
 }
 /*  */
 /* 스크롤바 스타일을 조정합니다. */
-ul::-webkit-scrollbar {
-  width: 8px;
-}
-
-ul::-webkit-scrollbar-thumb {
-  background-color: #2196f3;
-  border-radius: 4px;
-}
-
-ul::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
-}
 
 span {
   font-size: 0.8em;
   color: #888; /* 수정: 시간의 색깔을 회색으로 변경 */
   margin-left: 5px; /* 수정: 시간과 메시지 사이의 여백 추가 */
 }
-.chat-list {
+
+.material-symbols-outlined {
+  color: #f0f0f0;
+  font-size: 1.5em;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 </style>
