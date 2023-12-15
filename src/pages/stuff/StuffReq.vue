@@ -145,38 +145,21 @@ export default {
     max-height: 300px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
     overflow-y: auto;
 }
 
-table {
-    width: 99.5%;
+.table-container>table{
+    width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
-
-th {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
-
-td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
-
 thead {
     background-color: #f5f5f5;
 }
-
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tbody tr:hover {
-    background-color: #eaeaea;
+th{
+    text-align: center;
 }
 
 .form-container {
@@ -223,6 +206,6 @@ select {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5px; /* 필요에 따라 조절하세요 */
+  margin-top: 5px; 
 }
 </style>

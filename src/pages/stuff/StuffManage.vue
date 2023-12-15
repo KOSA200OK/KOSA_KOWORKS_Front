@@ -13,6 +13,7 @@
             <div class="form-group">
                 <label for="departmentSelect">부서명:</label>
                 <select id="departmentSelect" v-model="departmentId">
+                    <option value="0">전체선택</option>
                     <option value="1">개발 1팀</option>
                     <option value="3">개발 3팀</option>
                 </select>
@@ -134,56 +135,25 @@ export default {
 </script>
 <style scoped>
 .table-container {
-    max-height: 700px;
+    max-height: 780px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
     overflow-y: auto;
 }
 
-table {
-    width: 99.5%;
+.table-container>table{
+    width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-}
-
-td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
 }
 
 thead {
     background-color: #f5f5f5;
 }
-
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tbody tr:hover {
-    background-color: #eaeaea;
-}
-
-/* 처리현황에 따른 스타일링 */
-.processing,
-.completed,
-.rejected {
-    font-weight: bold;
+th{
     text-align: center;
-    padding: 8px;
-}
-
-.processing {
-    background-color: #E9BC00;
-}
-
-.completed {
-    background-color: #58CB64;
-}
-
-.rejected {
-    background-color: #FE813C;
 }
 
 .form-container {
