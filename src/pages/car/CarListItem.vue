@@ -3,7 +3,7 @@
         <td>{{c.id}}</td>
         <td>{{c.carNo}}</td>
         <td>{{c.carType}}</td>
-        <td><button @click="openModal">신청</button></td>
+        <td><button class="applybutton" @click="openModal">신청</button></td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck" >
         <div class="modal-container">
@@ -109,12 +109,24 @@ export default {
 }
 </script>
 <style scoped>
-td{
+/* td{
     padding : 25px;
     font-size: 15px;
     border-top : dotted 2px;
     border-color : #dfdfdf;
     text-align: center;
+} */
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+tr:hover {
+    background-color: #fcfcfc;
+}
+td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: px solid #ddd;
+    border-top : dotted 1px #cccccc;
 }
 .modal-wrap {
   position: fixed;
@@ -140,6 +152,17 @@ td{
     position: relative;
     left: 50%;
     margin-top : 50px;
+}
+.applybutton, .ok{
+    background-color: #58d3e9;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover{
+    background-color: #58b5c5;
 }
 .ok{
     margin-right : 20px;

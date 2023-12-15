@@ -1,53 +1,54 @@
 <template lang="">
-    <div class="carlist">
-        <router-link class="myrentlistbutton" to="/carrent/myrentlist">차량 예약 내역</router-link><br>
-        <div class="dateselect">
-            <label>대여기간 : </label><input type="date" 
-                name="startDate" 
-                v-model="data.startDate"
-                :min="minStartDate" 
-               
-                required>
-         ~ <input type="date" 
-                  name="endDate" 
-                  v-model="data.endDate" 
-                  :min="minEndDate" 
-                 
-                  required>
-            <button class="dateselectbutton" @click="dateSelectHandler">확인</button>
+    <main>
+            <router-link class="myrentlistbutton" to="/carrent/myrentlist">차량 예약 내역</router-link><br>
+            <div class="dateselect">
+                <label>대여기간 : </label><input type="date" 
+                    name="startDate" 
+                    v-model="data.startDate"
+                    :min="minStartDate" 
+                
+                    required>
+            ~ <input type="date" 
+                    name="endDate" 
+                    v-model="data.endDate" 
+                    :min="minEndDate" 
+                    
+                    required>
+                <button class="dateselectbutton" @click="dateSelectHandler">확인</button>
+            </div>
+        <div class="carlist">
+            <table v-if="carlist" class="carlist-table">
+                <thead>
+                    <tr>
+                        <th>차대번호</th>
+                        <th>차량번호</th>
+                        <th>차종</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="hover-effect">
+                    <CarListItem
+                                :d="data" 
+                                :c="c"
+                                v-if="carlist"
+                                v-for="c in carlist.content"
+                                :key="c.id"/>
+                </tbody>
+            </table>
+        
         </div>
-        <table v-if="carlist" class="carlist-table">
-            <thead>
-                <tr>
-                    <th>차대번호</th>
-                    <th>차량번호</th>
-                    <th>차종</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody class="hover-effect">
-                <CarListItem
-                            :d="data" 
-                            :c="c"
-                            v-if="carlist"
-                            v-for="c in carlist.content"
-                            :key="c.id"/>
-            </tbody>
-        </table>
-        <PageGroup
-            v-if="carlist" 
-            :path="'/carrent/carlist/'"
-            :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-           
-            :totalPage="carlist.totalPages"
-           
-            :startPage="startPage"
-            :endPage="endPage"
+            <PageGroup
+                v-if="carlist" 
+                :path="'/carrent/carlist/'"
+                :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
+            
+                :totalPage="carlist.totalPages"
+            
+                :startPage="startPage"
+                :endPage="endPage"
 
-        />
-       
-    </div>
-    
+            />
+    </main>
     
 </template>
 <script>
@@ -145,44 +146,32 @@ export default {
 </script>
 <style scoped>
 .carlist{
-    /* position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); */
-    /* margin-left : 300px; */
+    /* font-family: "Arial", sans-serif; */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 6%;
+    width: 1450px;
 }
 .carlist-table {
-  font-family: "Arial", sans-serif;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  margin: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-left: 6%;
-  width: 1450px;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
+}
+thead {
+    background-color: #f5f5f5;
 }
 
 .carlist-table th {
-  padding: 25px;
+    text-align: center;
+  /* padding: 25px;
   font-size: 15px;
-  background-color: #f5f5f5;
+  background-color: #f5f5f5; */
 }
-
-.carlist-table td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-}
-
-.carlist-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.hover-effect tbody:hover {
-  background-color: #eaeaea;
-}
-
+/* .carlist-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+} */
 .myrentlistbutton{
     width : 200px;
     padding : 10px;
@@ -195,5 +184,8 @@ export default {
 }
 .dateselectbutton{
     margin-left: 20px;
+}
+tbody::v-deep tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 </style>
