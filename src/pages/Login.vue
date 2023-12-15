@@ -174,7 +174,7 @@ export default {
         localStorage.removeItem("departmentId");
 
         localStorage.removeItem("name");
-        this.$router.push("/home");
+        this.$router.push("/dashboard");
         //화면 새로고침
         location.reload();
       } catch (error) {
