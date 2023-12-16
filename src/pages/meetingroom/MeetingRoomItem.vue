@@ -20,7 +20,10 @@
                 <!-- 행 개수(5개)만큼 반복 -->
                 <div v-for="row in 5" :key="row" class="reservation-container">
                 <!-- 칼럼 개수(times.length)만큼 반복 -->
-                <div v-for="time in times" :key="time" class="time-slot">yes</div>
+                <div v-for="time in times" :key="time" class="time-slot">
+                    <!-- 해당 시간 범위에 네모 박스를 추가 -->
+                    <div v-if="isTimeInRange(time, mr.reservation.startTime, mr.reservation.endTime)" class="reservation-box"></div>
+                </div>
                 </div>
             </div>
         </td>
@@ -38,6 +41,8 @@ export default {
         return {
             times: this.generateTimeSlots(),
             showModal: false,
+            // starttime: "8:00", // 시작 시간
+            // endtime: "9:00",   // 종료 시간
         }
     },
     methods: {
@@ -59,6 +64,16 @@ export default {
             }
 
             return times;
+        },
+        isTimeInRange(time, start, end) {
+            const currentDate = this.mr.reservation.meetingDate;
+
+            const currentTime = new Date(`${currentDate} ${time}`);
+            const startTime = new Date(`${currentDate} ${start}`);
+            const endTime = new Date(`${currentDate} ${end}`);
+            console.log(startTime);
+            console.log(endTime);
+            return currentTime >= startTime && currentTime < endTime;
         },
         openModal() {
             this.showModal = true;
@@ -167,6 +182,8 @@ td {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 30px;
+
     padding-right: 10px;
     margin-right: 10px;
 }
@@ -174,9 +191,19 @@ td {
 .time-slot {
   flex: 0 0 100px;
   padding: 8px;
+  height: 100%;
   text-align: center;
   border-left : 1px solid lightgray;
   border-bottom : 1px solid lightgray;
+}
+
+/* 네모 박스 스타일 지정 */
+.reservation-box {
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  background-color: lightblue;
+  border: 1px solid #ccc;
 }
 
 </style>
