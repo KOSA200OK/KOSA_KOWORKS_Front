@@ -12,31 +12,34 @@
     </div>
 
     <div class="menu">
-      <button class="button">
+      <div class="button">
+        <span class="material-icons">badge</span>
+        <span class="text">{{ memberName }}님 환영합니다</span>
+      </div>
+      <div class="button">
         <span class="material-icons" :class="{ 'bell-has-content': hasContent }"
           >notifications</span
         >
         <button @click="toggleOnOff" class="text">Bell</button>
         <!-- <span class="text">Bell</span> -->
-      </button>
-      <!-- 찬석  -->
-      <div v-if="isStatusOn" class="notify">
-        <notificationItem
-          :n="n"
-          v-for="n in this.notificationList.content"
-          :key="n.id"
-        >
-          {{ n.content }}
-          예약 내용
-        </notificationItem>
+        <div v-if="isStatusOn" class="notify">
+          <notificationItem
+            :n="n"
+            v-for="n in this.notificationList.content"
+            :key="n.id"
+            @click="notificationClick(n)"
+          >
+            예약 내용
+          </notificationItem>
+        </div>
       </div>
+      <!-- 찬석  -->
     </div>
-
     <h3>Menu</h3>
     <div class="menu">
-      <router-link class="button" to="/home">
-        <span class="material-icons">home</span>
-        <span class="text">메인</span>
+      <router-link class="button" to="/dashboard">
+        <span class="material-icons">apps</span>
+        <span class="text">대시보드</span>
       </router-link>
       <router-link class="button" to="/attendance">
         <span class="material-icons">check_circle</span>
@@ -46,7 +49,7 @@
         <span class="material-icons">campaign</span>
         <span class="text">공지사항</span>
       </router-link>
-      <router-link class="button" to="/address/members">
+      <router-link class="button" to="/address/addresslist">
         <span class="material-icons">group</span>
         <span class="text">주소록</span>
       </router-link>
@@ -54,10 +57,10 @@
         <span class="material-icons">chat</span>
         <span class="text">채팅</span>
       </router-link>
-      <!-- <router-link class="button" to="/calendar/list">
+      <router-link class="button" to="/schedule/calendar">
         <span class="material-icons">calendar_month</span>
         <span class="text">일정</span>
-      </router-link> -->
+      </router-link>
       <router-link class="button" to="/meetingroom">
         <span class="material-icons">meeting_room</span>
         <span class="text">회의실 예약</span>
@@ -70,7 +73,7 @@
         <span class="material-icons">no_crash</span>
         <span class="text">차량 예약</span><br />
       </router-link>
-      <router-link class="button" to="/carrent/manage">
+      <router-link v-if="departmentId === '4'" class="button" to="/carrent/manage">
         <span class="material-icons">car_rental</span>
         <span class="text">차량 관리</span>
       </router-link>
@@ -78,7 +81,7 @@
         <span class="material-icons">add_box</span>
         <span class="text">비품 요청</span>
       </router-link>
-      <router-link class="button" to="/stuff/stuffmanage">
+      <router-link v-if="departmentId === '4'" class="button" to="/stuff/stuffmanage">
         <span class="material-icons">shelves</span>
         <span class="text">비품 요청 관리</span>
       </router-link>
@@ -87,8 +90,10 @@
     <div class="flex"></div>
 
     <div class="menu">
-      <span class="material-icons">account_circle</span>
-      <span></span>
+      <div class="button logoutBt" @click="logout">
+        <span class="material-icons">logout</span>
+        <span class="text">로그아웃</span>
+      </div>
     </div>
   </aside>
 </template>
@@ -96,7 +101,7 @@
 <script>
 // 찬석
 // import notificationItem from '../pages/notification/notificationItem.vue'
-import notificationItem from "../pages/notification/notificationItem.vue";
+import notificationItem from "@/pages/notification/notificationItem.vue";
 import axios from "axios";
 import { ref } from "vue";
 
@@ -107,6 +112,9 @@ export default {
   data() {
     return {
       is_expanded: localStorage.getItem("is_expanded") === "true",
+      memberName: "",
+      departmentId: 0,
+
       //찬석
       isStatusOn: false,
       notificationList: { content: [] },
@@ -119,10 +127,56 @@ export default {
       this.is_expanded = !this.is_expanded;
       localStorage.setItem("is_expanded", this.is_expanded);
     },
+
+    async logout() {
+      try {
+        // SSE 연결 해제 -> 찬석
+        if (this.eventSource) {
+          this.eventSource.close();
+          this.eventSource = null;
+        }
+        // =============
+
+        await axios.get(`${this.backURL}/logout`, {});
+
+        // localStorage에서 로그인 상태 제거
+        localStorage.removeItem("isLoggedIn");
+
+        // localStorage에서 memberId 제거
+        localStorage.removeItem("memberId");
+
+        // localStorage에서 departmentId 제거
+        localStorage.removeItem("departmentId");
+
+        // localStorage에서 name 제거
+        localStorage.removeItem("name");
+
+        this.$router.push("/home");
+        //화면 새로고침
+        location.reload();
+      } catch (error) {
+        console.error("로그아웃 실패:", error);
+      }
+    },
+
     // 찬석
     toggleOnOff: function () {
       this.isStatusOn = !this.isStatusOn;
       console.log("isStatusOn 값:", this.isStatusOn);
+    },
+
+    notificationClick(n) {
+      console.log("타입 : ", n.type);
+      switch (n.type) {
+        case "CAR":
+          this.$router.push("/carrent/myrentlist");
+          break;
+        case "MEETING":
+          this.$router.push("/meetingroom/myreservation");
+          break;
+        default:
+          break;
+      }
     },
   },
   computed: {
@@ -130,8 +184,15 @@ export default {
       return { "is-expanded": this.is_expanded };
     },
   },
-  // 찬석
+
   created() {
+    //재원
+    const memberName = window.localStorage.getItem("name");
+    this.memberName = memberName;
+    const departmentId = window.localStorage.getItem("departmentId");
+    this.departmentId = departmentId;
+
+    // 찬석
     const id = window.localStorage.getItem("memberId");
     // const id = 1;
     console.log("localStorage memberId : ", id);
@@ -144,9 +205,7 @@ export default {
           // this.notificationList = response.data
           this.notificationList.content = response.data;
           // this.notificationList = { content: response.data }; // 객체 내에 content 속성으로 데이터 할당
-          const contentList = this.notificationList.content.map(
-            (item) => item.content
-          );
+          const contentList = this.notificationList.content.map((item) => item.content);
 
           console.log(this.notificationList);
           console.log("list : ", contentList);
@@ -175,16 +234,17 @@ aside {
   flex-direction: column;
   width: calc(2rem + 32px); //최소 넓이 = 2rem + 아이콘 크기 32px
   min-height: 100vh; // 부모와 상관없이 화면 채움
+  border-radius: 0 25px 25px 0;
   overflow: hidden;
   padding: 1rem;
 
-  background-color: #009ea8; //var(--dark); //var()는 사용자 지정 속성
+  background-color: #1565c0; //var(--dark); //var()는 사용자 지정 속성
   color: var(--light);
 
   transition: 0.2s ease-out; //토글 속도
 
   .flex {
-    flex: 1 1 0;
+    flex: 1 1 0%;
   }
 
   .logo {
@@ -226,7 +286,8 @@ aside {
 
   h3,
   .button .text {
-    // opacity: 0;
+    display: none;
+    opacity: 0;
     transition: 0.3s ease-out;
   }
 
@@ -264,15 +325,12 @@ aside {
       &:hover,
       &.router-link-exact-active {
         background-color: var(--dark-alt);
+        border-right: 5px solid var(--primary);
 
         .material-icons,
         .text {
           color: var(--primary);
         }
-      }
-
-      &.router-link-exact-active {
-        border-right: 5px solid var(--primary);
       }
     }
   }
@@ -287,16 +345,17 @@ aside {
       .menu-toggle {
         transform: rotate(-180deg);
       }
+    }
 
-      h3,
-      .button .text {
-        opacity: 1;
-      }
+    h3,
+    .button .text {
+      display: flex;
+      opacity: 1;
+    }
 
-      .button {
-        .material-icons {
-          margin-right: 1rem;
-        }
+    .button {
+      .material-icons {
+        margin-right: 1rem;
       }
     }
   }
@@ -306,41 +365,29 @@ aside {
     z-index: 99; // 요소의 수직 위치 지정 - 제일 높음
   }
 }
+
 // 찬석
 .notify {
   position: absolute;
   width: 400px;
-  margin-left: 245px;
-  margin-top: 5px;
+  margin-left: 13.1%;
+  margin-top: 19%;
   padding: 10px;
-  background-color: var(--dark);
+  // background-color: var(--dark);
+  background-color: #3b7ed8;
   border: 1px solid white;
   border-radius: 4px;
   max-height: 450px;
-  overflow-y: auto;
+  overflow-y: scroll;
+
+  /* 우측 패딩을 추가하여 스크롤바를 요소의 내부로 이동 */
+  padding-right: 20px;
+  z-index: 999;
 }
 /* 스크롤바 스타일링 */
 .notify::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
-	// 찬석
-	.notify {
-		position: absolute;
-		width: 400px;
-		margin-left: 245px;
-		margin-top: 5px;
-		padding: 10px;
-		// background-color: var(--dark);
-		background-color:#009EA8;
-		border: 1px solid #009EA8;
-		border-radius: 4px;
-		max-height: 450px; 
-		overflow-y: auto; 
-	}
-	/* 스크롤바 스타일링 */
-	.notify::-webkit-scrollbar {
-		width: 8px;
-	}
 
 .notify::-webkit-scrollbar-thumb {
   background-color: var(--light); /* 스크롤바 색상 */
@@ -348,11 +395,32 @@ aside {
 }
 
 .notify::-webkit-scrollbar-track {
-  background-color: var(--dark); /* 스크롤바 트랙 색상 */
   border-radius: 4px; /* 스크롤바 트랙 모양 */
 }
-/* contentList가 null이 아니면 종 이모티콘 색상 변경 */
+
+/* 종 딸랑딸랑 움직이는 애니메이션 */
+@keyframes bellAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(30deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* 이모티콘에 애니메이션 적용 */
 .material-icons.bell-has-content {
-  color: yellow !important;
+  color: #ffcc00 !important;
+  animation: bellAnimation 0.5s ease-in-out infinite;
+  /* 무한 반복하는 애니메이션 설정 */
+}
+
+.logoutBt {
+  cursor: pointer;
 }
 </style>
