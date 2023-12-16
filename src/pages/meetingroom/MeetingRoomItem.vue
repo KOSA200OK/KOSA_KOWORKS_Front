@@ -22,7 +22,7 @@
                 <!-- 칼럼 개수(times.length)만큼 반복 -->
                 <div v-for="time in times" :key="time" class="time-slot">
                     <!-- 해당 시간 범위에 네모 박스를 추가 -->
-                    <div v-if="isTimeInRange(time, mr.reservation.startTime, mr.reservation.endTime)" class="reservation-box"></div>
+                    <div v-if="isTimeReserved(time)" class="reservation-box"></div>
                 </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@ export default {
         return {
             times: this.generateTimeSlots(),
             showModal: false,
-            // starttime: "8:00", // 시작 시간
-            // endtime: "9:00",   // 종료 시간
+            starttime: '', // 시작 시간
+            endtime: '',   // 종료 시간
         }
     },
     methods: {
@@ -65,15 +65,26 @@ export default {
 
             return times;
         },
-        isTimeInRange(time, start, end) {
-            const currentDate = this.mr.reservation.meetingDate;
-
-            const currentTime = new Date(`${currentDate} ${time}`);
-            const startTime = new Date(`${currentDate} ${start}`);
-            const endTime = new Date(`${currentDate} ${end}`);
-            console.log(startTime);
-            console.log(endTime);
-            return currentTime >= startTime && currentTime < endTime;
+        // 해당 시간에 예약이 있는지 확인하는 메서드
+        isTimeReserved(time) {
+            return (
+                this.mr.reservation &&
+                this.mr.reservation.some(
+                (reservation) =>
+                    reservation.meetingDate === this.currentDate() &&
+                    this.isTimeInRange(time, reservation.startTime, reservation.endTime)
+                )
+            );
+        },
+        isTimeInRange(currentTime, startTime, endTime) {
+            const currentTimeValue = this.getTimeValue(currentTime);
+            const startTimeValue = this.getTimeValue(startTime);
+            const endTimeValue = this.getTimeValue(endTime);
+            return currentTimeValue >= startTimeValue && currentTimeValue < endTimeValue;
+        },
+        getTimeValue(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes;
         },
         openModal() {
             this.showModal = true;
@@ -199,7 +210,7 @@ td {
 
 /* 네모 박스 스타일 지정 */
 .reservation-box {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   height: 10px;
   background-color: lightblue;

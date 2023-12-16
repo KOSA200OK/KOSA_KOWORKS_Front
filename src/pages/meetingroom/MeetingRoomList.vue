@@ -22,7 +22,7 @@
                     :mr="mr"
                     :date="date"
                     v-if="meetingroomlist"
-                    v-for="mr in meetingroomlist" 
+                    v-for="mr in meetingroomlist"
                     v-bind:key="mr.id"
                     @click="clickMeetingRoomReservation()"
                 />

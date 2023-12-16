@@ -4,8 +4,10 @@
         <FullCalendar 
         :options="calendarOptions"
         :events="events"
+        :eventContent="renderEventContent"
         >
         </FullCalendar>
+
     </div>    
 </main>
 </template>
@@ -27,6 +29,19 @@ export default {
         return {
             meetingroomlist: [],
             date: '',
+            events: [
+                {
+                title: 'Event 1',
+                start: '2023-12-16T10:00:00',
+                end: '2023-12-16T12:00:00'
+                },
+                {
+                title: 'Event 2',
+                start: '2023-12-16T14:00:00',
+                end: '2023-12-16T16:00:00'
+                },
+                // Add more events as needed
+            ],
             calendarOptions: {
                 plugins: [ interactionPlugin, resourceTimelinePlugin],
                 initialView: 'resourceTimelineDay',
@@ -37,12 +52,9 @@ export default {
                 },
                 resourceAreaHeaderContent: 'Rooms',
                 scrollTime: '08:00',
+                slotDuration: '00:30:00', // Set the duration of each time slot
                 resources: [],
-                events: [
-                    {
-
-                    }
-                ],
+                events: this.events,
             },
         }
     },
@@ -65,7 +77,10 @@ export default {
             }
             return '';
         },
-
+        renderEventContent(arg) {
+            // 이벤트 내용을 커스터마이즈할 함수
+            return { html: `<div class="custom-event">${arg.event.title}</div>` };
+        },
         updateList(selectedDate) {
             this.date = selectedDate;
 
@@ -79,11 +94,24 @@ export default {
             axios.get(url)
                 .then(response=>{
                     this.meetingroomlist = response.data;
+
+                    this.calendarOptions.events = this.generateEvents();
                     console.log(this.date)
                 })
                 .catch((error) =>{
                     console.log(error)
                 })
+        },
+
+        generateEvents() {
+            // meetingroomlist를 기반으로 events 생성
+            return this.meetingroomlist.flatMap((mr) => {
+                return mr.reservation.map((reservation) => ({
+                    title: '회의', // 이벤트 타이틀
+                    start: `${reservation.meetingDate}T${reservation.startTime}`, // 시작 시간
+                    end: `${reservation.meetingDate}T${reservation.endTime}`, // 종료 시간
+                }));
+            });
         },
 
         //예약 있는지 여부 확인하는 로직
