@@ -20,9 +20,11 @@
                 <!-- 행 개수(5개)만큼 반복 -->
                 <div v-for="row in 5" :key="row" class="reservation-container">
                 <!-- 칼럼 개수(times.length)만큼 반복 -->
-                <div v-for="time in times" :key="time" class="time-slot">
-                    <!-- 해당 시간 범위에 네모 박스를 추가 -->
+                <!-- <div v-for="time in times" :key="time" class="time-slot">
                     <div v-if="isTimeReserved(time)" class="reservation-box"></div>
+                </div> -->
+                <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
+                    <div v-if="box.reserved" class="reservation-box"></div>
                 </div>
                 </div>
             </div>
@@ -43,6 +45,7 @@ export default {
             showModal: false,
             starttime: '', // 시작 시간
             endtime: '',   // 종료 시간
+            reservationBoxes: [], // 추가된 부분: 초기에 표시될 예약 박스들
         }
     },
     methods: {
@@ -64,6 +67,13 @@ export default {
             }
 
             return times;
+        },
+        // 추가된 메서드: 초기에 예약 박스들을 가공하는 메서드
+        processReservationBoxes() {
+            this.reservationBoxes = this.times.map((time) => ({
+                time,
+                reserved: this.isTimeReserved(time),
+            }));
         },
         // 해당 시간에 예약이 있는지 확인하는 메서드
         isTimeReserved(time) {
@@ -92,7 +102,11 @@ export default {
         closeModal() {
             this.showModal = false;
         },
-    }
+    },
+    mounted() {
+        // 초기 데이터를 가공하여 예약 박스들을 설정
+        this.processReservationBoxes();
+    },
 }
 </script>
 <style scoped>
