@@ -116,13 +116,6 @@ export default {
 }
 </script>
 <style scoped>
-/* td{
-    padding : 25px;
-    font-size: 15px;
-    border-top : dotted 2px;
-    border-color : #dfdfdf;
-    text-align: center;
-} */
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
@@ -135,6 +128,7 @@ td {
     border-bottom: px solid #ddd;
     border-top : dotted 1px #cccccc;
     font-size: 15px;
+    cursor: pointer;
 }
 .modal-wrap {
   position: fixed;
@@ -177,9 +171,6 @@ td {
 }
 .ok:hover{
     background-color: #58b5c5;
-}
-.ok{
-    margin-right : 20px;
 }
 .cancel{
     float: right;
