@@ -82,12 +82,21 @@ export default {
             subcategory: '', // 소분류 선택값
             status: 3,
             stuffId: 'default',
-            startDate: '',
-            endDate: '',
+            startDate: this.getCurrentDate(),
+            endDate: this.getCurrentDate(),
             reqList: [],
         }
     },
     methods: {
+
+        getCurrentDate() {
+            const today = new Date()
+            const year = today.getFullYear()
+            const month = String(today.getMonth() + 1).padStart(2, '0')
+            const day = String(today.getDate()).padStart(2, '0')
+            return `${year}-${month}-${day}`
+        },
+
         loadData() {
             if (!this.startDate || !this.endDate) {
                 alert('올바른 요청이 아닙니다. 시작 날짜와 종료 날짜를 선택하세요.');
@@ -103,7 +112,7 @@ export default {
             const endDateObject = new Date(this.endDate);
             endDateObject.setDate(endDateObject.getDate() + 1);
 
-            const url = `${this.backURL}/stuff/requestlist/case`;
+            const url = `${this.backURL}/stuff/requestlist`;
 
             const params = {
                 memberId: this.memberId,
@@ -122,13 +131,16 @@ export default {
                 withCredentials: true
             })
                 .then(response => {
-                    alert('목록 로드 성공')
                     this.reqList = response.data;
                 })
                 .catch(error => {
                     alert('목록 로드 실패')
                 });
         },
+    },
+
+    created() {
+        this.loadData()
     },
 
 }
