@@ -2,11 +2,13 @@
   <div class="app">
     <Sidebar />
     <Login />
+    <!-- <Main /> -->
   </div>
 </template>
 <script setup>
 import Login from "./pages/Login.vue";
 import Sidebar from "./components/Sidebar.vue";
+// import Main from "./components/Main.vue";
 </script>
 <style lang="scss">
 :root {
@@ -40,7 +42,8 @@ button {
 
 .app {
   display: flex;
-
+  width: 100vw;
+  background-color: white;
   main {
     flex: 1 1 0;
     padding: 2rem;
