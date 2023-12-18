@@ -4,11 +4,11 @@
         <h2>공지사항</h2>
         <div class="title">
             <b>{{n.title}}</b>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{n.regdate}}
+            <div class="regdate">{{n.regdate}}</div>
         </div>
         <div class="body">
-            {{n.content}} <br><br><br><br>
-            {{n.member.name}}
+            <div class="content">{{n.content}}</div><br><br><br><br>
+            <div class="writer">{{n.member.name}}</div>
         </div>
     </div>
     </main>
@@ -47,34 +47,60 @@ export default {
 }
 </script>
 <style scoped>
-div.noticeinfo {
-    border-collapse: collapse;
-    width: 1000px;
+.noticeinfo {
+    width: 90%;
+    font-family: "Arial", sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgb(236, 243, 253);
 
-    margin-left: 200px;
-    margin-right: auto;
-    margin-top: 100px;
-
-    border: 1px solid black;
+    padding: 20px;
+    margin: 20px;
+    margin-top: 50px;
+    
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 6%;
 }
 
 h2 {
-    margin: 50px;
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    margin-top: 40px;
+    margin-bottom: 70px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
 }
 
-div.title {
+.title {
     margin: 50px;
-
     font-size: 22px;
+
+    color: #2c3e50;
+    text-transform: uppercase;
+}
+
+.regdate {
+    float: right;
 }
 
 div.body {
     height: 500px;
     margin: 50px;
-    padding: 100px;
+    padding: 80px;
 
-    border: 1px solid black;
+    border: 1px solid #ddd;
     border-radius: 1rem;
-    background-color: white;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+    height: 70%;
+}
+
+.writer {
+    float: right;
 }
 </style>
