@@ -227,8 +227,9 @@ hr {
 }
 
 .noticeBox {
-	height: 80%;
+	height: 90%;
 	font-size: 16px;
+	overflow: auto;
 }
 
 /* 테이블 행 */
