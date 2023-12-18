@@ -16,8 +16,7 @@ import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
 import MeetingRoomTimeline from "@/pages/meetingroom/FullCalendarTest.vue";
 import RoomList from "@/pages/chat/RoomList.vue";
 import RoomDetail from "@/pages/chat/RoomDetail.vue";
-
-import StuffReq from "@/pages/stuff/StuffReq.vue";
+import StuffRequest from "@/pages/stuff/StuffRequest.vue";
 import StuffManage from "@/pages/stuff/StuffManage.vue";
 const router = createRouter({
   history: createWebHistory(),
@@ -58,7 +57,7 @@ const router = createRouter({
       component: MeetingRoomResList,
     },
     { path: "/meetingroom/timeline", component: MeetingRoomTimeline },
-    { path: "/stuff/request", component: StuffReq },
+    { path: "/stuff/request", component: StuffRequest },
     { path: "/stuff/stuffmanage", component: StuffManage },
   ],
 });

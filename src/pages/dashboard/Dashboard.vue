@@ -108,7 +108,7 @@ export default {
 		// 알림 데이터를 가져오는 메소드
 		fetchNotifications() {
 			const memberId = localStorage.getItem("memberId");
-			const url = `${this.backURL}/subscribe/?memberId=${memberId}`;
+			const url = `${this.backURL}/subscribe/recent/?memberId=${memberId}`;
 
 			axios
 				.get(url)
@@ -217,7 +217,6 @@ hr {
 
 .notificationBox {
 	height: 290px;
-	overflow-y: auto;
 }
 
 .noNotification {
