@@ -361,14 +361,18 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: auto;
+
 }
 
 /* 모달 컨텐츠 부분 */
 .modal-content {
   width: 800px;
+  height: auto;
   background: #fff;
   padding: 20px;
   border-radius: 8px;
+  overflow: auto;
 
   align-content: center;
   align-items: center;
@@ -383,6 +387,8 @@ export default {
 
 .meetingroominfo {
   display: grid;
+  width: 80%;
+
   grid-template-columns: repeat(2, 1fr); /* 2개의 열로 설정 */
   gap: 1rem; /* 간격 조절 */
   margin-bottom: 1rem; /* 아래쪽 여백 추가 */
@@ -428,7 +434,7 @@ button.close {
 
 /* 모달 내 폼 부분 */
 .modalform {
-
+  width: 80%;
 }
 
 select {

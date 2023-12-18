@@ -1,4 +1,5 @@
 <template>
+    <main>
     <div class="meetingroomlist">
         <VueDatePicker 
         :model-value="date" 
@@ -27,9 +28,9 @@
                     @click="clickMeetingRoomReservation()"
                 />
             </tbody>
-            
         </table>
     </div>
+    </main>
 </template>
 <script>
 import MeetingRoomItem from '@/pages/meetingroom/MeetingRoomItem.vue'
@@ -77,7 +78,7 @@ export default {
             const url = `${this.backURL}/meetingroom?meetingDate=${this.date}`
             axios.get(url)
                 .then(response=>{
-                    
+
                     this.meetingroomlist = response.data;
                     console.log(this.date)
                 })

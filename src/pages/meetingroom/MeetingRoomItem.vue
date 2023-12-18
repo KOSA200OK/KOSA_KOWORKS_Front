@@ -1,8 +1,8 @@
 <template lang="">
     <tr>
         <td>
-            <img :src="`../../images/${mr.name}.jpg`" :alt="mr.name">
-            <div class="roomname">{{mr.name}}</div>
+            <img :src="imageSrc" :alt="mr.name">
+            <div class="roomname">{{ roomName }}</div>
             <button class="resbutton" @click="openModal">
                 <span><b>예약하기</b></span>
             </button>
@@ -11,25 +11,28 @@
             :mr = "mr"
             @close="closeModal"/>
         </td>
-        <td>
+        <td></td>
+        
+        <!-- <td>
             <div class="flex-container">
                 <div class="time-container">
                     <div v-for="time in times" :key="time" class="time-slot">{{ time }}</div>
                 </div>
 
-                <!-- 행 개수(5개)만큼 반복 -->
+                행 개수(5개)만큼 반복
                 <div v-for="row in 5" :key="row" class="reservation-container">
-                <!-- 칼럼 개수(times.length)만큼 반복 -->
+                칼럼 개수(times.length)만큼 반복
                 <div v-for="time in times" :key="time" class="time-slot">
                     {{time}}
                     <div v-if="isTimeReserved(starttime, endtime)" class="reservation-box"></div>
                 </div>
-                <!-- <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
+                <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
                     <div v-if="box.reserved" class="reservation-box"></div>
-                </div> -->
+                </div>
                 </div>
             </div>
-        </td>
+        </td> -->
+        
     </tr>
 </template>
 <script>
@@ -48,6 +51,14 @@ export default {
             endtime: '',   // 종료 시간
             reservationBoxes: [], // 추가된 부분: 초기에 표시될 예약 박스들
         }
+    },
+    computed: {
+        imageSrc() {
+            return `../../images/${this.mr.name}.jpg`;
+        },
+        roomName() {
+            return this.mr.name;
+        },
     },
     methods: {
         currentDate() {
