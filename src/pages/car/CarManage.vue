@@ -33,7 +33,7 @@
                     :c="carlist"
                     :menu="menu"/>
             </div>
-            <CarManageList v-if="menu==0"
+            <CarManageList v-if="menu==0 && load==1"
                             :rentlist="rentlist"
                             :noreturnlist="noreturnlist"/>
             <CarWaitingList v-if="menu==1"/>
@@ -63,12 +63,14 @@ export default {
             waitingcnt : 0,
             noreturncnt : 0,
             menu : 0,
-            intervalid: 0
+            intervalid: 0,
+            load : 0
         }
     },
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
+            this.load = 0
             console.log('axios호출시작')
             const url = `${this.backURL}/carrent/manage`
             axios.get(url)
@@ -77,10 +79,10 @@ export default {
                 this.waitinglist = response.data.waitinglist
                 this.rentlist = response.data.rentlist
                 this.noreturnlist = response.data.noreturnlist
-                console.log(this.carlist)
-                console.log(this.waitinglist)
-                console.log(this.rentlist)
-                console.log(this.noreturnlist)
+                console.log("manage carlist: ",this.carlist)
+                console.log("manage waitinglist: ",this.waitinglist)
+                console.log("manage rentlist: ",this.rentlist)
+                console.log("manage noreturnlist: ",this.noreturnlist)
                 if(this.waitinglist!=null){
                     console.log('cnt값 구하기 시작')
                     this.waitingcnt = this.waitinglist.length
@@ -94,6 +96,8 @@ export default {
                 console.log(this.waitingcnt)
                 console.log(this.noreturncnt)
                 console.log('axios호출완료')
+
+                this.load = 1
             })
             .catch((Error)=>{
                 console.log(Error)
