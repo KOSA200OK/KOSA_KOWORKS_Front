@@ -86,13 +86,22 @@ export default {
             memberId: null,
             status: 3,
             stuffId: 'default',
-            startDate: null,
-            endDate: null,
+            startDate: this.getCurrentDate(),
+            endDate: this.getCurrentDate(),
             departmentId: 0,
             reqList: [],
         }
     },
     methods: {
+
+        getCurrentDate() {
+            const today = new Date()
+            const year = today.getFullYear()
+            const month = String(today.getMonth() + 1).padStart(2, '0')
+            const day = String(today.getDate()).padStart(2, '0')
+            return `${year}-${month}-${day}`
+        },
+
         loadData() {
             if (!this.startDate || !this.endDate) {
                 alert('올바른 요청이 아닙니다. 시작 날짜와 종료 날짜를 선택하세요.');
@@ -127,7 +136,6 @@ export default {
                 withCredentials: true
             })
                 .then(response => {
-                    alert('목록 로드 성공')
                     this.reqList = response.data;
                 })
                 .catch(error => {
@@ -139,6 +147,10 @@ export default {
             this.selectedRowData = this.reqList;
             this.isModalVisible = true;
         },
+    },
+
+    created() {
+        this.loadData()
     },
 }
 </script>
