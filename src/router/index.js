@@ -8,6 +8,7 @@ import CarMyRentList from "@/pages/car/CarMyRentList.vue";
 import CarManage from "@/pages/car/CarManage.vue";
 import CarAllRentList from "@/pages/car/CarAllRentList.vue";
 import Calendar from "@/pages/schedule/Calendar.vue";
+// import Test from "@/pages/schedule/Test.vue";
 import NoticeList from "@/pages/notice/NoticeList.vue";
 import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
@@ -41,6 +42,7 @@ const router = createRouter({
     { path: "/carrent/allrentlist", component: CarAllRentList },
     { path: "/carrent/allrentlist/:currentPage", component: CarAllRentList },
     { path: "/schedule/calendar", component: Calendar},
+    // { path: "/schedule/Test", component: Test},
     { path: "/attendance", component: Attendance },
     { path: "/attendance/:currentPage", component: Attendance },
     { path: "/attendance/date/:currentPage", component: Attendance },
