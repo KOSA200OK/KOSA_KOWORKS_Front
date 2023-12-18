@@ -21,7 +21,7 @@ export default {
 
 td {
   width: 150rem;
-  height: 80px;
+  height: 50px;
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;

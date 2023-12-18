@@ -46,6 +46,13 @@
                     {{mrr.startTime}} - {{mrr.endTime}}
                 </div>
                 <br>
+                <div class="participants">
+                    <b>회의 참여자: </b> &nbsp;&nbsp;&nbsp;&nbsp; 
+                    <p v-for="mp in mrr.participants">
+                      <span>{{mp.member.name}}</span>
+                    </p>
+                </div>
+                <br>
                 <div class="purpose">
                     <b>사용목적: </b>&nbsp;&nbsp;&nbsp;&nbsp;{{mrr.purpose}}
                 </div>
@@ -147,6 +154,10 @@ button.close {
 
 .detail {
   grid-column: 2;
+}
+
+span {
+  white-space: nowrap;
 }
 
 hr{

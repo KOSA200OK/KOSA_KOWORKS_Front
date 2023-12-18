@@ -13,7 +13,7 @@ import NoticeInfo from "@/pages/notice/NoticeInfo.vue";
 import MeetingRoomList from "@/pages/meetingroom/MeetingRoomList.vue";
 import ReservationModal from "@/pages/meetingroom/ReservationModal.vue";
 import MeetingRoomResList from "@/pages/meetingroom/MeetingRoomResList.vue";
-import MeetingRoomTimeline from "@/pages/meetingroom/MeetingRoomTimeline.vue";
+import MeetingRoomTimeline from "@/pages/meetingroom/FullCalendarTest.vue";
 import RoomList from "@/pages/chat/RoomList.vue";
 import RoomDetail from "@/pages/chat/RoomDetail.vue";
 import StuffRequest from "@/pages/stuff/StuffRequest.vue";

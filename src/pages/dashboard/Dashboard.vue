@@ -19,10 +19,18 @@
 			<div class="item notice">
 				<h3>최근 공지사항</h3>
 				<div class="box">
-					<button class="add-button" @click="addNotice">
+					<router-link class="go-notice" to="/notice/noticelist">
 						<span class="material-icons">add</span>
-					</button>
+					</router-link>
 					<hr>
+					<div class="noticeBox">
+						<NoticeItem
+							:n="n"
+							v-if="noticelist"
+							v-for="n in noticelist.content.slice(0,5)"
+							v-bind:key="n.id"
+						/>
+					</div>
 				</div>
 			</div>
 			<div class="item calendar">
@@ -63,13 +71,18 @@ import NotificationItem from "@/pages/dashboard/NotificationItemDash.vue";
 import AttendanceInfo from "@/pages/dashboard/AttendanceInfo.vue";
 import CarStatus from "@/pages/dashboard/CarStatus.vue";
 import StuffStatus from "@/pages/dashboard/StuffStatus.vue";
+import NoticeItem from "@/pages/notice/NoticeItem.vue";
 import axios from "axios";
 export default {
-	components: { Sidebar, TodayTodoItem, NotificationItem, AttendanceInfo, CarStatus, StuffStatus },
+	components: { Sidebar, TodayTodoItem, NotificationItem, AttendanceInfo, CarStatus, StuffStatus, NoticeItem },
 	data() {
 		return {
 			todayTodo: null,
 			notifications: [],
+			noticelist: [],
+			currentPage: 1,
+			startPage: 1,
+			endPage: 1,
 		};
 	},
 	mounted() {
@@ -119,11 +132,33 @@ export default {
 				default:
 					break;
 			}
+		},
+
+		// ============================== 공지, 윤경 ================================
+		noticeListHandler() {
+			const url = `${this.backURL}/notice/list?currentPage=${this.currentPage}`;
+			axios
+				.get(url)
+				.then((response) => {
+				this.noticelist = response.data;
+				if (this.currentPage <= this.noticelist.totalPages) {
+					this.startPage = parseInt((this.currentPage - 1) / 5) * 5 + 1;
+					this.endPage = this.startPage + 5 - 1;
+				}
+
+				if (this.endPage > this.noticelist.totalPages) {
+					this.endPage = this.noticelist.totalPages;
+				}
+				})
+				.catch((Error) => {
+				console.log(Error);
+				});
 		}
 	},
 	created() {
 		this.TodayTodoHandler();
 		this.fetchNotifications();
+		this.noticeListHandler();
 	},
 };
 </script>
@@ -189,6 +224,25 @@ hr {
 	justify-content: center;
 	color: #2196F3;
 	padding: 133px;
+}
+
+.noticeBox {
+	font-size: 16px;
+}
+
+/* 테이블 행 */
+th {
+  padding: 8px;
+  height: 100%;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+td {
+	padding-top: 15px;
+	padding-bottom: 0px;
 }
 </style>
 

@@ -37,9 +37,12 @@
                     <b>예약자: </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{mrr.member.name}}
                 </div>
                 <br>
-                <!--수정 가능한 영역 START-->
+                <!----수정 가능한 영역 START---->
                 <div class="participants"> 
-                <b>회의 참석자: </b> &nbsp;&nbsp;&nbsp; {{mrr.participants.id}}<br>
+                <b>회의 참석자: </b> &nbsp;&nbsp;&nbsp;
+                <div v-for="mp in mrr.participants" :key="mp.id" class="participant-item">
+                  <p>{{mp.member.name}}</p>
+                </div>
                 <input v-model="search" type="text" placeholder="검색"/>
                   <div v-if="loading"></div>
                   <div v-else-if="filteredMembers.length > 0">
@@ -69,7 +72,7 @@
                     </ul>
                   </div>
                 </div>
-                <!--수정 가능한 영역 END-->
+                <!----수정 가능한 영역 END---->
                 <br>
                 <div class="date">
                     <b>회의 날짜: </b> &nbsp;&nbsp;&nbsp;&nbsp; {{mrr.meetingDate}}
@@ -290,6 +293,14 @@ button.close {
 
 hr{
   border: 0.1rem solid #ddd;
+}
+
+p {
+  white-space: nowrap;
+}
+
+.participant-item {
+  white-space: nowrap;
 }
 
 </style>

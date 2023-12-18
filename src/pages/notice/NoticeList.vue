@@ -1,4 +1,5 @@
 <template>
+  <main>
   <div class="noticelist">
     <table>
       <thead>
@@ -29,8 +30,9 @@
       />
     </table>
   </div>
+  </main>
 </template>
-<script>
+<script scoped>
 import NoticeItem from "@/pages/notice/NoticeItem.vue";
 import PageGroup from "@/components/PageGroup.vue";
 import axios from "axios";
@@ -99,11 +101,15 @@ export default {
 };
 </script>
 <style scoped>
+div.noticelist {
+  width: 100%;
+}
+
 table {
   border-collapse: collapse;
-  width: 1000px;
+  width: 90%;
 
-  margin-left: 200px;
+  margin-left: 100px;
   margin-right: auto;
   margin-top: 100px;
 }

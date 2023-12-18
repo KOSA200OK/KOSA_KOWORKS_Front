@@ -1,4 +1,5 @@
 <template>
+    <main>
     <div class="meetingroomlist">
         <VueDatePicker 
         :model-value="date" 
@@ -22,14 +23,14 @@
                     :mr="mr"
                     :date="date"
                     v-if="meetingroomlist"
-                    v-for="mr in meetingroomlist" 
+                    v-for="mr in meetingroomlist"
                     v-bind:key="mr.id"
                     @click="clickMeetingRoomReservation()"
                 />
             </tbody>
-            
         </table>
     </div>
+    </main>
 </template>
 <script>
 import MeetingRoomItem from '@/pages/meetingroom/MeetingRoomItem.vue'
@@ -77,6 +78,7 @@ export default {
             const url = `${this.backURL}/meetingroom?meetingDate=${this.date}`
             axios.get(url)
                 .then(response=>{
+
                     this.meetingroomlist = response.data;
                     console.log(this.date)
                 })
