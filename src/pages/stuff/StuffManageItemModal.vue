@@ -56,7 +56,7 @@ g<template>
 <script>
 import axios from 'axios'
 export default {
-  name: 'ManageItemModal',
+
   props: {
     request: Object,
   },

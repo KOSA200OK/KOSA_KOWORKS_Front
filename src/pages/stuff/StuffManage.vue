@@ -1,81 +1,84 @@
 <template>
     <main>
-        <h3 class="title">비품 요청 내역</h3>
-        <div class="form-container">
-            <div class="form-group">
-                <label for="startDatePicker">시작 날짜:</label>
-                <input type="date" id="startDatePicker" v-model="startDate" />
+        <div class="manage-container">
+            <h3 class="title">비품 요청 내역</h3>
+            <br>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="startDatePicker">시작 날짜:</label>
+                    <input type="date" id="startDatePicker" v-model="startDate" />
+                </div>
+                <div class="form-group">
+                    <label for="endDatePicker">종료 날짜:</label>
+                    <input type="date" id="endDatePicker" v-model="endDate" />
+                </div>
+                <div class="form-group">
+                    <label for="departmentSelect">부서명:</label>
+                    <select id="departmentSelect" v-model="departmentId">
+                        <option value="0">전체선택</option>
+                        <option value="1">개발 1팀</option>
+                        <option value="3">개발 3팀</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="statusSelect">요청상태:</label>
+                    <select id="statusSelect" v-model="status">
+                        <option value="0">승인대기</option>
+                        <option value="1">승인</option>
+                        <option value="2">반려</option>
+                        <option value="3">전체선택</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="categorySelect">대분류:</label>
+                    <select id="categorySelect" v-model="category">
+                        <option value="default">선택안함</option>
+                        <option value="S">문구류</option>
+                        <option value="F">가구류</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subcategorySelect">소분류:</label>
+                    <select id="subcategorySelect" v-model="subcategory">
+                        <option v-if="category === 'S'" value="S0001">A4</option>
+                        <option v-if="category === 'S'" value="S0002">B4</option>
+                        <option v-if="category === 'S'" value="S0003">볼펜</option>
+                        <option v-if="category === 'S'" value="S0004">클립</option>
+                        <option v-if="category === 'F'" value="F0001">책상</option>
+                        <option v-if="category === 'F'" value="F0002">의자</option>
+                        <option v-if="category === 'F'" value="F0003">파티션</option>
+                    </select>
+                </div>
+                <button @click="loadData" class="load-button">목록 로드</button>
             </div>
-            <div class="form-group">
-                <label for="endDatePicker">종료 날짜:</label>
-                <input type="date" id="endDatePicker" v-model="endDate" />
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>요청날짜</th>
+                            <th>사원이름</th>
+                            <th>부서명</th>
+                            <th>비품번호</th>
+                            <th>비품명</th>
+                            <th>현재재고</th>
+                            <th>요청수량</th>
+                            <th>처리현황</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <StuffManageItem :request="request" v-if="reqList" v-for="request in reqList" :key="request.id" />
+                    </tbody>
+                </table>
             </div>
-            <div class="form-group">
-                <label for="departmentSelect">부서명:</label>
-                <select id="departmentSelect" v-model="departmentId">
-                    <option value="0">전체선택</option>
-                    <option value="1">개발 1팀</option>
-                    <option value="3">개발 3팀</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="statusSelect">요청상태:</label>
-                <select id="statusSelect" v-model="status">
-                    <option value="0">승인대기</option>
-                    <option value="1">승인</option>
-                    <option value="2">반려</option>
-                    <option value="3">전체선택</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="categorySelect">대분류:</label>
-                <select id="categorySelect" v-model="category">
-                    <option value="default">선택안함</option>
-                    <option value="S">문구류</option>
-                    <option value="F">가구류</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="subcategorySelect">소분류:</label>
-                <select id="subcategorySelect" v-model="subcategory">
-                    <option v-if="category === 'S'" value="S0001">A4</option>
-                    <option v-if="category === 'S'" value="S0002">B4</option>
-                    <option v-if="category === 'S'" value="S0003">볼펜</option>
-                    <option v-if="category === 'S'" value="S0004">클립</option>
-                    <option v-if="category === 'F'" value="F0001">책상</option>
-                    <option v-if="category === 'F'" value="F0002">의자</option>
-                    <option v-if="category === 'F'" value="F0003">파티션</option>
-                </select>
-            </div>
-            <button @click="loadData" class="load-button">목록 로드</button>
-        </div>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>요청날짜</th>
-                        <th>사원이름</th>
-                        <th>부서명</th>
-                        <th>비품번호</th>
-                        <th>비품명</th>
-                        <th>현재재고</th>
-                        <th>요청수량</th>
-                        <th>처리현황</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <RequestManageItem :request="request" v-if="reqList" v-for="request in reqList" :key="request.id" />
-                </tbody>
-            </table>
         </div>
     </main>
 </template>
 <script>
-import RequestManageItem from '@/pages/stuff/RequestManageItem.vue'
+import StuffManageItem from '@/pages/stuff/StuffManageItem.vue'
 import axios from 'axios'
 export default {
     name: 'StuffManage',
-    components: { RequestManageItem },
+    components: { StuffManageItem },
     data() {
         return {
             category: 'default', // 대분류 선택값
@@ -134,6 +137,23 @@ export default {
 }
 </script>
 <style scoped>
+.manage-container{
+    width: 100%;
+    min-height: 888px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 1px 1px 15px 6px rgb(231, 231, 231);
+}
+.title {
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
+}
 .table-container {
     max-height: 780px;
     border: 1px solid #ccc;
@@ -144,7 +164,7 @@ export default {
     overflow-y: auto;
 }
 
-.table-container>table{
+.table-container>table {
     width: 100%;
     border-collapse: collapse;
 }
@@ -152,7 +172,8 @@ export default {
 thead {
     background-color: #f5f5f5;
 }
-th{
+
+th {
     text-align: center;
 }
 

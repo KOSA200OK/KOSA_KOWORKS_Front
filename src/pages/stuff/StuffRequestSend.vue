@@ -1,7 +1,7 @@
 <template lang="">
 <form @submit.prevent="sendRequest" class="send-container">
             <div class="form-group">
-                <h3>비품 요청</h3>
+                <h3 class="title">비품 요청</h3>
                 <table>
                     <tr>
                         <td class="input-item">대분류</td>
@@ -50,7 +50,6 @@
 <script>
 import axios from 'axios'
 export default {
-    name: 'StuffReqSend',
     props: {
         memberId: {
             type: String,
@@ -127,7 +126,17 @@ export default {
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: white;
+    box-shadow: 1px 1px 15px 6px rgb(231, 231, 231);
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
 }
 
 table {
