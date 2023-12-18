@@ -26,7 +26,7 @@
 					<div class="noticeBox">
 						<NoticeItem
 							:n="n"
-							v-if="noticelist"
+							v-if="noticelist.content"
 							v-for="n in noticelist.content.slice(0,5)"
 							v-bind:key="n.id"
 						/>
