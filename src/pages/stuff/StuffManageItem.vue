@@ -1,29 +1,27 @@
 <template lang="">
     <tr @click="trClickHandler(request.id)">
         <td>{{ request.reqDate }}</td>
+        <td>{{ request.member.name }}</td>
+        <td>{{ request.member.department.name }}</td>
         <td>{{ request.stuff.id }}</td>
         <td>{{ request.stuff.name }}</td>
+        <td>{{ request.stuff.stock }}</td>
         <td>{{ request.quantity }}</td>
-        <!-- <td>{{ reqList.purpose }}</td> -->
-        <td>{{ truncateString(request.purpose, 10) }}</td>
         <td>
-            <span  :class="{ 'processing': request.status === 0, 'completed': request.status === 1, 'rejected': request.status === 2 }">
+            <span :class="{ 'processing': request.status === 0, 'completed': request.status === 1, 'rejected': request.status === 2 }">
                 {{ request.status === 0 ? '대기' : request.status === 1 ? '승인' : '반려' }}
             </span>
-         </td>
-
-        <td>{{ truncateString(request.reject, 10) }}</td>
+        </td>
     </tr>
-    <RequestItemModal 
+    <StuffManageItemModal 
     v-if="isModalVisible" 
     :request="selectedRowData" 
     @close="closeModal" />
 </template>
 <script>
-import RequestItemModal from '@/pages/stuff/RequestItemModal.vue';
+import StuffManageItemModal from '@/pages/stuff/StuffManageItemModal.vue';
 export default {
-    name: 'RequestItem',
-    components: { RequestItemModal },
+    components: { StuffManageItemModal },
     props: {
         request: Object,
     },
@@ -34,14 +32,7 @@ export default {
         }
     },
     methods: {
-        truncateString(str, maxLength) {
-            if (str && str.length > maxLength) {
-                return str.substring(0, maxLength) + '...';
-            } else {
-                return str;
-            }
-        },
-        trClickHandler(reqId) {
+        trClickHandler() {
             this.selectedRowData = this.request;
             this.isModalVisible = true;
         },
@@ -68,7 +59,6 @@ td {
     font-size: 15px;
     cursor: pointer;
 }
-
 .processing,
 .completed,
 .rejected {

@@ -14,7 +14,7 @@
                 </svg>
             </button>
         </div>
-        <br><br><br><br>
+        <br><br>
         
         <!-- Modal body -->
         <!--희의실 정보-->
@@ -108,6 +108,37 @@
                         />
                     </div>
                 </div>
+                <div class="participants"> 
+                회의 참석자: &nbsp;&nbsp;&nbsp; <br>
+                <input v-model="search" type="text" placeholder="검색"/>
+                  <div v-if="loading"></div>
+                  <div v-else-if="filteredMembers.length > 0">
+                      <!-- key를 member.id로 정해서 <tr></tr>안의 내용을 반복 -->
+                      <div v-for="member in filteredMembers" :key="member.id">
+                        <div class="table-row">
+                          <div class="table-cell" @click="addParticipant(member)">{{ member.name }}</div>
+                        </div>
+                      </div>
+                  </div>
+                  <div v-else>
+                  <!-- 검색 결과가 없는 경우 메시지를 화면에 표시 -->
+                  <p>다시 검색해주세요</p>
+                  </div>
+                  <div v-if="addedParticipants.length > 0">
+                    <p><b>추가된 참석자:</b></p>
+                    <ul>
+                      <li v-for="participant in addedParticipants" :key="participant.id">
+                        {{ participant.name }}
+                        <button @click="removeParticipant(participant)">
+                          <svg class="removebtn" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
+                              stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                          </svg>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
                 <div class="purpose">
                     <label class="labelpurpose">사용 목적*</label><br>
                     <textarea
@@ -152,6 +183,12 @@ export default {
         format: 'HH:mm', // 시간 형식
         formatDate: 'yyyy-MM-dd', //날짜 형식
 
+        formDataList: [],
+        loading: true,
+        members: [],
+        search: "",
+        addedParticipants: [], //추가된 참석자 저장
+
         formData: {
           startTime: '', // 시작 시간
           endTime: '',   // 종료 시간
@@ -164,21 +201,24 @@ export default {
             id: ''
           },
           participants: [
-            {
-              member: {
-                id: '0001'
-              }
-            },
-            {
-              member: {
-                id: '0002'
-              }
-            }
+
           ],
         },
         selectedMeeting: 0, // 선택된 회의실 id
         originalMeeting: 0, // 모달 열 때의 초기 id
     }
+  },
+  computed: {
+     filteredMembers() {
+      return this.members.filter((member) => {
+        // 검색어가 없거나, 검색어가 이름과 직급에 포함되어 있는 경우에만 반환
+        return (
+          !this.search ||
+          member.name.includes(this.search) ||
+          member.position.includes(this.search)
+        );
+      });
+    },
   },
   setup() {
     const state = reactive({
@@ -233,6 +273,52 @@ export default {
 
       this.formData.meetingDate = this.meetingDate;
     },
+    addParticipant(member) {
+      this.addedParticipants.push(member);
+      console.log(member);
+
+      this.formData.participants = this.addedParticipants.map((participant) => ({
+        member: {
+          id: participant.id
+        }
+      }))
+    },
+    removeParticipant(participant) {
+      // member.id와 일치하는 참석자를 addedParticipants 배열에서 찾기
+      const indexToRemove = this.addedParticipants.findIndex(
+        (addedParticipant) => addedParticipant.id === participant.id
+      );
+
+      if (indexToRemove !== -1) {
+        // 배열에서 찾은 참석자 제거
+        this.addedParticipants.splice(indexToRemove, 1);
+        console.log("제거 완료")
+        console.log(this.addedParticipants)
+
+        // 추가된 참석자의 id를 갖는 객체를 formDataList 업데이트
+        this.formDataList = this.addedParticipants.map((participant) => ({
+          meetingId: {
+            id : `${this.mrr.id}`
+          },
+          member: {
+            id: participant.id
+          }
+        }))
+      }
+    },
+    async fetchData() {
+      try {
+        this.loading=true;
+        const url = `${this.backURL}/address/members`
+        const response = await axios.get(url);
+        // response.data에는 id, name, position, tel정보가 있음, 그 정보를 members배열에 넣음
+        this.members = response.data;
+      } catch (error) {
+        console.error("사원 정보를 불러오지 못했습니다:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
     saveReservationHandler(e) {
       const url = `${this.backURL}/meetingroom`
       this.formData.meetingroom.id = this.mr.id;
@@ -252,7 +338,14 @@ export default {
     }
   },
   watch: {
-
+    search(newValue) {
+      if (newValue.trim() !== "") {
+        this.fetchData();
+      } else {
+        // Clear the members array when the search term is empty
+        this.members = [];
+      }
+    },
   },
 };
 </script>
@@ -268,14 +361,18 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: auto;
+
 }
 
 /* 모달 컨텐츠 부분 */
 .modal-content {
-  width: 700px;
+  width: 800px;
+  height: auto;
   background: #fff;
   padding: 20px;
   border-radius: 8px;
+  overflow: auto;
 
   align-content: center;
   align-items: center;
@@ -290,6 +387,8 @@ export default {
 
 .meetingroominfo {
   display: grid;
+  width: 80%;
+
   grid-template-columns: repeat(2, 1fr); /* 2개의 열로 설정 */
   gap: 1rem; /* 간격 조절 */
   margin-bottom: 1rem; /* 아래쪽 여백 추가 */
@@ -335,7 +434,7 @@ button.close {
 
 /* 모달 내 폼 부분 */
 .modalform {
-
+  width: 80%;
 }
 
 select {
@@ -418,5 +517,10 @@ button.cancelbtn {
   height: 35px;
   vertical-align: middle;
   align-items: center;
+}
+
+.removebtn {
+  width: 15px;
+  height: 15px;
 }
 </style>

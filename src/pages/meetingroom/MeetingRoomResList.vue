@@ -1,4 +1,5 @@
 <template>
+    <main>
     <div class="myreservationlist">
         <table>
             <thead>
@@ -28,6 +29,7 @@
             />
         </table>
     </div>
+    </main>
 </template>
 <script>
 import MeetingRoomResItem from '@/pages/meetingroom/MeetingRoomResItem.vue'
@@ -101,11 +103,15 @@ export default {
 }
 </script>
 <style scoped>
+.myreservationlist {
+  width: 100%;
+}
+
 table {
   border-collapse: collapse;
-  width: 1000px;
+  width: 90%;
 
-  margin-left: 200px;
+  margin-left: 100px;
   margin-right: auto;
   margin-top: 100px;
 }

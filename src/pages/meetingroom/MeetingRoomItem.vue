@@ -1,8 +1,8 @@
 <template lang="">
     <tr>
         <td>
-            <img :src="`../../images/${mr.name}.jpg`" :alt="mr.name">
-            <div class="roomname">{{mr.name}}</div>
+            <img :src="imageSrc" :alt="mr.name">
+            <div class="roomname">{{ roomName }}</div>
             <button class="resbutton" @click="openModal">
                 <span><b>예약하기</b></span>
             </button>
@@ -11,19 +11,28 @@
             :mr = "mr"
             @close="closeModal"/>
         </td>
-        <td>
+        <td></td>
+        
+        <!-- <td>
             <div class="flex-container">
                 <div class="time-container">
                     <div v-for="time in times" :key="time" class="time-slot">{{ time }}</div>
                 </div>
 
-                <!-- 행 개수(5개)만큼 반복 -->
+                행 개수(5개)만큼 반복
                 <div v-for="row in 5" :key="row" class="reservation-container">
-                <!-- 칼럼 개수(times.length)만큼 반복 -->
-                <div v-for="time in times" :key="time" class="time-slot">yes</div>
+                칼럼 개수(times.length)만큼 반복
+                <div v-for="time in times" :key="time" class="time-slot">
+                    {{time}}
+                    <div v-if="isTimeReserved(starttime, endtime)" class="reservation-box"></div>
+                </div>
+                <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
+                    <div v-if="box.reserved" class="reservation-box"></div>
+                </div>
                 </div>
             </div>
-        </td>
+        </td> -->
+        
     </tr>
 </template>
 <script>
@@ -38,7 +47,18 @@ export default {
         return {
             times: this.generateTimeSlots(),
             showModal: false,
+            starttime: '', // 시작 시간
+            endtime: '',   // 종료 시간
+            reservationBoxes: [], // 추가된 부분: 초기에 표시될 예약 박스들
         }
+    },
+    computed: {
+        imageSrc() {
+            return `../../images/${this.mr.name}.jpg`;
+        },
+        roomName() {
+            return this.mr.name;
+        },
     },
     methods: {
         currentDate() {
@@ -60,13 +80,45 @@ export default {
 
             return times;
         },
+        // 추가된 메서드: 초기에 예약 박스들을 가공하는 메서드
+        processReservationBoxes() {
+            this.reservationBoxes = this.times.map((time) => ({
+                time,
+                reserved: this.isTimeReserved(time),
+            }));
+        },
+        // 해당 시간에 예약이 있는지 확인하는 메서드
+        isTimeReserved(time) {
+            return (
+                this.mr.reservation &&
+                this.mr.reservation.some(
+                (reservation) =>
+                    reservation.meetingDate === this.currentDate() &&
+                    this.isTimeInRange(time, reservation.startTime, reservation.endTime)
+                )
+            );
+        },
+        isTimeInRange(currentTime, startTime, endTime) {
+            const currentTimeValue = this.getTimeValue(currentTime);
+            const startTimeValue = this.getTimeValue(startTime);
+            const endTimeValue = this.getTimeValue(endTime);
+            return currentTimeValue >= startTimeValue && currentTimeValue < endTimeValue;
+        },
+        getTimeValue(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes;
+        },
         openModal() {
             this.showModal = true;
         },
         closeModal() {
             this.showModal = false;
         },
-    }
+    },
+    mounted() {
+        // 초기 데이터를 가공하여 예약 박스들을 설정
+        this.processReservationBoxes();
+    },
 }
 </script>
 <style scoped>
@@ -167,6 +219,8 @@ td {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 30px;
+
     padding-right: 10px;
     margin-right: 10px;
 }
@@ -174,9 +228,19 @@ td {
 .time-slot {
   flex: 0 0 100px;
   padding: 8px;
+  height: 100%;
   text-align: center;
   border-left : 1px solid lightgray;
   border-bottom : 1px solid lightgray;
+}
+
+/* 네모 박스 스타일 지정 */
+.reservation-box {
+  /* position: absolute; */
+  width: 100%;
+  height: 10px;
+  background-color: lightblue;
+  border: 1px solid #ccc;
 }
 
 </style>
