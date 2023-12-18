@@ -31,26 +31,23 @@
     </main>
 </template>
 <script>
-    import vueCustomElement from 'vue-custom-element';
     import FullCalendar from '@fullcalendar/vue3'
     import interactionPlugin from '@fullcalendar/interaction'
     import { Calendar } from '@fullcalendar/core';
     import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
     import MeetingRoomItem from '@/pages/meetingroom/MeetingRoomItem.vue'
-    import Modal from "@/pages/meetingroom/ReservationModal.vue";
     import axios from 'axios'
     
     export default {
         name: 'Calendar',
         props:['mr', 'date'],
         components: {
-            FullCalendar, MeetingRoomItem, Modal
+            FullCalendar, MeetingRoomItem
         },
         data() {
             return {
                 meetingroomlist: [],
                 date: '',            
-                showModal: false,
                 calendarOptions: {
                     plugins: [ interactionPlugin, resourceTimelinePlugin],
                     initialView: 'resourceTimelineDay',
@@ -195,14 +192,6 @@
                 // 리소스를 클릭할 때 발생하는 이벤트 핸들러
                 console.log('Resource Clicked:', resource);
                 console.log("클릭됨");
-                this.showModal = true;
-            },
-            openModal() {
-                console.log("클릭됨");
-                this.showModal = true;
-            },
-            closeModal() {
-                this.showModal = false;
             },
         },
         watch: {
