@@ -1,8 +1,8 @@
 <template lang="">
     <tr>
         <td>
-            <img :src="imageSrc" :alt="mr.name">
-            <div class="roomname">{{ roomName }}</div>
+            <img :src="`../../images/${mr.name}.jpg`" :alt="mr.name">
+            <div class="roomname">{{mr.name}}</div>
             <button class="resbutton" @click="openModal">
                 <span><b>예약하기</b></span>
             </button>
@@ -11,28 +11,24 @@
             :mr = "mr"
             @close="closeModal"/>
         </td>
-        <td></td>
         
-        <!-- <td>
+        <td>
             <div class="flex-container">
                 <div class="time-container">
                     <div v-for="time in times" :key="time" class="time-slot">{{ time }}</div>
                 </div>
 
-                행 개수(5개)만큼 반복
-                <div v-for="row in 5" :key="row" class="reservation-container">
-                칼럼 개수(times.length)만큼 반복
-                <div v-for="time in times" :key="time" class="time-slot">
-                    {{time}}
-                    <div v-if="isTimeReserved(starttime, endtime)" class="reservation-box"></div>
+                <!-- 행 개수(5개)만큼 반복 -->
+                <div v-for="row in 1" :key="row" class="reservation-container">
+                <!-- 칼럼 개수(times.length)만큼 반복 -->
+                <div v-for="time in times" :key="time" :class="{ 'reserved-time': isTimeReserved(starttime, endtime, time) }" class="time-slot">
                 </div>
-                <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
+                <!-- <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
                     <div v-if="box.reserved" class="reservation-box"></div>
-                </div>
+                </div> -->
                 </div>
             </div>
-        </td> -->
-        
+        </td>
     </tr>
 </template>
 <script>
@@ -49,15 +45,13 @@ export default {
             showModal: false,
             starttime: '', // 시작 시간
             endtime: '',   // 종료 시간
-            reservationBoxes: [], // 추가된 부분: 초기에 표시될 예약 박스들
+            reservations: [], // 추가된 부분: 초기에 표시될 예약 박스들
         }
     },
-    computed: {
-        imageSrc() {
-            return `../../images/${this.mr.name}.jpg`;
-        },
-        roomName() {
-            return this.mr.name;
+    watch: {
+        date: function (newDate) {
+            // date가 변경될 때마다 호출되는 함수
+            this.updateTimeBasedOnDate(newDate);
         },
     },
     methods: {
@@ -87,17 +81,20 @@ export default {
                 reserved: this.isTimeReserved(time),
             }));
         },
-        // 해당 시간에 예약이 있는지 확인하는 메서드
-        isTimeReserved(time) {
-            return (
-                this.mr.reservation &&
-                this.mr.reservation.some(
-                (reservation) =>
-                    reservation.meetingDate === this.currentDate() &&
-                    this.isTimeInRange(time, reservation.startTime, reservation.endTime)
-                )
-            );
+        isTimeReserved(starttime, endtime, currentTime) {
+            return this.isTimeInRange(currentTime, starttime, endtime);
         },
+        // 해당 시간에 예약이 있는지 확인하는 메서드
+        // isTimeReserved(time) {
+        //     return (
+        //         this.mr.reservation &&
+        //         this.mr.reservation.some(
+        //         (reservation) =>
+        //             reservation.meetingDate === this.currentDate() &&
+        //             this.isTimeInRange(time, reservation.startTime, reservation.endTime)
+        //         )
+        //     );
+        // },
         isTimeInRange(currentTime, startTime, endTime) {
             const currentTimeValue = this.getTimeValue(currentTime);
             const startTimeValue = this.getTimeValue(startTime);
@@ -105,8 +102,31 @@ export default {
             return currentTimeValue >= startTimeValue && currentTimeValue < endTimeValue;
         },
         getTimeValue(time) {
+            if (!time) {
+                return 0; // 혹은 다른 기본값 설정
+            }
             const [hours, minutes] = time.split(':').map(Number);
             return hours * 60 + minutes;
+        },
+        updateTimeBasedOnDate(newDate) {
+            // newDate와 일치하는 mr.reservation을 찾습니다.
+            const matchingReservation = this.mr.reservation.find(reservation => reservation.meetingDate === newDate);
+            // const matchingReservation = this.mr.reservation.filter(reservation => reservation.meetingDate === newDate);
+            console.log(matchingReservation);
+
+            this.reservations = matchingReservation;
+            // matchingReservation이 존재하면 해당 정보로 starttime과 endtime을 설정합니다.
+            if (matchingReservation) {
+                console.log(this.reservations)
+                this.starttime = matchingReservation.startTime;
+                console.log(this.starttime)
+                this.endtime = matchingReservation.endTime;
+                console.log(this.endtime)
+            } else {
+                // 일치하는 예약 정보가 없을 경우 기본값으로 설정하거나 다른 로직을 수행할 수 있습니다.
+                this.starttime = '';
+                this.endtime = '';
+            }
         },
         openModal() {
             this.showModal = true;
@@ -118,6 +138,7 @@ export default {
     mounted() {
         // 초기 데이터를 가공하여 예약 박스들을 설정
         this.processReservationBoxes();
+        this.updateTimeBasedOnDate(this.date);
     },
 }
 </script>
@@ -145,7 +166,7 @@ td {
   display: inline-block;
 
   border-radius: 4px;
-  background: var(--dark);
+  background: #1565c0;
   color: #ddd;
   border: none;
 
@@ -241,6 +262,10 @@ td {
   height: 10px;
   background-color: lightblue;
   border: 1px solid #ccc;
+}
+
+.reserved-time {
+  background-color: #1565c0; /* 예약된 시간대의 배경색을 여기에 설정합니다. */
 }
 
 </style>

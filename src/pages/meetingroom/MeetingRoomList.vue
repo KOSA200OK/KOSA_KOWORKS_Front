@@ -8,7 +8,7 @@
         @update:model-value="updateList"
         />
         <div class="date">
-            <h2>회의실 예약 내역</h2><br>
+            <h2><b>회의실 예약 내역</b></h2><br>
             <h3>{{FormattedDate()}}</h3>
         </div>
         <table class="scrollable-table">
@@ -39,7 +39,7 @@ import axios from 'axios'
 
 export default {
     name: "MeetingRoomList",
-    components: {MeetingRoomItem},
+    components: { MeetingRoomItem },
     data() {
         return {
             meetingroomlist : [],
@@ -78,7 +78,6 @@ export default {
             const url = `${this.backURL}/meetingroom?meetingDate=${this.date}`
             axios.get(url)
                 .then(response=>{
-
                     this.meetingroomlist = response.data;
                     console.log(this.date)
                 })
@@ -135,6 +134,9 @@ export default {
 }
 </script>
 <style scoped>
+.meetingroomlist {
+    width: 100%;
+}
 
 div.date {
     margin-left: 200px;
@@ -146,11 +148,12 @@ div.date {
 }
 
 .scrollable-table {
-    width: 80%;
-    margin-left: 200px;
-    margin-right: 200px;
-    margin-top: 50px;
-    margin-bottom: 200px;
+    border-collapse: collapse;
+    width: 90%;
+
+    margin-left: 100px;
+    margin-right: auto;
+    margin-top: 100px;
 
     border-collapse: collapse;
     table-layout: fixed;
@@ -221,7 +224,7 @@ td:nth-child(2) {
 }
 
 tr:nth-child(even) {
-  background-color: #fff6f6;
+  background-color: #f1f9ff;
 }
 
 </style>
