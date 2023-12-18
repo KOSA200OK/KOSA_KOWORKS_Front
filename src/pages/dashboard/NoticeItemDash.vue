@@ -1,7 +1,7 @@
 <template lang="">
     <tr>
         <td>{{n.id}}</td>
-        <td>{{truncateString(n.title, 6)}}</td>
+        <td>{{truncateString(n.title, 8)}}</td>
         <td>{{n.regdate}}</td>
         <td>{{n.member.name}}</td>
     </tr>

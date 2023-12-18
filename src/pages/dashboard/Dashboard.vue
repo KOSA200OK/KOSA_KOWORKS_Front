@@ -227,6 +227,7 @@ hr {
 }
 
 .noticeBox {
+	height: 80%;
 	font-size: 16px;
 }
 
