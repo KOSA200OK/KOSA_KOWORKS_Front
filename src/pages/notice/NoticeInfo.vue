@@ -1,4 +1,5 @@
 <template >
+    <main>
     <div class="noticeinfo">
         <h2>공지사항</h2>
         <div class="title">
@@ -10,6 +11,7 @@
             {{n.member.name}}
         </div>
     </div>
+    </main>
 </template>
 <script>
 import axios from 'axios'
