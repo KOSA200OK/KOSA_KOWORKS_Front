@@ -264,6 +264,7 @@ td {
 }
 
 thead {
+    text-align: center;
     background-color: #f5f5f5;
 }
 

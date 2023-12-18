@@ -18,8 +18,9 @@
 			</div>
 			<div class="button">
 				<span class="material-icons" :class="{ 'bell-has-content': hasContent }">notifications</span>
+				<!-- 찬석  -->
 				<button @click="toggleOnOff" class="text">Bell</button>
-				<!-- <span class="text">Bell</span> -->
+				
 				<div v-if="isStatusOn" class="notify">
 					<notificationItem :n="n"
 										v-for="n in this.notificationList.content"
@@ -29,7 +30,6 @@
 					</notificationItem>
 				</div>
 			</div>
-			<!-- 찬석  -->
 			
 		</div>
 		<h3>Menu</h3>
