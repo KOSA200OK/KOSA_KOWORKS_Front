@@ -25,6 +25,7 @@
         },
         data() {
             return {
+                date: '',
                 calendarOptions: {
                     plugins: [ interactionPlugin, resourceTimelinePlugin],
                     initialView: 'resourceTimelineDay',
@@ -58,7 +59,26 @@
             }
         },
         methods: {
-            
+            updateList(selectedDate) {
+                this.date = selectedDate;
+
+                const date = new Date(this.date);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                this.date = `${year}-${month}-${day}`
+
+                const url = `${this.backURL}/meetingroom?meetingDate=${this.date}`
+                axios.get(url)
+                    .then(response=>{
+                        
+                        this.meetingroomlist = response.data;
+                        console.log(this.date)
+                    })
+                    .catch((error) =>{
+                        console.log(error)
+                    })
+            },
         },
         watch: {
             //----라우터값이 변경되었을 때 할 일 START----
@@ -74,14 +94,7 @@
             //----라우터값이 변경되었을 때 할 일 END----
         },
         created(){
-            //오늘 날짜 가져오기
-            const currentdate = new Date();
-            // 날짜를 'yyyy-mm-dd' 형식으로 변환
-            const date = currentdate.getFullYear()+'-'+(currentdate.getMonth()+1)+'-'+currentdate.getDate();
-            this.date = date;
-            // console.log(this.date);
 
-            this.updateList(this.date);
         }
     }
 </script>
