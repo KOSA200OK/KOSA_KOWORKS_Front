@@ -69,7 +69,6 @@ export default {
                     this.closeModal();
                 })
                 .catch((error) => {
-                    console.error('요청 취소 중 에러 발생:', error);
                     alert('요청 취소에 실패했습니다.');
                 });
         },

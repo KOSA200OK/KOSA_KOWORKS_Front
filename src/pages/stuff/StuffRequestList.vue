@@ -99,7 +99,7 @@ export default {
                 return false
             }
 
-            //backEnd 메서드에서 인식하는 endDate의 범위 인식 차이 해결 
+            //backEnd 메서드에서 인식하는 endDate의 범위 인식차이로 인한 문제 해결 
             const endDateObject = new Date(this.endDate);
             endDateObject.setDate(endDateObject.getDate() + 1);
 

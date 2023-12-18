@@ -95,7 +95,6 @@ export default {
         })
         .catch((error) => {
           alert('승인 실패', error.message)
-          console.log(params)
         });
       this.closeModal();
     },
@@ -117,7 +116,6 @@ export default {
         })
         .catch((error) => {
           alert('반려 실패', error.message)
-          console.log(params)
         });
       this.closeModal();
     },

@@ -32,7 +32,7 @@ export default {
         }
     },
     methods: {
-        trClickHandler(reqId) {
+        trClickHandler() {
             this.selectedRowData = this.request;
             this.isModalVisible = true;
         },

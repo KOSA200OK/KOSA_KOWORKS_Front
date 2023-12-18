@@ -21,10 +21,10 @@ export default {
         };
     },
     created() {
-        const memberIdValue = localStorage.getItem('memberId');
+        const memberId = localStorage.getItem('memberId');
 
-        if (memberIdValue !== null) {
-            this.memberId = memberIdValue;
+        if (memberId !== null) {
+            this.memberId = memberId;
         } else {
             console.log('로컬 스토리지에 memberId에 해당하는 값이 없습니다.');
         }

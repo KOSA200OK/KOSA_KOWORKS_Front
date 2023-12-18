@@ -40,7 +40,7 @@ export default {
                 return str;
             }
         },
-        trClickHandler(reqId) {
+        trClickHandler() {
             this.selectedRowData = this.request;
             this.isModalVisible = true;
         },

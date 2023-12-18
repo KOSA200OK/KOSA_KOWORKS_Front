@@ -136,9 +136,6 @@ export default {
                 });
         },
         trClickHandler(reqId) {
-            console.log('클릭한 tr의 데이터:', reqId);
-
-
             this.selectedRowData = this.reqList;
             this.isModalVisible = true;
         },
