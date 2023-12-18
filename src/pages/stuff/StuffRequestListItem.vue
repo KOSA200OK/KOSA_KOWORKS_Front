@@ -1,28 +1,28 @@
 <template lang="">
     <tr @click="trClickHandler(request.id)">
         <td>{{ request.reqDate }}</td>
-        <td>{{ request.member.name }}</td>
-        <td>{{ request.member.department.name }}</td>
         <td>{{ request.stuff.id }}</td>
         <td>{{ request.stuff.name }}</td>
-        <td>{{ request.stuff.stock }}</td>
         <td>{{ request.quantity }}</td>
+        <!-- <td>{{ reqList.purpose }}</td> -->
+        <td>{{ truncateString(request.purpose, 10) }}</td>
         <td>
-            <span :class="{ 'processing': request.status === 0, 'completed': request.status === 1, 'rejected': request.status === 2 }">
+            <span  :class="{ 'processing': request.status === 0, 'completed': request.status === 1, 'rejected': request.status === 2 }">
                 {{ request.status === 0 ? '대기' : request.status === 1 ? '승인' : '반려' }}
             </span>
-        </td>
+         </td>
+
+        <td>{{ truncateString(request.reject, 10) }}</td>
     </tr>
-    <ManageItemModal 
+    <StuffRequestListItemModal 
     v-if="isModalVisible" 
     :request="selectedRowData" 
     @close="closeModal" />
 </template>
 <script>
-import ManageItemModal from '@/pages/stuff/ManageItemModal.vue';
+import StuffRequestListItemModal from '@/pages/stuff/StuffRequestListItemModal.vue';
 export default {
-    name: 'RequestManageItem',
-    components: { ManageItemModal },
+    components: { StuffRequestListItemModal },
     props: {
         request: Object,
     },
@@ -33,7 +33,14 @@ export default {
         }
     },
     methods: {
-        trClickHandler(reqId) {
+        truncateString(str, maxLength) {
+            if (str && str.length > maxLength) {
+                return str.substring(0, maxLength) + '...';
+            } else {
+                return str;
+            }
+        },
+        trClickHandler() {
             this.selectedRowData = this.request;
             this.isModalVisible = true;
         },
@@ -60,6 +67,7 @@ td {
     font-size: 15px;
     cursor: pointer;
 }
+
 .processing,
 .completed,
 .rejected {
