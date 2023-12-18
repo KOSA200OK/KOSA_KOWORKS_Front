@@ -1,11 +1,13 @@
 <template>
 <div>
+<div class="managelist">
     <table>
         <thead>
             <tr>
             <th>차대번호</th>
             <th>차량번호</th>
             <th>차종</th>
+            <th>비고</th>
             </tr>
         </thead>
         <tbody>
@@ -16,6 +18,7 @@
                             :key="c.id"/>
         </tbody>
     </table>
+</div>
     <div class="pagegroup">
         <PageGroup
                 v-if="carlist" 
@@ -91,21 +94,27 @@ export default {
 }
 </script>
 <style scoped>
-.pagegroup{
-    width : 95%;
-    margin-bottom:100px;
-}
 table{
-    width : 95%;
-    margin-bottom: 100px;
-    border: solid 1px #ebe9e9;
-    border-radius: 20px;
-    box-shadow: 0 19px 38px #f3f3f3;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #f5f5f5;
 }
 
 th{
-    padding : 20px;
-    font-size: 13px;
-    background-color : #f5f8f8;
+    text-align: center;
+}
+
+.managelist{
+    /* font-family: "Arial", sans-serif; */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 6%;
+    width: 90%;
 }
 </style>

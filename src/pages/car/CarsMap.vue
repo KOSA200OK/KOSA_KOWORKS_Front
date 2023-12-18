@@ -129,7 +129,6 @@ export default {
  #map{
     width:800px;
     height:400px;
-    margin-left : 20%;
     margin-bottom: 5%;
     border-radius: 20px;
     border : solid 2px #50798b34;
@@ -143,18 +142,18 @@ export default {
     text-align: center;
     font-size : 15px;
     font-weight: 700;
-    color : white;
-    text-shadow: 1px 1px 1px #ff9500;
+    color : rgb(255, 255, 255);
+    /* text-shadow: 1px 1px 1px #ff9500; */
     padding-top : 5px;
     position:relative; 
     margin: 50px;
     width:80px; 
     height:30px;
-    background:#ffea00; 
+    background:#f3b42d; 
     border-radius: 30px;
     bottom: 50px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    box-shadow:  inset 0 3px 8px #ff9500;
+    box-shadow: 0 10px 20px rgba(0, 11, 48, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    box-shadow:  inset 0 3px 8px #fdf8f5;
     /* inset 0 0 20px */
 
     animation: bubble 0.7s ease-in 0s infinite alternate; 
@@ -162,7 +161,7 @@ export default {
 }
 
 .bubble:after {
-    border-top:10px solid #ffe175; 
+    border-top:10px solid #f3b42d; 
     border-left: 10px solid transparent; 
     border-right: 10px solid transparent; 
     border-bottom: 0px solid transparent; 
