@@ -24,7 +24,7 @@
 					</router-link>
 					<hr>
 					<div class="noticeBox">
-						<NoticeItem
+						<NoticeItemDash
 							:n="n"
 							v-if="noticelist"
 							v-for="n in noticelist.content.slice(0,5)"
@@ -71,10 +71,10 @@ import NotificationItem from "@/pages/dashboard/NotificationItemDash.vue";
 import AttendanceInfo from "@/pages/dashboard/AttendanceInfo.vue";
 import CarStatus from "@/pages/dashboard/CarStatus.vue";
 import StuffStatus from "@/pages/dashboard/StuffStatus.vue";
-import NoticeItem from "@/pages/notice/NoticeItem.vue";
+import NoticeItemDash from "@/pages/dashboard/NoticeItemDash.vue";
 import axios from "axios";
 export default {
-	components: { Sidebar, TodayTodoItem, NotificationItem, AttendanceInfo, CarStatus, StuffStatus, NoticeItem },
+	components: { Sidebar, TodayTodoItem, NotificationItem, AttendanceInfo, CarStatus, StuffStatus, NoticeItemDash },
 	data() {
 		return {
 			todayTodo: null,
@@ -227,7 +227,9 @@ hr {
 }
 
 .noticeBox {
+	height: 90%;
 	font-size: 16px;
+	overflow: auto;
 }
 
 /* 테이블 행 */
