@@ -99,6 +99,10 @@ export default {
                 return false
             }
 
+            //backEnd 메서드에서 인식하는 endDate의 범위 인식 차이 해결 
+            const endDateObject = new Date(this.endDate);
+            endDateObject.setDate(endDateObject.getDate() + 1);
+
             const url = `${this.backURL}/stuff/requestlist/case`;
 
             const params = {
@@ -106,7 +110,7 @@ export default {
                 status: this.status,
                 stuffId: this.stuffId,
                 startDate: this.startDate,
-                endDate: this.endDate
+                endDate: endDateObject
             };
             // 소분류가 선택된 경우
             if (this.category !== 'default') {
@@ -119,7 +123,6 @@ export default {
             })
                 .then(response => {
                     alert('목록 로드 성공')
-                    console.log(response)
                     this.reqList = response.data;
                 })
                 .catch(error => {
@@ -139,7 +142,8 @@ export default {
     font-weight: bold;
     text-shadow: 1px 1px 1px #ccc;
 }
-.list-container{
+
+.list-container {
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -147,6 +151,7 @@ export default {
     background-color: white;
     box-shadow: 1px 1px 15px 6px rgb(231, 231, 231);
 }
+
 .table-container {
     min-height: 190px;
     max-height: 300px;

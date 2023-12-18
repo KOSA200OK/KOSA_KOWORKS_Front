@@ -95,9 +95,18 @@ export default {
     methods: {
         loadData() {
             if (!this.startDate || !this.endDate) {
-                alert('시작 날짜와 종료 날짜를 선택하세요.');
+                alert('올바른 요청이 아닙니다. 시작 날짜와 종료 날짜를 선택하세요.');
                 return;
             }
+
+            if (this.endDate < this.startDate) {
+                alert("올바른 날짜 선택이 아닙니다. 선택기간을 다시 확인하세요.")
+                return false
+            }
+
+            //backEnd 메서드에서 인식하는 endDate의 범위 인식 차이 해결 
+            const endDateObject = new Date(this.endDate);
+            endDateObject.setDate(endDateObject.getDate() + 1);
 
             const url = `${this.backURL}/stuff/requestmanage`;
 
@@ -106,7 +115,7 @@ export default {
                 status: this.status,
                 stuffId: this.stuffId,
                 startDate: this.startDate,
-                endDate: this.endDate
+                endDate: endDateObject
             };
             // 소분류가 선택된 경우
             if (this.category !== 'default') {
@@ -137,7 +146,7 @@ export default {
 }
 </script>
 <style scoped>
-.manage-container{
+.manage-container {
     width: 100%;
     min-height: 888px;
     border: 1px solid #ccc;
@@ -146,6 +155,7 @@ export default {
     background-color: white;
     box-shadow: 1px 1px 15px 6px rgb(231, 231, 231);
 }
+
 .title {
     text-align: center;
     font-size: 28px;
@@ -154,8 +164,9 @@ export default {
     font-weight: bold;
     text-shadow: 1px 1px 1px #ccc;
 }
+
 .table-container {
-    max-height: 780px;
+    max-height: 720px;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 20px;
