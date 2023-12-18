@@ -1,4 +1,5 @@
 <template>
+  <main>
   <div class="noticelist">
     <table>
       <thead>
@@ -29,8 +30,9 @@
       />
     </table>
   </div>
+  </main>
 </template>
-<script>
+<script scoped>
 import NoticeItem from "@/pages/notice/NoticeItem.vue";
 import PageGroup from "@/components/PageGroup.vue";
 import axios from "axios";

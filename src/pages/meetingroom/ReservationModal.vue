@@ -365,7 +365,7 @@ export default {
 
 /* 모달 컨텐츠 부분 */
 .modal-content {
-  width: 700px;
+  width: 800px;
   background: #fff;
   padding: 20px;
   border-radius: 8px;

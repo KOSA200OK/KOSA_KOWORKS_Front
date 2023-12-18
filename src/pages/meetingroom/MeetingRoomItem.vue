@@ -20,12 +20,13 @@
                 <!-- 행 개수(5개)만큼 반복 -->
                 <div v-for="row in 5" :key="row" class="reservation-container">
                 <!-- 칼럼 개수(times.length)만큼 반복 -->
-                <!-- <div v-for="time in times" :key="time" class="time-slot">
-                    <div v-if="isTimeReserved(time)" class="reservation-box"></div>
-                </div> -->
-                <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
-                    <div v-if="box.reserved" class="reservation-box"></div>
+                <div v-for="time in times" :key="time" class="time-slot">
+                    {{time}}
+                    <div v-if="isTimeReserved(starttime, endtime)" class="reservation-box"></div>
                 </div>
+                <!-- <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
+                    <div v-if="box.reserved" class="reservation-box"></div>
+                </div> -->
                 </div>
             </div>
         </td>
