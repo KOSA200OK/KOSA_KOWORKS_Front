@@ -145,6 +145,10 @@ table {
     margin-bottom: 20px;
 } 
 
+#purposetext {
+    width: 100%;
+}
+
 .submit-button {
     background-color: #2196F3;
     color: white;
