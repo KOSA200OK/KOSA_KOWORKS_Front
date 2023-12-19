@@ -183,7 +183,7 @@ label{
     text-align: center;
 }
 .ok, .approvebutton, .rejectbutton{
-    background-color: #58d3e9;
+    background-color: #2196f3;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -191,13 +191,13 @@ label{
     cursor: pointer;
 }
 .ok:hover{
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .approvebutton:hover{
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .rejectbutton:hover{
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .cancel{
     float: right;

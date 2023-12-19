@@ -4,6 +4,8 @@
         <td>{{c.carNo}}</td>
         <td>{{c.carType}}</td>
         <td>{{c.maxNum}}인승</td>
+        <td><span class="tag" v-if="c.status==1" style="background-color: rgb(25, 189, 74);">승인</span>
+            <span class="tag" v-if="c.status==2" style="background-color: rgb(252, 49, 49);">미반납</span></td>
         <!-- <td><span v-if="c.status==2">미반납</span><span v-if="c.status==1">대기중</span></td> -->
     </tr>
 </template>
@@ -37,5 +39,12 @@ td{
     font-size: 15px;
     cursor: pointer;
 }
-
+.tag{
+    color: white;
+    border-radius:15px;
+    padding: 20px;
+    padding-top: 5px;
+    padding-bottom:5px;
+    font-size: 12px;
+}
 </style>
