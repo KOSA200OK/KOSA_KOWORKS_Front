@@ -5,18 +5,44 @@ g<template>
         <span class="material-symbols-outlined">close</span>
       </button>
       <h3>요청 정보</h3>
-      <div class="info-item"><span class="label">요청날짜:</span> {{ request.reqDate }}</div>
-      <div class="info-item"><span class="label">사원명:</span> {{ request.member.name }}</div>
-      <div class="info-item"><span class="label">부서명:</span> {{ request.member.department.name }}</div>
+      <table>
+        <tr>
+          <td class="label">요청날짜</td>
+          <td>{{ request.reqDate }}</td>
+        </tr>
+        <tr>
+          <td class="label">사원명</td>
+          <td>{{ request.member.name }}</td>
+        </tr>
+        <tr>
+          <td class="label">부서명</td>
+          <td>{{ request.member.department.name }}</td>
+        </tr>
+      </table>
+      <br>
       <h3>요청 비품정보</h3>
-      <div class="info-item"><span class="label">품번:</span> {{ request.stuff.id }}</div>
-      <div class="info-item"><span class="label">품명:</span> {{ request.stuff.name }}</div>
-      <div class="info-item"><span class="label">요청수량:</span> {{ request.quantity }}</div>
-      <div class="info-item"><span class="label">요청 사유:</span> {{ request.purpose }}</div>
+      <table>
+        <tr>
+          <td class="label">품목번호</td>
+          <td>{{ request.stuff.id }}</td>
+        </tr>
+        <tr>
+          <td class="label">품목명</td>
+          <td>{{ request.stuff.name }}</td>
+        </tr>
+        <tr>
+          <td class="label">요청수량</td>
+          <td>{{ request.quantity }}</td>
+        </tr>
+        <tr>
+          <td class="label">요청사유</td>
+          <td>{{ request.purpose }}</td>
+        </tr>
+      </table>
       <div v-if="request.status === 0">
         <div class="info-item">
-          <label for="rejectReason">반려 사유:</label>
-          <textarea id="rejectReason" v-model="reject" rows="4" cols="50" placeholder="반려 사유를 입력하세요" required></textarea>
+          <label for="rejectReason" class="label">반려 사유</label>
+          <textarea id="rejectReason" v-model="reject" rows="4" cols="50" placeholder="반려 사유를 50자 이내로 입력하세요" required></textarea>
         </div>
         <div class="button-group">
           <button class="approve-button" @click="approveRequest">승인</button>
@@ -30,7 +56,7 @@ g<template>
 <script>
 import axios from 'axios'
 export default {
-  name: 'ManageItemModal',
+
   props: {
     request: Object,
   },
@@ -69,7 +95,6 @@ export default {
         })
         .catch((error) => {
           alert('승인 실패', error.message)
-          console.log(params)
         });
       this.closeModal();
     },
@@ -91,7 +116,6 @@ export default {
         })
         .catch((error) => {
           alert('반려 실패', error.message)
-          console.log(params)
         });
       this.closeModal();
     },
@@ -118,7 +142,11 @@ export default {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
-  text-align: left;
+}
+
+.modal-content h3 {
+    font-size: 20px;
+    color: #2196F3;
 }
 
 .button-group {
@@ -136,37 +164,36 @@ export default {
 }
 
 .approve-button {
-  background-color: #58CB64;
-  /* 승인 버튼 배경색 */
+  background-color: #2196F3;
 }
 
 .reject-button {
-  background-color: #FE813C;
-  /* 반려 버튼 배경색 */
+  background-color: #2196F3;
 }
 
-.close-button:hover,
 .approve-button:hover,
 .reject-button:hover {
-  background-color: #ddd;
+  background-color: #2189df;
 }
 
 .close-button {
   float: right;
-  width: 30px;
-  height: 30px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.info-item {
-  margin-bottom: 10px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 20px;
+    margin-left: 330px;
 }
 
 .label {
-  font-weight: bold;
-  margin-right: 5px;
+    width: 130px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+#rejectReason {
+  width: 100%;
 }
 </style>

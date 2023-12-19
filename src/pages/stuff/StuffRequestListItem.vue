@@ -6,23 +6,23 @@
         <td>{{ request.quantity }}</td>
         <!-- <td>{{ reqList.purpose }}</td> -->
         <td>{{ truncateString(request.purpose, 10) }}</td>
-        <td
-            :class="{ 'processing': request.status === 0, 'completed': request.status === 1, 'rejected': request.status === 2 }">
-             {{ request.status === 0 ? '대기' : request.status === 1 ? '승인' : '반려' }}
+        <td>
+            <span  :class="{ 'processing': request.status === 0, 'completed': request.status === 1, 'rejected': request.status === 2 }">
+                {{ request.status === 0 ? '대기' : request.status === 1 ? '승인' : '반려' }}
+            </span>
          </td>
 
         <td>{{ truncateString(request.reject, 10) }}</td>
     </tr>
-    <RequestItemModal 
+    <StuffRequestListItemModal 
     v-if="isModalVisible" 
     :request="selectedRowData" 
     @close="closeModal" />
 </template>
 <script>
-import RequestItemModal from '@/pages/stuff/RequestItemModal.vue';
+import StuffRequestListItemModal from '@/pages/stuff/StuffRequestListItemModal.vue';
 export default {
-    name: 'RequestItem',
-    components: { RequestItemModal },
+    components: { StuffRequestListItemModal },
     props: {
         request: Object,
     },
@@ -40,7 +40,7 @@ export default {
                 return str;
             }
         },
-        trClickHandler(reqId) {
+        trClickHandler() {
             this.selectedRowData = this.request;
             this.isModalVisible = true;
         },
@@ -51,32 +51,43 @@ export default {
 }
 </script>
 <style scoped>
-td {
-    /* border: 1px solid #dddddd; */
-    border: none;
-    text-align: center;
-    padding: 12px;
-    background-color: #ffffff;
+tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-/* 처리현황에 따른 스타일링 */
+tr:hover {
+    background-color: #fcfcfc;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: px solid #ddd;
+    border-top: dotted 1px #cccccc;
+    font-size: 15px;
+    cursor: pointer;
+}
+
 .processing,
 .completed,
 .rejected {
-    font-weight: bold;
-    text-align: center;
-    padding: 8px;
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 12px;
 }
 
 .processing {
-    background-color: #E9BC00;
+    background-color: rgb(255, 217, 0);
 }
 
 .completed {
-    background-color: #58CB64;
+    background-color: rgb(25, 189, 74);
 }
 
 .rejected {
-    background-color: #FE813C;
+    background-color: rgb(252, 49, 49);
 }
 </style>

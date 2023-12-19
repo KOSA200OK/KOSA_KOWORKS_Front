@@ -1,4 +1,6 @@
 <template>
+    <main>
+    <h3 class="title">내 회의 예약내역</h3>
     <div class="myreservationlist">
         <table>
             <thead>
@@ -18,16 +20,17 @@
                     v-bind:key="mrr.id"
                 />
             </tbody>
-            
-            <PageGroup 
-            v-if="meetingroomreslist" 
-            :path="'/meetingroom/myreservation/'"
-            :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-            :startPage="startPage"
-            :endPage="endPage"
-            />
         </table>
     </div>
+    <br>
+        <PageGroup 
+        v-if="meetingroomreslist" 
+        :path="'/meetingroom/myreservation/'"
+        :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
+        :startPage="startPage"
+        :endPage="endPage"
+        />
+    </main>
 </template>
 <script>
 import MeetingRoomResItem from '@/pages/meetingroom/MeetingRoomResItem.vue'
@@ -101,27 +104,62 @@ export default {
 }
 </script>
 <style scoped>
+/* 페이지 제목 */
+.title {
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    margin-top: 100px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+/* 내용 */
+.myreservationlist {
+    width: 90%;
+    font-family: "Arial", sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 6%;
+}
+
 table {
   border-collapse: collapse;
-  width: 1000px;
+  width: 100%;
 
-  margin-left: 200px;
-  margin-right: auto;
-  margin-top: 100px;
+  align-content: center;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+thead {
+    background-color: #f5f5f5;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #eaeaea;
 }
 
 /* 테이블 행 */
-th{
+ th{
   padding: 8px;
   height: 80px;
   text-align: left;
   border-bottom: 1px solid #ddd;
   text-align: center;
-}
-
-th {
-  background-color: var(--dark);
-  color: #ddd;
 }
 
 /* 테이블 비율 */

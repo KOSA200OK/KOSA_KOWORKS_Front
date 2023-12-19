@@ -80,7 +80,7 @@ export default {
         // SSE 구독 시작 ==
         this.startSSE();
 
-        this.$router.push("/home");
+        this.$router.push("/dashboard");
         this.$data.user = response.data;
         location.reload();
       } catch (error) {
@@ -174,7 +174,7 @@ export default {
         localStorage.removeItem("departmentId");
 
         localStorage.removeItem("name");
-        this.$router.push("/home");
+        this.$router.push("/dashboard");
         //화면 새로고침
         location.reload();
       } catch (error) {

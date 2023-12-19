@@ -1,4 +1,12 @@
 <template>
+    <main>
+    <h3 class="title"><b>회의실 예약 내역</b><br>
+        <div class="date">
+            <button class="prevday" @click="prevDay">PREV &lt;&lt; &nbsp;&nbsp;&nbsp;</button>
+            <h3 style="display: inline-block;">{{FormattedDate()}}</h3>
+            <button class="nextday" @click="nextDay">&nbsp;&nbsp;&nbsp; &gt;&gt; NEXT </button>
+        </div>
+    </h3>
     <div class="meetingroomlist">
         <VueDatePicker 
         :model-value="date" 
@@ -6,10 +14,6 @@
         class="calender"
         @update:model-value="updateList"
         />
-        <div class="date">
-            <h2>회의실 예약 내역</h2><br>
-            <h3>{{FormattedDate()}}</h3>
-        </div>
         <table class="scrollable-table">
             <thead>
                 <tr>
@@ -22,14 +26,14 @@
                     :mr="mr"
                     :date="date"
                     v-if="meetingroomlist"
-                    v-for="mr in meetingroomlist" 
+                    v-for="mr in meetingroomlist"
                     v-bind:key="mr.id"
                     @click="clickMeetingRoomReservation()"
                 />
             </tbody>
-            
         </table>
     </div>
+    </main>
 </template>
 <script>
 import MeetingRoomItem from '@/pages/meetingroom/MeetingRoomItem.vue'
@@ -38,7 +42,7 @@ import axios from 'axios'
 
 export default {
     name: "MeetingRoomList",
-    components: {MeetingRoomItem},
+    components: { MeetingRoomItem },
     data() {
         return {
             meetingroomlist : [],
@@ -52,6 +56,7 @@ export default {
             return date;
         },
 
+        //날짜 구하기
         FormattedDate() {
             // 선택한 날짜를 YYYY-MM-DD 형식으로 변경하여 저장
             if (this.date) {
@@ -63,6 +68,20 @@ export default {
                 return this.date;
             }
             return '';
+        },
+        prevDay() {
+            const currentDate = new Date(this.date);
+            // 하루를 빼기
+            currentDate.setDate(currentDate.getDate() - 1);
+            // 변환된 날짜를 updateList 메서드에 전달
+            this.updateList(currentDate);
+        },
+        nextDay() {
+            const currentDate = new Date(this.date);
+            // 하루를 더하기
+            currentDate.setDate(currentDate.getDate() + 1);
+            // 변환된 날짜를 updateList 메서드에 전달
+            this.updateList(currentDate);
         },
 
         updateList(selectedDate) {
@@ -134,23 +153,44 @@ export default {
 </script>
 <style scoped>
 
+/* 페이지 제목 */
+.title {
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    margin-top: 100px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+/* 본문 */
+.meetingroomlist {
+    width: 90%;
+    font-family: "Arial", sans-serif;
+    padding: 20px;
+    margin: 20px;
+    margin-left: 6%;
+}
+
 div.date {
-    margin-left: 200px;
-    margin-right: auto;
-    margin-top: 10px;
-    margin-bottom: 0px;
+    margin-top: 20px;
     
     text-align: center;
 }
 
-.scrollable-table {
-    width: 80%;
-    margin-left: 200px;
-    margin-right: 200px;
-    margin-top: 50px;
-    margin-bottom: 200px;
+.prevday, .nextday {
+    text-align: center;
+    font-size: 18px;
+    color: #2c3e50;
+    text-shadow: 1px 1px 1px #ccc;
+}
 
+.scrollable-table {
     border-collapse: collapse;
+    width: 100%;
+
     table-layout: fixed;
 }
 
@@ -164,10 +204,9 @@ div.date {
 .calender {
     width: 150px;
 
-    margin-left: 200px;
+    margin-left: 10px;
     margin-right: auto;
-    margin-top: 100px;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
 }
 
 .time-container {
@@ -202,10 +241,9 @@ th{
 }
 
 th {
-  background-color: var(--dark);
+  background-color: var(--dark-alt);
   color: #ddd;
 }
-
 
 /* 테이블 비율 */
 th:nth-child(1),
@@ -219,7 +257,7 @@ td:nth-child(2) {
 }
 
 tr:nth-child(even) {
-  background-color: #fff6f6;
+  background-color: #f1f9ff;
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template lang="">
 <form @submit.prevent="sendRequest" class="send-container">
             <div class="form-group">
-                <h3>비품 요청</h3>
+                <h3 class="title">비품 요청</h3>
                 <table>
                     <tr>
                         <td class="input-item">대분류</td>
@@ -50,7 +50,6 @@
 <script>
 import axios from 'axios'
 export default {
-    name: 'StuffReqSend',
     props: {
         memberId: {
             type: String,
@@ -109,13 +108,10 @@ export default {
                 )
                 .then((response) => {
                     alert('요청 성공')
-                    console.log('서버 응답:', response.data);
-                    console.log(data)
+                    window.location.reload();
                 })
                 .catch((error) => {
                     alert('요청 실패')
-                    console.error('서버 요청 실패:', error);
-                    console.log(data)
                 });
         },
     },
@@ -128,28 +124,47 @@ export default {
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: white;
+    box-shadow: 1px 1px 15px 6px rgb(231, 231, 231);
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+table {
+    margin: 0 auto;
 }
 
 .form-group {
     margin-bottom: 20px;
+} 
+
+#purposetext {
+    width: 100%;
 }
 
 .submit-button {
-    background-color: #58d3e9;
+    background-color: #2196F3;
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    float: right;
 }
 
 .submit-button:hover {
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .input-item {
-    padding-right: 30px;
-    /* 원하는 간격으로 조절 */
+    font-weight: bold;
+    padding-right: 80px;
 }
 
 table {

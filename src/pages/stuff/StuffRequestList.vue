@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <div class="list-container">
         <h3 class="title">비품 요청 목록조회</h3>
         <br>
         <div class="form-container">
@@ -26,6 +26,7 @@
                     <option value="default">선택안함</option>
                     <option value="S">문구류</option>
                     <option value="F">가구류</option>
+                    <option value="E">기타</option>
                 </select>
             </div>
             <div class="form-group">
@@ -38,6 +39,7 @@
                     <option v-if="category === 'F'" value="F0001">책상</option>
                     <option v-if="category === 'F'" value="F0002">의자</option>
                     <option v-if="category === 'F'" value="F0003">파티션</option>
+                    <option v-if="category === 'E'" value="E0001"> </option>
                 </select>
             </div>
             <button @click="loadData" class="load-button">목록 로드</button>
@@ -57,65 +59,67 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <RequestItem :request="request" v-if="reqList" v-for="request in reqList" :key="request.id" />
+                    <StuffRequestListItem :request="request" v-if="reqList" v-for="request in reqList" :key="request.id" />
                 </tbody>
             </table>
         </div>
-        <br>
-        <hr>
-        <br>
-        <div class="req-container">
-            <StuffReqSend :memberId="memberId" @submitRequest="sendRequest" />
-        </div>
-    </main>
+    </div>
 </template>
-  
 <script>
-import StuffReqSend from '@/pages/stuff/StuffReqSend.vue'
-import RequestItem from '@/pages/stuff/RequestItem.vue'
+import StuffRequestListItem from '@/pages/stuff/StuffRequestListItem.vue'
 import axios from 'axios'
 export default {
-    name: 'StuffReq',
-    components: { RequestItem, StuffReqSend },
+    components: { StuffRequestListItem },
+    props: {
+        memberId: {
+            type: String,
+            required: true,
+        },
+    },
     data() {
         return {
             category: 'default', // 대분류 선택값
             subcategory: '', // 소분류 선택값
-            memberId: null,
             status: 3,
             stuffId: 'default',
-            startDate: '',
-            endDate: '',
-            // 비품 데이터 예시
+            startDate: this.getCurrentDate(),
+            endDate: this.getCurrentDate(),
             reqList: [],
-        };
-    },
-    created() {
-        const memberIdValue = localStorage.getItem('memberId');
-
-        if (memberIdValue !== null) {
-            console.log('memberId의 값:', memberIdValue);
-
-            this.memberId = memberIdValue;
-        } else {
-            console.log('로컬 스토리지에 memberId에 해당하는 값이 없습니다.');
         }
     },
     methods: {
+
+        getCurrentDate() {
+            const today = new Date()
+            const year = today.getFullYear()
+            const month = String(today.getMonth() + 1).padStart(2, '0')
+            const day = String(today.getDate()).padStart(2, '0')
+            return `${year}-${month}-${day}`
+        },
+
         loadData() {
             if (!this.startDate || !this.endDate) {
-                alert('시작 날짜와 종료 날짜를 선택하세요.');
+                alert('올바른 요청이 아닙니다. 시작 날짜와 종료 날짜를 선택하세요.');
                 return;
             }
 
-            const url = `${this.backURL}/stuff/requestlist/case`;
+            if (this.endDate < this.startDate) {
+                alert("올바른 날짜 선택이 아닙니다. 선택기간을 다시 확인하세요.")
+                return false
+            }
+
+            //backEnd 메서드에서 인식하는 endDate의 범위 인식차이로 인한 문제 해결 
+            const endDateObject = new Date(this.endDate);
+            endDateObject.setDate(endDateObject.getDate() + 1);
+
+            const url = `${this.backURL}/stuff/requestlist`;
 
             const params = {
                 memberId: this.memberId,
                 status: this.status,
                 stuffId: this.stuffId,
                 startDate: this.startDate,
-                endDate: this.endDate
+                endDate: endDateObject
             };
             // 소분류가 선택된 경우
             if (this.category !== 'default') {
@@ -127,8 +131,6 @@ export default {
                 withCredentials: true
             })
                 .then(response => {
-                    alert('목록 로드 성공')
-                    console.log(response)
                     this.reqList = response.data;
                 })
                 .catch(error => {
@@ -136,41 +138,54 @@ export default {
                 });
         },
     },
-};
+
+    created() {
+        this.loadData()
+    },
+
+}
 </script>
-  
 <style scoped>
+.title {
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+.list-container {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 1px 1px 15px 6px rgb(231, 231, 231);
+}
+
 .table-container {
-    min-height: 200px;
+    min-height: 190px;
     max-height: 300px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
     overflow-y: auto;
 }
 
-table {
-    width: 99.5%;
+.table-container>table {
+    width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-}
-
-td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
 }
 
 thead {
     background-color: #f5f5f5;
 }
 
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tbody tr:hover {
-    background-color: #eaeaea;
+th {
+    text-align: center;
 }
 
 .form-container {
@@ -198,7 +213,7 @@ select {
 
 .load-button {
     height: 35px;
-    background-color: #58d3e9;
+    background-color: #2196F3;
     border: none;
     color: white;
     padding: 5px;
@@ -211,12 +226,6 @@ select {
 }
 
 .load-button:hover {
-    background-color: #58b5c5;
-}
-.req-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5px; /* 필요에 따라 조절하세요 */
+    background-color: #2189df;
 }
 </style>

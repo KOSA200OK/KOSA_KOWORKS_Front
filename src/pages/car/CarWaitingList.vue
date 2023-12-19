@@ -1,4 +1,5 @@
 <template lang="">
+<div>
     <div class="waitinglist">
         <table>
             <thead>
@@ -18,6 +19,7 @@
                             :key="w.id"/>
             </tbody>
         </table>
+    </div>
         <div class="pagegroup">
             <PageGroup
                 v-if="waitinglist" 
@@ -28,7 +30,7 @@
                 :endPage="endPage"
             />
         </div>
-    </div>
+</div>
 </template>
 <script>
 import CarWaitingListItem from '@/pages/car/CarWaitingListItem.vue'
@@ -99,27 +101,24 @@ export default {
 }
 </script>
 <style scoped>
-/* .waitinglist{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} */
-.pagegroup{
-    width : 1400px;
-    margin-bottom:100px;
+.waitinglist{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 6%;
+    width: 1450px;
 }
-.waitinglist>table{
-    width : 1400px;
-    margin-bottom: 100px;
-    border: solid 1px #ebe9e9;
-    border-radius: 20px;
-    box-shadow: 0 19px 38px #f3f3f3;
+table{
+    width: 100%;
+    border-collapse: collapse;
 }
-th{
-    padding : 20px;
-    font-size: 13px;
-    background-color : #f5f8f8;
+thead {
+    background-color: #f5f5f5;
+}
+th {
+    text-align: center;
 }
 
 
