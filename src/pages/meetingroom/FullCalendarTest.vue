@@ -97,21 +97,21 @@
                         {
                             field: 'name',
                             cellContent: {
-                                component: MeetingRoomItem,
-                                props: {mr:'meetingRoomData'}
-                                // html:
-                                // `<img src="../../images/회의실1.jpg" style="width:200px; height:200px;"></img>
-                                // <br>
-                                // 회의실1
-                                // <br>
-                                // <button class="resbutton" @click="openModal">
-                                //     <span><b>예약하기</b></span>
-                                // </button>
-                                // <Modal 
-                                // :show="showModal"
-                                // :mr = "mr"
-                                // @close="closeModal"/>
-                                // `
+                                // component: MeetingRoomItem,
+                                // props: {mr:'meetingRoomData'}
+                                html:
+                                `<img src="../../images/회의실1.jpg" style="width:200px; height:200px;"></img>
+                                <br>
+                                회의실1
+                                <br>
+                                <button class="resbutton" @click="openModal">
+                                    <span><b>예약하기</b></span>
+                                </button>
+                                <Modal 
+                                :show="showModal"
+                                :mr = "mr"
+                                @close="closeModal"/>
+                                `
                             },
                         },
                         // other columns...

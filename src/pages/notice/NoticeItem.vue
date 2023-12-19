@@ -20,12 +20,10 @@ export default {
 <style scoped>
 
 td {
-  width: 150rem;
-  height: 50px;
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
+    height: 80px;
+    padding: 10px;
+    text-align: center;
+    border-bottom: px solid #ddd;
 }
 
 </style>
