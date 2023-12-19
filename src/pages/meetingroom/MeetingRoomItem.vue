@@ -122,11 +122,22 @@ export default {
                 console.log(this.starttime)
                 this.endtime = matchingReservation.endTime;
                 console.log(this.endtime)
+
+                const randomColor = this.getRandomColor();
+                return {
+                    'reserved-time': true,
+                    [randomColor]: true,
+                };
             } else {
                 // 일치하는 예약 정보가 없을 경우 기본값으로 설정하거나 다른 로직을 수행할 수 있습니다.
                 this.starttime = '';
                 this.endtime = '';
             }
+        },
+        getRandomColor() {
+            const colors = ['red', 'blue', 'green', 'yellow', 'purple']; // 원하는 색상들을 배열로 정의
+            const randomColor = colors[Math.floor(Math.random() * colors.length)]; // 배열에서 랜덤으로 색상 선택
+            return randomColor;
         },
         openModal() {
             this.showModal = true;
@@ -268,4 +279,24 @@ td {
   background-color: #1565c0; /* 예약된 시간대의 배경색을 여기에 설정합니다. */
 }
 
+/* 랜덤 색상 정해주기 */
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.purple {
+  background-color: purple;
+}
 </style>

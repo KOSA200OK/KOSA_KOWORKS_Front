@@ -1,6 +1,6 @@
 <template>
     <main>
-    <h3 class="title">내 회의 예약내역</h3>
+    <h3 class="title">회의 예약내역</h3>
     <div class="myreservationlist">
         <table>
             <thead>
@@ -118,7 +118,7 @@ export default {
 
 /* 내용 */
 .myreservationlist {
-    
+
     width: 90%;
     font-family: "Arial", sans-serif;
     border: 1px solid #ccc;
