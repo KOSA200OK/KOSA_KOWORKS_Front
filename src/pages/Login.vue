@@ -25,10 +25,14 @@
       <button class="login-button" type="submit">로그인</button>
     </form>
     <!-- 찬석 -->
-    <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
-        <div class="notify_bar_title">알림</div>
-        <br>
-        <div>{{ notifyMessage }}</div>
+    <div
+      class="notify_bar"
+      v-if="notifyMessage"
+      @click="handleNotificationClick"
+    >
+      <div class="notify_bar_title">알림</div>
+      <br />
+      <div>{{ notifyMessage }}</div>
     </div>
 
     <router-view v-if="isLoggedIn"></router-view>
@@ -82,7 +86,6 @@ export default {
 
         this.$router.push("/dashboard");
         this.$data.user = response.data;
-        location.reload();
       } catch (error) {
         console.error("로그인 실패:", error);
       }
@@ -96,7 +99,7 @@ export default {
         // EventSource를 이용해 SSE 구독 시작
         // this.eventSource = new EventSource(`${this.backURL}/subscribe/${this.id}`);
         this.eventSource = new EventSource(`${this.backURL}/subscribe/${id}`);
-        
+
         this.eventSource.addEventListener("sse", (event) => {
           console.log(event.data);
           console.log(event);
@@ -218,14 +221,14 @@ export default {
 
   background-color: rgba(59, 126, 216, 1);
   /* background:  rgba(255,255,255,0.1); */
-  border-radius: 10px 10px 10px 10px ;
+  border-radius: 10px 10px 10px 10px;
 }
 .notify_bar_title {
-    position: absolute;
-    left: 10px; /* 왼쪽과의 여백 설정 */
-    top: 10px; /* 위쪽과의 여백 설정 */
-    font-weight: normal;
-    font-size: 12px;
+  position: absolute;
+  left: 10px; /* 왼쪽과의 여백 설정 */
+  top: 10px; /* 위쪽과의 여백 설정 */
+  font-weight: normal;
+  font-size: 12px;
 }
 
 /*  */
@@ -242,7 +245,10 @@ export default {
   position: absolute; /* 위치를 absolute로 설정 */
   top: 50%; /* 부모 요소의 50% 위치로 이동 */
   left: 50%; /* 부모 요소의 50% 위치로 이동 */
-  transform: translate(-50%, -50%); /* 자기 자신의 50% 만큼 이동하여 중앙 정렬 */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* 자기 자신의 50% 만큼 이동하여 중앙 정렬 */
 }
 
 .member-input {
