@@ -30,6 +30,7 @@
                 : a.status === 3 ? "결근"
                 : a.status === 4 ? "병가"
                 : a.status === 5 ? "휴가"
+                : a.status === 6 ? "조퇴"
                 : ""
             }}
         </td>
