@@ -67,6 +67,7 @@ export default {
                 .then((response) => {
                     alert('요청이 취소되었습니다.');
                     this.closeModal();
+                    window.location.reload();
                 })
                 .catch((error) => {
                     alert('요청 취소에 실패했습니다.');

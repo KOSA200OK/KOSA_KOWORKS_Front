@@ -368,7 +368,7 @@ aside {
 
 // 찬석
 .notify {
-  position: absolute;
+  position: absolute; 
   width: 400px;
   margin-left: 13.1%;
   margin-top: 19%;
