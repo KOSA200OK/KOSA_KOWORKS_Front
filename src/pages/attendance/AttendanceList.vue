@@ -51,7 +51,6 @@ export default {
     components: { AttendanceItem, PageGroup },
     data() {
         return {
-            // pageTitle: '근태내역',
             currentPage: 1,
             attendanceList: null, // 페이지 그룹 초기화
             // attendanceList:[]
@@ -124,8 +123,6 @@ export default {
                     this.attendanceList.content.sort((a, b) => {
                         return b.id - a.id; // id 필드를 기준으로 내림차순 정렬
                     });
-
-                    console.log("ㅜㅜㅜㅜ : {}", this.attendanceList);
 
                     if (this.currentPage <= this.attendanceList.totalPages) {
                         this.startPage = parseInt((this.currentPage - 1) / 5) * 5 + 1;
