@@ -26,7 +26,6 @@
                     <option value="default">선택안함</option>
                     <option value="S">문구류</option>
                     <option value="F">가구류</option>
-                    <option value="E">기타</option>
                 </select>
             </div>
             <div class="form-group">
