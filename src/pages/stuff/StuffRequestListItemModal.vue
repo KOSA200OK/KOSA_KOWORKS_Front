@@ -61,6 +61,11 @@ export default {
         },
 
         cancelRequest() {
+            // 확인 대화상자 추가
+            if (!confirm('요청을 취소하시겠습니까?')) {
+                return; // 사용자가 '아니오'를 선택한 경우, 함수를 빠져나간다.
+            }
+
             const url = `${this.backURL}/stuff/request?id=${this.request.id}`;
             axios
                 .delete(url)
