@@ -78,12 +78,59 @@ export default {
 <style scoped>
 
 td {
-  width: 150rem;
-  height: 80px;
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
+    height: 80px;
+    padding: 10px;
+    text-align: center;
+    border-bottom: px solid #ddd;
+}
+
+.resinfo {
+    width: 150px;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2196F3;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.resinfo:hover {
+    background-color: #27ae60;
+}
+
+.update {
+    padding: 8px 20px;
+    border: 2px solid var(--dark-alt);
+    border-radius: 5px;
+    color: var(--dark-alt);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.update:hover {
+    background-color: var(--dark-alt);
+    color: #fff;
+}
+
+.cancel {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--dark-alt);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+.cancel:hover {
+    border: 2px solid var(--dark-alt);
+    border-radius: 5px;
+    color: var(--dark-alt);
+    background-color: #f1f9ff;
 }
 
 </style>
