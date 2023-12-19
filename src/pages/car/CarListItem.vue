@@ -1,6 +1,6 @@
 <template lang="">
     <tr>
-        <td>{{c.id}}</td>
+        <!-- <td>{{c.id}}</td> -->
         <td>{{c.carNo}}</td>
         <td>{{c.carType}}</td>
         <td>{{c.maxNum}}인승</td>

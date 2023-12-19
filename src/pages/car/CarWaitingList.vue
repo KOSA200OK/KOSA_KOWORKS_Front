@@ -108,7 +108,7 @@ export default {
     margin: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-left: 6%;
-    width: 1450px;
+    width: 90%;
 }
 table{
     width: 100%;

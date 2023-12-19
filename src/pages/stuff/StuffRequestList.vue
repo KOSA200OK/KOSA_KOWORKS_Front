@@ -112,7 +112,7 @@ export default {
             const endDateObject = new Date(this.endDate);
             endDateObject.setDate(endDateObject.getDate() + 1);
 
-            const url = `${this.backURL}/stuff/requestlist/case`;
+            const url = `${this.backURL}/stuff/requestlist`;
 
             const params = {
                 memberId: this.memberId,
