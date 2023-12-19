@@ -20,9 +20,17 @@
 
                 <!-- 행 개수(5개)만큼 반복 -->
                 <div v-for="row in 1" :key="row" class="reservation-container">
-                <!-- 칼럼 개수(times.length)만큼 반복 -->
-                <div v-for="time in times" :key="time" :class="{ 'reserved-time': isTimeReserved(starttime, endtime, time) }" class="time-slot">
-                </div>
+                    <!-- 칼럼 개수(times.length)만큼 반복 -->
+                    <div
+                        v-for="time in times"
+                        :key="time"
+                        :class="{
+                            'reserved-time': isTimeReserved(time),
+                        }"
+                        class="time-slot"
+                        @click = "detailInfoHandler"
+                    ></div>
+
                 <!-- <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
                     <div v-if="box.reserved" class="reservation-box"></div>
                 </div> -->
@@ -81,8 +89,10 @@ export default {
                 reserved: this.isTimeReserved(time),
             }));
         },
-        isTimeReserved(starttime, endtime, currentTime) {
-            return this.isTimeInRange(currentTime, starttime, endtime);
+        isTimeReserved(currentTime) {
+            return this.reservations.some(reservation =>
+                    this.isTimeInRange(currentTime, reservation.startTime, reservation.endTime)
+                );        
         },
         // 해당 시간에 예약이 있는지 확인하는 메서드
         // isTimeReserved(time) {
@@ -109,30 +119,41 @@ export default {
             return hours * 60 + minutes;
         },
         updateTimeBasedOnDate(newDate) {
-            // newDate와 일치하는 mr.reservation을 찾습니다.
-            const matchingReservation = this.mr.reservation.find(reservation => reservation.meetingDate === newDate);
-            // const matchingReservation = this.mr.reservation.filter(reservation => reservation.meetingDate === newDate);
-            console.log(matchingReservation);
+            // const matchingReservation = this.mr.reservation.find(reservation => reservation.meetingDate === newDate);
+            // newDate와 일치하는 mr.reservation 여러개를 찾아 담아준다
+            const matchingReservations = this.mr.reservation.filter(reservation => reservation.meetingDate === newDate);
+            console.log(matchingReservations);
 
-            this.reservations = matchingReservation;
-            // matchingReservation이 존재하면 해당 정보로 starttime과 endtime을 설정합니다.
-            if (matchingReservation) {
-                console.log(this.reservations)
-                this.starttime = matchingReservation.startTime;
-                console.log(this.starttime)
-                this.endtime = matchingReservation.endTime;
-                console.log(this.endtime)
+            this.reservations = []; //배열 초기화
 
-                const randomColor = this.getRandomColor();
-                return {
-                    'reserved-time': true,
-                    [randomColor]: true,
-                };
-            } else {
-                // 일치하는 예약 정보가 없을 경우 기본값으로 설정하거나 다른 로직을 수행할 수 있습니다.
-                this.starttime = '';
-                this.endtime = '';
+            for (const reservation of matchingReservations) {
+                console.log(reservation.startTime, reservation.endTime);
+
+                // 회의의 시작 시간과 종료 시간을 배열에 추가
+                this.reservations.push({
+                    startTime: reservation.startTime,
+                    endTime: reservation.endTime,
+                });
             }
+
+            // matchingReservation이 존재하면 해당 정보로 starttime과 endtime을 설정합니다.
+            // if (matchingReservation) {
+            //     console.log(this.reservations)
+            //     this.starttime = matchingReservation.startTime;
+            //     console.log(this.starttime)
+            //     this.endtime = matchingReservation.endTime;
+            //     console.log(this.endtime)
+
+            //     const randomColor = this.getRandomColor();
+            //     return {
+            //         'reserved-time': true,
+            //         [randomColor]: true,
+            //     };
+            // } else {
+            //     // 일치하는 예약 정보가 없을 경우 기본값으로 설정하거나 다른 로직을 수행할 수 있습니다.
+            //     this.starttime = '';
+            //     this.endtime = '';
+            // }
         },
         getRandomColor() {
             const colors = ['red', 'blue', 'green', 'yellow', 'purple']; // 원하는 색상들을 배열로 정의
