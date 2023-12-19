@@ -1,23 +1,25 @@
 <template lang="">
-    <div class="noreturnlist">
-        <table>
-            <thead>
-                <tr>
-                    <th>신청날짜</th>
-                    <th>소속부서</th>
-                    <th>예약자</th>
-                    <th>차량번호</th>
-                    <th>대여기간</th>
-                    <th> </th>
-                </tr>
-            </thead>
-            <tbody>
-                <CarNoReturnListItem :n="n"
-                            v-if="noreturnlist"
-                            v-for="n in noreturnlist.content"
-                            :key="n.id"/>
-            </tbody>
-        </table>
+    <div>
+        <div class="noreturnlist">
+            <table>
+                <thead>
+                    <tr>
+                        <th>신청날짜</th>
+                        <th>소속부서</th>
+                        <th>예약자</th>
+                        <th>차량번호</th>
+                        <th>대여기간</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <CarNoReturnListItem :n="n"
+                                v-if="noreturnlist"
+                                v-for="n in noreturnlist.content"
+                                :key="n.id"/>
+                </tbody>
+            </table>
+        </div>
         <div class="pagegroup">
         <PageGroup
             v-if="noreturnlist" 
@@ -98,27 +100,24 @@ export default {
 }
 </script>
 <style scoped>
-/* .noreturnlist{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} */
-.pagegroup{
-    width : 1400px;
-    margin-bottom:100px;
+.noreturnlist{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 6%;
+    width: 90%;
 }
 .noreturnlist>table{
-    width : 1400px;
-    margin-bottom: 100px;
-    border: solid 1px #ebe9e9;
-    border-radius: 20px;
-    box-shadow: 0 19px 38px #f3f3f3;
+    width: 100%;
+    border-collapse: collapse;
+}
+thead {
+    background-color: #f5f5f5;
 }
 th{
-    padding : 20px;
-    font-size: 13px;
-    background-color : #f5f8f8;
+    text-align: center;
 }
 
 

@@ -33,7 +33,7 @@
                     :c="carlist"
                     :menu="menu"/>
             </div>
-            <CarManageList v-if="menu==0"
+            <CarManageList v-if="menu==0 && load==1"
                             :rentlist="rentlist"
                             :noreturnlist="noreturnlist"/>
             <CarWaitingList v-if="menu==1"/>
@@ -62,12 +62,15 @@ export default {
             rentcnt : 0,
             waitingcnt : 0,
             noreturncnt : 0,
-            menu : 0
+            menu : 0,
+            intervalid: 0,
+            load : 0
         }
     },
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
+            this.load = 0
             console.log('axios호출시작')
             const url = `${this.backURL}/carrent/manage`
             axios.get(url)
@@ -76,10 +79,10 @@ export default {
                 this.waitinglist = response.data.waitinglist
                 this.rentlist = response.data.rentlist
                 this.noreturnlist = response.data.noreturnlist
-                console.log(this.carlist)
-                console.log(this.waitinglist)
-                console.log(this.rentlist)
-                console.log(this.noreturnlist)
+                console.log("manage carlist: ",this.carlist)
+                console.log("manage waitinglist: ",this.waitinglist)
+                console.log("manage rentlist: ",this.rentlist)
+                console.log("manage noreturnlist: ",this.noreturnlist)
                 if(this.waitinglist!=null){
                     console.log('cnt값 구하기 시작')
                     this.waitingcnt = this.waitinglist.length
@@ -93,6 +96,8 @@ export default {
                 console.log(this.waitingcnt)
                 console.log(this.noreturncnt)
                 console.log('axios호출완료')
+
+                this.load = 1
             })
             .catch((Error)=>{
                 console.log(Error)
@@ -102,12 +107,46 @@ export default {
         menuHandler(menu){
             this.menu = menu
             this.$router.push({ path: '/carrent/manage' });
-        }
+        },
+        liveHandler(){
+            const url = `${this.backURL}/carrent/updatelive`
+            axios.get(url)
+            .then(response=>{
+                for(var car of this.carlist){
+                    if(car.id==='740293'){
+                        car.latitude = response.data.latitude
+                        car.longitude = response.data.longitude
+                    }
+                }
+            })
+            .catch((Error)=>{
+                console.log(Error)
+            })
+        },
+        // testhandler(){
+        //     for(var car of this.carlist){
+        //         car.latitude+=0.01
+        //         car.longitude+=0.01
+        //         console.log('++해줬음')
+        //     }
+        // }
     },
     created() {
         console.log('created carmanage')
         this.axiosHandler()
-    }
+        this.intervalid = setInterval(() => {
+            // this.testhandler()
+            this.liveHandler()
+            console.log('나 아직 호출되는중')
+            // console.log(this.carlist)
+        }, 1000);
+    },
+    beforeRouteLeave(to, from, next) {
+        console.log('찍히니?')
+        // 컴포넌트가 파괴되기 전에 setInterval 중지
+        clearInterval(this.intervalid);
+        next()
+    },
 }
 </script>
 <style scoped>
