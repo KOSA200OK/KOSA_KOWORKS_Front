@@ -1,4 +1,4 @@
-g<template>
+<template>
   <div class="modal">
     <div class="modal-content">
       <button class="close-button" @click="closeModal">
@@ -42,7 +42,8 @@ g<template>
       <div v-if="request.status === 0">
         <div class="info-item">
           <label for="rejectReason" class="label">반려 사유</label>
-          <textarea id="rejectReason" v-model="reject" rows="4" cols="50" placeholder="반려 사유를 50자 이내로 입력하세요" required></textarea>
+          <textarea id="rejectReason" v-model="reject" rows="4" cols="50" placeholder="반려 사유를 50자 이내로 입력하세요"
+            required></textarea>
         </div>
         <div class="button-group">
           <button class="approve-button" @click="approveRequest">승인</button>
@@ -70,6 +71,11 @@ export default {
       this.$emit('close');
     },
     approveRequest() {
+      // 확인 대화상자 추가
+      if (!confirm('승인하시겠습니까?')) {
+        return; // 사용자가 '아니오'를 선택한 경우, 함수를 빠져나간다.
+      }
+
       if (this.request.quantity > this.request.stuff.stock) {
         alert('승인 가능한 수량이 없습니다.');
         return;
@@ -91,15 +97,20 @@ export default {
         )
         .then((response) => {
           location.href = "/stuff/stuffmanage"
-          alert('승인 성공')
+          alert('승인되었습니다')
         })
         .catch((error) => {
-          alert('승인 실패', error.message)
+          alert('승인에 실패했습니다', error.message)
         });
       this.closeModal();
     },
 
     rejectRequest() {
+      // 확인 대화상자 추가
+      if (!confirm('반려하시겠습니까?')) {
+        return; // 사용자가 '아니오'를 선택한 경우, 함수를 빠져나간다.
+      }
+
       const params = {
         id: this.request.id,
         reject: this.reject,
@@ -112,10 +123,10 @@ export default {
           }
         )
         .then((response) => {
-          alert('반려 성공')
+          alert('반려되었습니다')
         })
         .catch((error) => {
-          alert('반려 실패', error.message)
+          alert('반려에 실패했습니다', error.message)
         });
       this.closeModal();
     },
@@ -145,8 +156,8 @@ export default {
 }
 
 .modal-content h3 {
-    font-size: 20px;
-    color: #2196F3;
+  font-size: 20px;
+  color: #2196F3;
 }
 
 .button-group {
@@ -178,19 +189,19 @@ export default {
 
 .close-button {
   float: right;
-    width: 30px;
-    height: 30px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 20px;
-    margin-left: 330px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 20px;
+  margin-left: 330px;
 }
 
 .label {
-    width: 130px;
-    font-weight: bold;
-    margin-right: 5px;
+  width: 130px;
+  font-weight: bold;
+  margin-right: 5px;
 }
 
 #rejectReason {

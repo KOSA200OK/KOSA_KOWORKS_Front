@@ -26,7 +26,7 @@ export default {
     data() {
         return {
             currentDay: this.getCurrentDay(),
-			currentTime: this.getCurrentTime(),
+            currentTime: this.getCurrentTime(),
             attendanceTime: null,
             offTime: null,
         }
@@ -73,6 +73,7 @@ export default {
                 })
                 .catch((error) => {
                     console.error("출근 요청 실패", error);
+                    alert('이미 출근한 사원입니다.')
                 });
         },
 
@@ -80,23 +81,51 @@ export default {
             const id = localStorage.getItem("memberId");
 
             const url = `${this.backURL}/attendance`;
-            const memberId = id; // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
-            const currentTime = new Date(); // 현재 시간을 가져옴
-            const memberData = {
-                memberId: memberId,
-                currentTime: currentTime,
-                member: {
-                    id: id, // memberId 값 설정 (임시로 1로 설정) -> session이나 localstorage id 가져와야함
-                },
-            };
+            const memberId = id;
 
             axios
-                .put(url, memberData)
+                .get(`${this.backURL}/attendance/today?memberId=${memberId}`)
                 .then((response) => {
-                    alert("퇴근 완료! 조심히가세요~");
+                    // 출석 데이터가 있는 경우
+                    const attendanceData = response.data;
+                    if (attendanceData) {
+                        // 이미 퇴근한 경우
+                        if (attendanceData.endTime) {
+                            alert('이미 퇴근한 사원입니다.');
+                        } else {
+                            // 출석 데이터가 있고 퇴근하지 않은 경우
+                            const currentTime = new Date(); // 현재 시간을 가져옴
+                            const memberData = {
+                                memberId: memberId,
+                                currentTime: currentTime,
+                                member: {
+                                    id: id,
+                                },
+                            };
+
+                            axios
+                                .put(url, memberData)
+                                .then((response) => {
+                                    if (response.status === 200) {
+                                        alert("퇴근 완료! 조심히가세요~");
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.error("퇴근 요청 실패", error);
+                                    if (error.response.status === 400) {
+                                        alert('퇴근한 상태입니다. 이미 퇴근하셨습니다.');
+                                    } else {
+                                        alert('퇴근 요청에 실패했습니다.');
+                                    }
+                                });
+                        }
+                    } else {
+                        // 출석 데이터가 없는 경우
+                        alert('출근 기록이 없습니다. 먼저 출근을 기록해야 합니다.');
+                    }
                 })
                 .catch((error) => {
-                    console.error("퇴근 요청 실패", error);
+                    console.error("출근 데이터 조회 실패", error);
                 });
         },
 
@@ -127,57 +156,55 @@ export default {
         this.fetchAttendanceData(memberId);
     },
     created() {
-        
+
     },
 }
 </script>
   
 <style scoped>
-
 .buttons {
-	display: flex;
-	justify-content: space-around;
+    display: flex;
+    justify-content: space-around;
 }
 
 .buttons button {
     width: 100px;
-	padding: 10px 20px;
-	margin: 5px;
-	font-size: 14px;
-	cursor: pointer;
-	border: 2px solid #2196F3;
-	background-color: transparent;
-	color: #2196F3;
-	border-radius: 25px;
-	transition: background-color 0.3s ease;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 2px solid #2196F3;
+    background-color: transparent;
+    color: #2196F3;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
 }
 
 .buttons button:hover {
-	background-color: rgba(21, 101, 192, 0.1);
+    background-color: rgba(21, 101, 192, 0.1);
 }
 
 .currentDay {
-	color: rgba(128, 128, 128, 0.8);
+    color: rgba(128, 128, 128, 0.8);
 }
 
 .currentTime {
-	font-size: 20px;
-	font-weight: bold;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .timeBox {
-	margin-top: 50px;
-	margin-bottom: 70px;
+    margin-top: 50px;
+    margin-bottom: 70px;
 }
 
 .timeBox div {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .timeBox span {
-	text-align: center;
-	flex: 1;
+    text-align: center;
+    flex: 1;
 }
-
 </style>

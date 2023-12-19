@@ -11,9 +11,19 @@ export default {
                 map : null,
                 infowindow: null,
                 overlay: null,
-                selectedMarker : null
+                selectedMarker : null,
+                markers: []
             }
     },
+    watch : {
+		c: {
+            handler(newValue, oldValue) {
+                this.recreateMarkers()
+                // console.log('ㅎㅎ')
+            },
+            deep: true
+        }
+     },
     mounted() {
         if(window.kakao && window.kakao.maps){
             this.initMap()
@@ -50,7 +60,6 @@ export default {
                 console.log('위도 :'+this.c[i].latitude+' 경도 :'+this.c[i].longitude)
 
                 this.createMarker(latlng, this.c[i].carNo)
-                
                 // // 마커를 생성합니다
                 // var marker = new kakao.maps.Marker({
                 //     map: this.map, // 마커를 표시할 지도
@@ -95,6 +104,7 @@ export default {
 
             marker.setMap(this.map)
             console.log('마커 세팅')
+            this.markers.push(marker)
 
             kakao.maps.event.addListener(marker, 'click', () => {
                 if (this.selectedMarker && this.selectedMarker !== marker) {
@@ -121,6 +131,25 @@ export default {
 
                 this.selectedMarker = marker;
             });
+        },
+        recreateMarkers() {
+            console.log('시작했어')
+            // 이전 마커들을 모두 제거
+            for(var m of this.markers){
+                m.setMap(null)
+            }
+            console.log('삭제했어')
+
+            for (var i = 0; i < this.c.length; i ++) {
+                console.log(i+': '+this.c[i].id)
+    
+                var latlng  = new kakao.maps.LatLng(this.c[i].latitude, this.c[i].longitude)
+                console.log('위도 :'+this.c[i].latitude+' 경도 :'+this.c[i].longitude)
+
+                this.createMarker(latlng, this.c[i].carNo)
+            }
+
+            console.log('세팅했어')
         }
     },
 }
