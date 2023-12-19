@@ -31,6 +31,12 @@
           >
             예약 내용
           </notificationItem>
+          <div v-if="!hasContent" class="no-notification">
+            <span class="material-symbols-outlined">
+              body_system
+            </span>
+            <p>최근 알림이 없습니다</p>
+          </div>
         </div>
       </div>
       <!-- 찬석  -->
@@ -120,6 +126,7 @@ export default {
       notificationList: { content: [] },
       scrollPostion: 0,
       hasContent: false, // 종 색깔
+      hasContent: false,
     };
   },
   methods: {
@@ -174,6 +181,9 @@ export default {
         case "MEETING":
           this.$router.push("/meetingroom/myreservation");
           break;
+        case "STUFF":
+          this.$router.push("/stuff/request");
+          break;
         default:
           break;
       }
@@ -214,10 +224,10 @@ export default {
         } else {
           console.log("최근 알림이 없습니다");
 
-          this.notificationList.content = [];
-          this.notificationList.content.push({
-            content: " 최근 알림이 없습니다 ㅠ ",
-          });
+          // this.notificationList.content = [];
+          // this.notificationList.content.push({
+          //   content: " 최근 알림이 없습니다 ㅠ ",
+          // });
           this.hasContent = false;
         }
       })
@@ -370,19 +380,41 @@ aside {
 .notify {
   position: absolute;
   width: 400px;
+  height: 480px;
   margin-left: 13.1%;
-  margin-top: 19%;
+  margin-top: 21%;
   padding: 10px;
-  // background-color: var(--dark);
   background-color: #3b7ed8;
   border: 1px solid white;
   border-radius: 4px;
   max-height: 450px;
   overflow-y: scroll;
 
-  /* 우측 패딩을 추가하여 스크롤바를 요소의 내부로 이동 */
   padding-right: 20px;
   z-index: 999;
+}
+.no-notification {
+  display: flex;
+  height: 35%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 5%;
+  margin-top: 10%;
+  padding: 20px;
+  // background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.material-symbols-outlined {
+  font-size: 90px;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
 }
 /* 스크롤바 스타일링 */
 .notify::-webkit-scrollbar {
