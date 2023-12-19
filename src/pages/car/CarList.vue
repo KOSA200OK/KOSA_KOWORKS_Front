@@ -27,7 +27,7 @@
                 <table v-if="carlist" class="carlist-table">
                     <thead>
                         <tr>
-                            <th>차대번호</th>
+                            <!-- <th>차대번호</th> -->
                             <th>차량번호</th>
                             <th>차종</th>
                             <th>비고</th>
@@ -38,7 +38,7 @@
                         <CarListItem
                                     :d="data" 
                                     :c="c"
-                                    v-if="carlist"
+                                    v-if="carlist.content"
                                     v-for="c in carlist.content"
                                     :key="c.id"/>
                     </tbody>

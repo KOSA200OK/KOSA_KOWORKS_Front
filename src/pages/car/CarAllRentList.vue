@@ -1,4 +1,12 @@
 <template lang="">
+<main>
+    <div class="allrentheader">
+            <ul>
+                <li class="other"><router-link class="headermenu" to="/carrent/manage">차량 관리</router-link></li>
+                <li class="current"><span class="headermenu-c" >신청 내역</span></li>
+            </ul>
+    </div>
+    <h3>신청 내역</h3>
     <div class="allrentlist">
         <table>
             <thead>
@@ -9,6 +17,7 @@
                     <th>차량번호</th>
                     <th>대여기간</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -18,6 +27,8 @@
                             :key="r.id"/>
             </tbody>
         </table>
+    </div>
+    <div>
         <PageGroup
             v-if="allrentlist" 
             :path="'/carrent/allrentlist/'"
@@ -26,6 +37,7 @@
             :endPage="endPage"
         />
     </div>
+</main>
 </template>
 <script>
 import CarAllRentListItem from '@/pages/car/CarAllRentListItem.vue'
@@ -66,6 +78,12 @@ export default {
             })
         },
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 END----
+        openRejectModal() {
+            this.rejectModalCheck = !this.rejectModalCheck
+        },
+        openApproveModal() {
+            this.approveModalCheck = !this.approveModalCheck
+        },
     },
     watch: {
         //----라우터값이 변경되었을 때 할 일 START----
@@ -90,24 +108,75 @@ export default {
 }
 </script>
 <style scoped>
+.allrentheader{
+    margin-left: 6%;
+}
+h3{
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    text-transform: uppercase;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
+}
 .allrentlist{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 6%;
+    width: 90%;
 }
-.allrentlist>table{
-    width : 1000px;
-    border-top:solid 3px #363840;
-    border-bottom:solid 3px #363840;
+table{
+    width: 100%;
+    border-collapse: collapse;
 }
-th{
-    padding : 25px;
+thead {
+    background-color: #f5f5f5;
 }
-
-th{
-    font-size: 15px;
-    border-bottom: solid 3px #363840;
+th {
+    text-align: center;
 }
-
+ul{
+    list-style-type: none;
+    padding:0;
+    text-align: center;
+    display: inline-block;
+    margin: 0;
+}
+li.current{
+    background-color: #1565c0;
+    border : solid 1px rgb(190, 205, 255);
+}
+li.other{
+    background-color: white;
+    border: solid 1px rgb(200, 200, 201);
+}
+li{
+    /* display: inline; */
+    width: 150px;
+    height : 50px;
+    display: inline-block;
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 6px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.headermenu{
+    text-decoration: none;
+    color: rgb(23, 29, 110);
+    font-weight: 600;
+    padding:10px;
+}
+.headermenu-c{
+    color: rgb(247, 247, 247);
+    font-weight: 600;
+}
+li.other:hover{
+    background-color:#fbfbfc;
+}
 </style>
