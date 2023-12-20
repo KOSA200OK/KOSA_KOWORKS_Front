@@ -38,12 +38,17 @@
           <td class="label">요청사유</td>
           <td>{{ request.purpose }}</td>
         </tr>
+        <tr>
+          <td v-if="request.status === 2" class="label">반려사유</td>
+          <td>{{ request.reject }}</td>
+        </tr>
+
       </table>
       <div v-if="request.status === 0">
         <div class="info-item">
           <label for="rejectReason" class="label">반려 사유</label>
           <textarea id="rejectReason" v-model="reject" rows="4" cols="50" placeholder="반려 사유를 50자 이내로 입력하세요"
-            required></textarea>
+            required ></textarea>
         </div>
         <div class="button-group">
           <button class="approve-button" @click="approveRequest">승인</button>
@@ -106,10 +111,16 @@ export default {
     },
 
     rejectRequest() {
+      if (!this.reject || !this.reject) {
+                alert('올바른 접근이 아닙니다. 반려 사유를 입력하세요.');
+                return;
+            }
+      
       // 확인 대화상자 추가
       if (!confirm('반려하시겠습니까?')) {
         return; // 사용자가 '아니오'를 선택한 경우, 함수를 빠져나간다.
       }
+      
 
       const params = {
         id: this.request.id,
@@ -123,6 +134,7 @@ export default {
           }
         )
         .then((response) => {
+          location.href = "/stuff/stuffmanage"
           alert('반려되었습니다')
         })
         .catch((error) => {

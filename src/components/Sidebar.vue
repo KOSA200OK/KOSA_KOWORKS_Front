@@ -68,7 +68,7 @@
         <span class="text">일정</span>
       </router-link>
       <router-link class="button" to="/meetingroom">
-        <span class="material-icons">meeting_room</span>
+        <span class="material-icons">meeting_room</span> 
         <span class="text">회의실 예약</span>
       </router-link>
       <router-link class="button" to="/meetingroom/myreservation">
@@ -96,7 +96,7 @@
     <div class="flex"></div>
 
     <div class="menu">
-      <div class="button logoutBt" @click="logout">
+      <div class="button logoutBt" @click="logout" v-if="isLoggedIn">
         <span class="material-icons">logout</span>
         <span class="text">로그아웃</span>
       </div>
@@ -120,6 +120,7 @@ export default {
       is_expanded: localStorage.getItem("is_expanded") === "true",
       memberName: "",
       departmentId: 0,
+      isLoggedIn: false,
 
       //찬석
       isStatusOn: false,
@@ -201,6 +202,11 @@ export default {
     this.memberName = memberName;
     const departmentId = window.localStorage.getItem("departmentId");
     this.departmentId = departmentId;
+    if(window.localStorage.getItem("isLoggedIn")==null){
+      this.isLoggedIn = false
+    }else{
+      this.isLoggedIn = true
+    }
 
     // 찬석
     const id = window.localStorage.getItem("memberId");

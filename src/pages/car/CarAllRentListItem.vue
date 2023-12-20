@@ -12,20 +12,24 @@
         <td><button class="approvebutton" v-if="r.status==0" @click="approve">승인</button>
             <button class="rejectbutton" v-if="r.status==0" @click="openRejectModal">반려</button></td>
     </tr>
-    <div class="modal-wrap" v-show="modalCheck==true && r.status!=0" >
+    <div class="modal-wrap" v-show="modalCheck==true" >
         <div class="modal-container">
             <button class="cancel" @click="openModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg></button>
             <div class="rentdetail">
-                <label>신청자 </label><span style="font-size: 15px; margin-left:15px;">{{r.member.name}}</span><br><br>
-                <label>부서명 </label><span style="font-size: 15px; margin-left:15px;">{{r.member.department.name}}</span><br><br>
+                <h3 style="margin-bottom:30px; color: #2196F3;">신청 정보</h3>
+                <label>신청자 </label><span style="font-size: 15px; margin-left:30px;">{{r.member.name}}</span><br><br>
+                <label>부서명 </label><span style="font-size: 15px; margin-left:30px;">{{r.member.department.name}}</span><br><br>
                 <label>차량번호 </label><span style="font-size: 15px; margin-left:15px;">{{r.car.carNo}}</span><br><br>
-                <label>차종 </label><span style="font-size: 15px; margin-left:15px;">{{r.car.carType}}</span><br><br><br>
-                <label>대여기간 </label><span style="font-size: 15px; margin-left:15px;">{{r.startDate}} ~ {{r.endDate}}</span><br><br><br>
-                <label>대여목적 </label><span style="font-size: 15px; margin-left:15px;">{{r.purpose}}</span><br><br><br>
-                <label v-show="r.status==1">반려사유 </label><span style="font-size: 15px; margin-left:15px;">{{r.reject}}</span>
+                <label>차종 </label><span style="font-size: 15px; margin-left:45px;">{{r.car.carType}}</span><br><br>
+                <label>대여기간 </label><span style="font-size: 15px; margin-left:15px;">{{r.startDate}} ~ {{r.endDate}}</span><br><br>
+                <label>대여목적 </label><span style="font-size: 15px; margin-left:15px;">{{r.purpose}}</span><br><br>
+                <label v-if="r.status==1">반려사유 </label><span style="font-size: 15px; margin-left:15px;">{{r.reject}}</span><br><br>
+                <div class="modal-btn" v-if="r.status==0">
+                    <button type="submit" class="ok" @click="approve">승인</button>
+                </div>
             </div>
         </div>
     </div>
@@ -36,7 +40,7 @@
                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg></button>
             <div class="rejectdetail">
-                <h3>반려사유</h3>
+                <h3 style="color: #2196F3;">반려사유</h3>
                 <form class="rejectmessage" @submit.prevent="rejectHandler">
                     <textarea type="text" 
                             name="reject" 
@@ -64,7 +68,7 @@
                 <label>차량번호</label> <span style="font-size: 15px;">{{r.car.carNo}}</span><br><br>
                 <label>차종</label> <span style="font-size: 15px; margin-left:30px;">{{r.car.carType}}</span><br><br>
                 <label>대여기간</label> <span style="font-size: 15px;">{{r.startDate}} ~ {{r.endDate}}</span><br><br>
-                <label>대여목적</label> <span style="font-size: 15px;">{{r.purpose}}</span>
+                <label>대여목적</label> <span style="font-size: 15px;">{{r.purpose}}</span><br><br>
                 <div class="modal-btn">
                     <button type="submit" class="ok" @click="approve">승인</button>
                 </div>
@@ -133,7 +137,21 @@ export default {
             .catch((Error)=>{
                 console.log(Error)
             })
-        }
+        },
+        approve(){
+            const url = `${this.backURL}/carrent/approve?id=${this.w.id}`
+            axios.get(url)
+            .then(response=>{
+                if(response.status==200){
+                    alert('승인되었습니다.')
+                    this.$router.push("/carrent/allrentlist")
+                    // window.location.reload()
+                }
+            })
+            .catch((Error)=>{
+                console.log(Error)
+            })
+        },
     }
 }
 </script>
@@ -189,7 +207,7 @@ label{
     vertical-align: top;
 }
 .modal-btn{
-    margin-top : 50px;
+    margin-top : 30px;
     text-align: center;
 }
 .tag{

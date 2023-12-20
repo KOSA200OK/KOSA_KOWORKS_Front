@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul>
+        <ul @click="notificationClick(n)">
             <li>
                 <div class="icon-cancel">
                     <span class="material-symbols-outlined">
@@ -23,6 +23,7 @@
 </template>
 <script>
 import axios from 'axios';
+import { toHandlers } from 'vue';
 
 export default {
     name: 'NotificationItem',
@@ -63,6 +64,22 @@ export default {
                     console.log('DELETE 요청 실패', response.data);
                 })
         },
+        notificationClick(n) {
+            console.log("타입 : ", n.type);
+            switch (n.tyep) {
+                case "CAR" :
+                    this.$router.push("/arrent/myrentlist");
+                    break;
+                case "MEETING" :
+                    this.$router.push("/meetingroom/myreservation")
+                    break;
+                case "STUFF" :
+                    this.$router.push("/stuff/request");
+                    break;
+                default:
+                    break;
+            }
+        }
     },    
 }
 </script>

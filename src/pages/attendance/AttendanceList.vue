@@ -120,44 +120,22 @@ export default {
                 .then((response) => {
                     this.attendanceList = response.data;
 
-                    this.attendanceList.content.sort((a, b) => {
-                        return b.id - a.id; // id 필드를 기준으로 내림차순 정렬
-                    });
+                    if (this.attendanceList.content && this.attendanceList.content.length > 0) {
+                        this.attendanceList.content.sort((a, b) => {
+                            return new Date(b.date) - new Date(a.date); // 날짜를 기준으로 오름차순 정렬
+                        });
+                    }
 
                     if (this.currentPage <= this.attendanceList.totalPages) {
                         this.startPage = parseInt((this.currentPage - 1) / 5) * 5 + 1;
-                        this.endPage = this.startPage + 5 - 1;
-
-                        if (this.endPage > this.attendanceList.totalPages) {
-                            this.endPage = this.attendanceList.totalPages;
-                        }
-
-                        alert(
-                            "totalPage=" +
-                            this.attendanceList.totalPages +
-                            ", startPage=" +
-                            this.startPage +
-                            ", endPage" +
-                            this.endPage
-                        );
+                        this.endPage = Math.min(this.startPage + 4, this.attendanceList.totalPages);
                     }
                 })
                 .catch((error) => {
                     console.error("에러 발생", error);
                 });
-        },
 
-        // getPageGroupPath() {
-        //     // 만약 월이 선택되었다면
-        //     const memberId = localStorage.getItem("memberId");
-        //     if (this.selectedMonth !== '') {
-        //         // 선택된 월을 기반으로 월별 조회 URL을 생성합니다.
-        //         return this.fetchAttendanceData;
-        //     } else {
-        //         // 선택된 월이 없는 경우 전체 행의 페이징 URL을 생성합니다.
-        //         return this.axiosHandler
-        //     }
-        // },
+        },
     },
     watch: {
         // --- 라우터값이 변경되었을 때 할 일 START ---
@@ -231,6 +209,7 @@ export default {
 }
 
 .attendance {
+    width: 90%;
     font-family: "Arial", sans-serif;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -238,7 +217,7 @@ export default {
     margin: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-left: 6%;
-    width: 1450px;
+    /* width: 1450px; */
     /* max-width: 1300px; */
     /* width: 90% */
 }
@@ -279,7 +258,8 @@ tbody tr:hover {
     align-items: center;
     justify-content: flex-end; /* 오른쪽으로 보내기 */
     /* margin-right: 5%; */
-    margin-left: 1370px;
+    /* margin-left: 1370px; */
+    margin-left: 85%;
 }
 
 .select-month {
