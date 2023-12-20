@@ -25,12 +25,20 @@
         <td>{{ a.endTime }}</td>
         <td :class="statusType(a.status)">
             {{
-                a.status === 1 ? "퇴근"
-                : a.status === 2 ? "지각"
-                : a.status === 3 ? "결근"
-                : a.status === 4 ? "병가"
-                : a.status === 5 ? "휴가"
-                : a.status === 6 ? "조퇴"
+                // a.status === 1 ? "퇴근"
+                // : a.status === 2 ? "지각"
+                // : a.status === 3 ? "결근"
+                // : a.status === 4 ? "병가"
+                // : a.status === 5 ? "휴가"
+                // : a.status === 6 ? "조퇴"
+                // : ""
+                a.status === 0 ? "출근"
+                :a.status === 1 ? "지각"
+                : a.status === 2 ? "결근"
+                : a.status === 3 ? "병가"
+                : a.status === 4 ? "휴가"
+                : a.status === 5 ? "조퇴"
+                // : a.status === 6 ? "조퇴"
                 : ""
             }}
         </td>
@@ -48,18 +56,34 @@ export default {
     },
     methods: {
         statusType(status) {
+            // switch (status) {
+            //     case 1:
+            //         return "completed";
+            //     case 2:
+            //         return "late";
+            //     case 3:
+            //         return "absent";
+            //     case 4:
+            //         return "sick"
+            //     case 5:
+            //         return "vacation"
+            //     case 6:
+            //         return "early"
+            //     default :
+            //         return "";
+            // }
             switch (status) {
-                case 1:
+                case 0:
                     return "completed";
-                case 2:
+                case 1:
                     return "late";
-                case 3:
+                case 2:
                     return "absent";
+                case 3:
+                    return "sick";
                 case 4:
-                    return "sick"
-                case 5:
                     return "vacation"
-                case 6:
+                case 5:
                     return "early"
                 default :
                     return "";
@@ -77,7 +101,7 @@ td {
 }
 
 .completed {
-  /* Styles for '퇴근' */
+  /* Styles for '출근' */
   /* background-color: #cceeff; */
   color: #0040ff;
   font-weight: bolder;

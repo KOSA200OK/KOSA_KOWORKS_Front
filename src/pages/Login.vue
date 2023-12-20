@@ -25,7 +25,7 @@
       <button class="login-button" type="submit">로그인</button>
     </form>
     <!-- 찬석 -->
-    <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick">
+    <div class="notify_bar" v-if="notifyMessage" @click="handleNotificationClick()" :data-type="notificationType">
         <div class="notify_bar_title">알림</div>
         <br>
         <div>{{ notifyMessage }}</div>
@@ -190,6 +190,22 @@ export default {
         console.log("이전 SSE 구독을 중지합니다.");
       }
     },
+    handleNotificationClick() {
+      console.log("타입 : ", this.notificationType);
+            switch (this.notificationType) {
+                case "CAR" :
+                    this.$router.push("/arrent/myrentlist");
+                    break;
+                case "MEETING" :
+                    this.$router.push("/meetingroom/myreservation")
+                    break;
+                case "STUFF" :
+                    this.$router.push("/stuff/request");
+                    break;
+                default:
+                    break;
+            }
+    }
   },
 };
 </script>
