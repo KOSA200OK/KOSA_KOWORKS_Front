@@ -26,7 +26,7 @@
 					<div class="noticeBox">
 						<NoticeItemDash
 							:n="n"
-							v-if="noticelist.content"
+							v-if="noticelist && noticelist.content"
 							v-for="n in noticelist.content.slice(0,5)"
 							v-bind:key="n.id"
 						/>
@@ -96,7 +96,7 @@ export default {
 			const memberId = localStorage.getItem("memberId");
 			const url = `${this.backURL}/schedule/todaytodo?memberId=${memberId}`;
 			axios
-				.get(url, { params: this.data })
+				.get(url)
 				.then((response) => {
 					this.todayTodo = response.data;
 				})
@@ -121,7 +121,6 @@ export default {
 		},
 
 		notificationClick(n) {
-			console.log("타입 : ", n.type);
 			switch (n.type) {
 				case 'CAR':
 					this.$router.push('/carrent/myrentlist');

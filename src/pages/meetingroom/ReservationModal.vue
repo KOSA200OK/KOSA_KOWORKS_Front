@@ -3,18 +3,18 @@
     <!-- 모달 컨텐츠 -->
     <!-- Modal content -->
     <div class="modal-content">
+      <div class="content">
         <!-- Modal header -->
         <div class="modalheader">
-            <h2 class="title">
-                회의실 예약하기
-            </h2>
             <button @click="closeModal" class="close">
                 <svg class="closebutton" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                 </svg>
             </button>
+            <h2>
+                회의실 예약하기
+            </h2>
         </div>
-        <br><br>
         
         <!-- Modal body -->
         <!--희의실 정보-->
@@ -38,7 +38,6 @@
                   빔프로젝트 {{mr.projector}}대,<br>
                   콘센트 {{mr.socket}}개,<br>
                   마커 {{mr.marker}}개,<br>
-                  {{mr.id}}
               </div>
             </div>
         </div>
@@ -100,7 +99,7 @@
                         minutes-increment="30"
                         minutes-grid-increment="30"
                         time-picker disable-time-range-validation
-                        :min-time="`${startTime}`"
+                        :min-time="`${this.startTime}`"
                         :max-time="{ hours: 20, minutes: 0 }"
                         :format="format"
                         @update:model-value="updateEndTime"
@@ -109,8 +108,8 @@
                     </div>
                 </div>
                 <div class="participants"> 
-                회의 참석자: &nbsp;&nbsp;&nbsp; <br>
-                <input v-model="search" type="text" placeholder="검색"/>
+                회의 참석자 &nbsp;&nbsp;&nbsp; <br>
+                <input v-model="search" type="text" class="searchbar" placeholder="검색"/>
                   <div v-if="loading"></div>
                   <div v-else-if="filteredMembers.length > 0">
                       <!-- key를 member.id로 정해서 <tr></tr>안의 내용을 반복 -->
@@ -125,7 +124,7 @@
                   <p>다시 검색해주세요</p>
                   </div>
                   <div v-if="addedParticipants.length > 0">
-                    <p><b>추가된 참석자:</b></p>
+                    <p class="added"><b>추가된 참석자 &nbsp;&nbsp;</b></p>
                     <ul>
                       <li v-for="participant in addedParticipants" :key="participant.id">
                         {{ participant.name }}
@@ -155,6 +154,7 @@
                 <button class="cancelbtn" @click="closeModal"><b>취소</b></button>
             </div>
         </form>
+      </div>
     </div>
   </div>
 </template>
@@ -228,10 +228,7 @@ export default {
   },
   methods: {
     openModal() {
-      // 모달 열 때 초기 값 저장
-      // this.originalMeeting = this.selectedMeeting;
-      // this.originalMeeting = {...this.mr};
-      // this.originalMeeting = this.mr.id;
+
     },
     closeModal() {
       this.$emit("close");
@@ -342,7 +339,7 @@ export default {
       if (newValue.trim() !== "") {
         this.fetchData();
       } else {
-        // Clear the members array when the search term is empty
+        // 검색결과가 없으면 member배열 비우기
         this.members = [];
       }
     },
@@ -361,18 +358,35 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: auto;
 
+  /* overflow-y: auto; */
 }
 
 /* 모달 컨텐츠 부분 */
 .modal-content {
   width: 800px;
-  height: auto;
+  max-height: 900px;
   background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  overflow: auto;
+  /* padding: 20px; */
+  border-radius: 10px;
+
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+
+  overflow-y: auto;
+}
+
+.content {
+  height: 100%;
+
+  padding-left: 20%;
+  padding-right: auto;
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+  margin-top: 50px;
 
   align-content: center;
   align-items: center;
@@ -380,9 +394,26 @@ export default {
   text-align: left;
 }
 
+/* 모달 헤더 부분 */
+h2 {
+  text-align: center;
+  font-size: 28px;
+  color: #2c3e50;
+  text-transform: uppercase;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px #ccc;
+}
+
 .title {
-    float: left;
-    padding: 10px;
+  float: left;
+
+  font-size: 20px;
+  color: #2c3e50;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px #ccc;
 }
 
 .meetingroominfo {
@@ -394,6 +425,10 @@ export default {
   margin-bottom: 1rem; /* 아래쪽 여백 추가 */
 
   padding: 10px;
+}
+
+.roomname {
+  font-size: 20px;
 }
 
 .img {
@@ -409,26 +444,24 @@ img {
 }
 
 img {
-  width: 200px;
-  height: 200px;
+  width: 280px;
+  height: 280px;
   flex: left;
 }
 
-button.close {
+.close {
   float: right;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  align-items: center;
-  vertical-align: middle;
-
   padding-top: 15px;
 }
 
 .closebutton {
   float: right;
-  width: 30px;
-  height: 30px;
+  white-space: nowrap;
+
+  margin-left: 700px;
+
+  width: 50px;
+  height: 50px;
 }
 
 
@@ -469,11 +502,45 @@ div.purpose {
   grid-column: 2; /* 두 번째 열에 배치 */
 }
 
+.participants {
+  padding: 10px;
+}
+
+.searchbar {
+  height: 40px;
+  border-radius: var(--dp-border-radius);
+  border: 1px solid lightgray;
+  padding: 10px;
+}
+
+/* 점 제거 */
+ul {
+  list-style-type: none;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+li {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.added {
+  white-space : nowrap;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 3px;
+
+  display: inline-block;
+}
+
 textarea {
-    width: 100%;
-    border-radius: var(--dp-border-radius);
-    border: 1px solid lightgray;
-    padding: 10px;
+  width: 100%;
+  border-radius: var(--dp-border-radius);
+  border: 1px solid lightgray;
+  padding: 10px;
 }
 
 textarea:active {
