@@ -1,15 +1,15 @@
 <template>
 <main>
     <div class="calendar">
-        <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarOptions.events" eventClick="scheduleDetailHandler">
-
-        <template v-slot:eventContent='arg'>
-            <div class="event" @click="scheduleDetailHandler(arg)">
-                <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}
-                </b>
-            </div>
-        </template>
-
+        <FullCalendar ref="fullCalendar" :options="calendarOptions" 
+                                         :events="calendarOptions.events" 
+                                         eventClick="scheduleDetailHandler">
+            <template v-slot:eventContent='arg'>
+                <div class="event" @click="scheduleDetailHandler(arg)">
+                    <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}
+                    </b>
+                </div>
+            </template>
         </FullCalendar>
         <ScheduleInfo v-if="detailModalCheck" 
                     :c="c"
