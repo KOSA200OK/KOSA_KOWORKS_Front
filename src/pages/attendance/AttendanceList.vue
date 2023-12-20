@@ -231,6 +231,7 @@ export default {
 }
 
 .attendance {
+    width: 90%;
     font-family: "Arial", sans-serif;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -238,7 +239,7 @@ export default {
     margin: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-left: 6%;
-    width: 1450px;
+    /* width: 1450px; */
     /* max-width: 1300px; */
     /* width: 90% */
 }
@@ -279,7 +280,8 @@ tbody tr:hover {
     align-items: center;
     justify-content: flex-end; /* 오른쪽으로 보내기 */
     /* margin-right: 5%; */
-    margin-left: 1370px;
+    /* margin-left: 1370px; */
+    margin-left: 80%;
 }
 
 .select-month {
