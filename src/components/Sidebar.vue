@@ -72,7 +72,7 @@
         <span class="text">회의실 예약</span>
       </router-link>
       <router-link class="button" to="/meetingroom/myreservation">
-        <span class="material-icons">meeting_room</span>
+        <span class="material-icons">fact_check</span>
         <span class="text">회의실 내예약보기</span>
       </router-link>
       <router-link class="button" to="/carrent/carlist">
