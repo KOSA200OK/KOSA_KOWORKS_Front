@@ -68,7 +68,7 @@
         <span class="text">일정</span>
       </router-link>
       <router-link class="button" to="/meetingroom">
-        <span class="material-icons">meeting_room</span>
+        <span class="material-icons">meeting_room</span> 
         <span class="text">회의실 예약</span>
       </router-link>
       <router-link class="button" to="/meetingroom/myreservation">
