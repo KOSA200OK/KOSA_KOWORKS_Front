@@ -1,14 +1,26 @@
 <template>
   <div class="app">
     <Sidebar />
-    <Login />
-    <!-- <Main /> -->
+    <Dashboard v-if="isLoggedIn === 'true'" />
+    <Login v-else />
   </div>
 </template>
-<script setup>
+<script>
+import Dashboard from "./pages/dashboard/dashboard.vue";
 import Login from "./pages/Login.vue";
 import Sidebar from "./components/Sidebar.vue";
-// import Main from "./components/Main.vue";
+export default {
+  components: { Sidebar, Login, Dashboard },
+  data() {
+    return {
+      isLoggedIn: '',
+    }
+  },
+  created() {
+  const isLoggedInValue = localStorage.getItem("isLoggedIn");
+  this.isLoggedIn = isLoggedInValue === 'true';
+},
+};
 </script>
 <style lang="scss">
 :root {

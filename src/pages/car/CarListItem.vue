@@ -156,7 +156,7 @@ td {
     text-align: center;
 }
 .applybutton, .ok{
-    background-color: #58d3e9;
+    background-color: #2196f3;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -167,10 +167,10 @@ td {
     color: #58b5c5;
 }
 .applybutton:hover{
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .ok:hover{
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .cancel{
     float: right;
