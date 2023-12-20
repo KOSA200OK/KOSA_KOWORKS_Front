@@ -158,4 +158,10 @@ td {
 .scrollable-tbody::-webkit-scrollbar-track {
   background-color: #f5f5f5; /* 스크롤바 트랙의 배경색 설정 */
 }
+.address-thead {
+  background-color: #f5f5f5;
+  position: sticky;
+  top: 0; /* 상단에 고정 */
+  z-index: 1; /* 다른 요소 위에 나타나도록 설정 */
+}
 </style>
