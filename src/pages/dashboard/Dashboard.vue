@@ -162,6 +162,9 @@ export default {
 };
 </script>
 <style scoped>
+.home-page{
+	margin-top: 70px;
+}
 .gridContainer {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
