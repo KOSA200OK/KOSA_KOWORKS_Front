@@ -38,6 +38,11 @@
           <td class="label">요청사유</td>
           <td>{{ request.purpose }}</td>
         </tr>
+        <tr>
+          <td v-if="request.status === 2" class="label">반려사유</td>
+          <td>{{ request.reject }}</td>
+        </tr>
+
       </table>
       <div v-if="request.status === 0">
         <div class="info-item">
