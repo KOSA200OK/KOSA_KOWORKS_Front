@@ -16,8 +16,12 @@
                     <label for="departmentSelect">부서명:</label>
                     <select id="departmentSelect" v-model="departmentId">
                         <option value="0">전체선택</option>
-                        <option value="1">개발 1팀</option>
-                        <option value="3">개발 3팀</option>
+                        <option value="1">영업팀</option>
+                        <option value="2">인사팀</option>
+                        <option value="3">개발팀</option>
+                        <option value="4">총무팀</option>
+                        <option value="5">보안팀</option>
+                        <option value="6">인프라팀</option>
                     </select>
                 </div>
                 <div class="form-group">

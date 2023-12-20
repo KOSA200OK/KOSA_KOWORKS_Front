@@ -13,13 +13,12 @@
                         name="startDate" 
                         v-model="data.startDate"
                         :min="minStartDate" 
-                    
+                        @input="inputHandler"
                         required>
                         <span style="margin-left:20px; font-weight: 700; font-size: 15px;">~</span> <input type="date" 
                         name="endDate" 
                         v-model="data.endDate" 
                         :min="minEndDate" 
-                        
                         required>
                     <button class="dateselectbutton" @click="dateSelectHandler">확인</button>
                 </div>
@@ -50,9 +49,7 @@
                 v-if="carlist" 
                 :path="'/carrent/carlist/'"
                 :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
-            
                 :totalPage="carlist.totalPages"
-            
                 :startPage="startPage"
                 :endPage="endPage"
 
@@ -94,10 +91,8 @@ export default {
         },
         inputHandler() {
             // startDate 값이 변경될 때 minEndDate를 업데이트
-            this.minEndDate = this.startDate
+            this.minEndDate = this.data.startDate
             console.log(this.minEndDate)
-            this.formData.startDate = this.startDate
-            this.formData.endDate = this.endDate
         },
         dateSelectHandler(){
             // this.data.startDate = this.startDate

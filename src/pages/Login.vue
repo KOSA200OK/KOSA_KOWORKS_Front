@@ -83,7 +83,8 @@ export default {
 
         // SSE 구독 시작 ==
         this.startSSE();
-
+        
+        location.reload();
         this.$router.push("/dashboard");
         this.$data.user = response.data;
       } catch (error) {

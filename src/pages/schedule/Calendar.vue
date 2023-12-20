@@ -1,15 +1,15 @@
 <template>
 <main>
     <div class="calendar">
-        <FullCalendar ref="fullCalendar" :options="calendarOptions" :events="calendarOptions.events" eventClick="scheduleDetailHandler">
-
-        <template v-slot:eventContent='arg'>
-            <div class="event" @click="scheduleDetailHandler(arg)">
-                <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}
-                </b>
-            </div>
-        </template>
-
+        <FullCalendar ref="fullCalendar" :options="calendarOptions" 
+                                         :events="calendarOptions.events" 
+                                         eventClick="scheduleDetailHandler">
+            <template v-slot:eventContent='arg'>
+                <div class="event" @click="scheduleDetailHandler(arg)">
+                    <b>{{formatTime(arg.event.start)}} {{ arg.event.title }}
+                    </b>
+                </div>
+            </template>
         </FullCalendar>
         <ScheduleInfo v-if="detailModalCheck" 
                     :c="c"
@@ -276,7 +276,7 @@ export default {
     text-align: center;
 }
 .ok{
-    background-color: #58d3e9;
+    background-color: #2196f3;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -284,7 +284,7 @@ export default {
     cursor: pointer;
 }
 .ok:hover {
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 .cancel:hover {
     color : #58b5c5;
@@ -320,6 +320,12 @@ label{
     height: 100px;
     resize: none;
     font-size : 13px;
+    padding: 10px;
+}
+
+input{
+    border : 1px solid #d8d8d8;
+    border-radius: 5px;
     padding: 10px;
 }
 
