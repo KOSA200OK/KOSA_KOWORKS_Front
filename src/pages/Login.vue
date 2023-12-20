@@ -80,9 +80,10 @@ export default {
         // SSE 구독 시작 ==
         this.startSSE();
 
-        this.$router.push("/dashboard");
-        this.$data.user = response.data;
         location.reload();
+        this.$data.user = response.data;
+        this.$router.push("/dashboard");
+        
       } catch (error) {
         console.error("로그인 실패:", error);
       }

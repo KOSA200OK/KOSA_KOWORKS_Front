@@ -99,7 +99,7 @@
                         minutes-increment="30"
                         minutes-grid-increment="30"
                         time-picker disable-time-range-validation
-                        :min-time="`${this.startTime}`"
+                        :min-time="minEndTime"
                         :max-time="{ hours: 20, minutes: 0 }"
                         :format="format"
                         @update:model-value="updateEndTime"
@@ -219,6 +219,9 @@ export default {
         );
       });
     },
+    minEndTime() {
+      return this.startTime;
+    }
   },
   setup() {
     const state = reactive({
@@ -324,13 +327,17 @@ export default {
 
       console.log(this.formData)
       axios
-        .post(url, data)
+        .post(url, data, { withCredentials: true })
         .then(response => {
-          location.href = "/meetingroom"
-          alert("예약되었습니다!")
+            location.href = "/meetingroom"
+            alert("예약되었습니다!");
         })
         .catch(error => {
-          alert(error.message)
+          if (error.response.status === 403) {
+            alert(error.response.data.message);
+          } else if (error.response.status === 500) {
+            alert("오류가 발생했습니다.")
+          }
         })
     }
   },
