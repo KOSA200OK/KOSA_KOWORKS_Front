@@ -92,7 +92,9 @@ export default {
             formData: {
                 id: this.r.id,
                 reject: ''
-            }
+            },
+            startPage:1,
+            endPage:1
         }
     },
     methods: {
