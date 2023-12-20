@@ -55,6 +55,12 @@ export default {
                     return "late";
                 case 3:
                     return "absent";
+                case 4:
+                    return "sick"
+                case 5:
+                    return "vacation"
+                case 6:
+                    return "early"
                 default :
                     return "";
             }
@@ -90,6 +96,12 @@ td {
   /* Styles for '결근' */
   /* background-color: #ffd6cc;  */
   color: #ff0000;
+  font-weight: bolder;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
+}
+
+.early {
+color: blueviolet;
   font-weight: bolder;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
 }

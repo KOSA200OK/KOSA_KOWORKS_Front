@@ -281,7 +281,7 @@ tbody tr:hover {
     justify-content: flex-end; /* 오른쪽으로 보내기 */
     /* margin-right: 5%; */
     /* margin-left: 1370px; */
-    margin-left: 80%;
+    margin-left: 85%;
 }
 
 .select-month {
