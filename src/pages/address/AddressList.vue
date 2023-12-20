@@ -12,26 +12,28 @@
     </div>
     <div v-if="loading">잠시만 기다려주세요...</div>
     <div v-else>
-      <table>
-        <thead>
-          <tr>
-            <th>사원 번호</th>
-            <th>이름</th>
-            <th>부서명</th>
-            <th>직급</th>
-            <th>사내번호</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="member in filteredMembers" :key="member.id">
-            <td>{{ member.id }}</td>
-            <td>{{ member.name }}</td>
-            <td>{{ member.departmentName }}</td>
-            <td>{{ member.position }}</td>
-            <td>{{ member.tel }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table class="address-table">
+          <thead class="address-thead">
+            <tr class="address-tr">
+              <th>사원 번호</th>
+              <th>이름</th>
+              <th>부서명</th>
+              <th>직급</th>
+              <th>사내번호</th>
+            </tr>
+          </thead>
+          <tbody class="address-tbody scrollable-tbody">
+            <tr v-for="member in filteredMembers" :key="member.id">
+              <td>{{ member.id }}</td>
+              <td>{{ member.name }}</td>
+              <td>{{ member.departmentName }}</td>
+              <td>{{ member.position }}</td>
+              <td>{{ member.tel }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </main>
 </template>
@@ -89,7 +91,7 @@ export default {
   text-shadow: 1px 1px 1px #ccc;
 }
 
-table {
+.address-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
@@ -102,15 +104,15 @@ td {
   border-bottom: 1px solid #ddd;
 }
 
-thead {
+.address-thead {
   background-color: #f5f5f5;
 }
 
-tbody tr:nth-child(even) {
+.address-tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-tbody tr:hover {
+.address-tbody tr:hover {
   background-color: #eaeaea;
 }
 
@@ -132,5 +134,28 @@ tbody tr:hover {
   color: #fff;
   border: none;
   border-radius: 3px;
+}
+.table-container {
+  overflow-y: auto; /* 스크롤이 필요한 경우 수직 스크롤을 생성합니다. */
+  max-height: 400px;
+}
+
+.scrollable-tbody {
+  /* 스크롤바 디자인을 적용합니다. 필요에 따라 스타일을 조절할 수 있습니다. */
+  scrollbar-width: thin;
+  scrollbar-color: #3498db #f5f5f5;
+}
+
+.scrollable-tbody::-webkit-scrollbar {
+  width: 8px; /* WebKit 브라우저에 대한 스크롤바 너비 설정 */
+}
+
+.scrollable-tbody::-webkit-scrollbar-thumb {
+  background-color: #3498db; /* 스크롤바 색상 설정 */
+  border-radius: 4px; /* 스크롤바 모서리를 둥글게 만듭니다. */
+}
+
+.scrollable-tbody::-webkit-scrollbar-track {
+  background-color: #f5f5f5; /* 스크롤바 트랙의 배경색 설정 */
 }
 </style>
