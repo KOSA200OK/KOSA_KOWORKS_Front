@@ -35,6 +35,7 @@
             :currentPage="$route.params.currentPage ? $route.params.currentPage : 1"
             :startPage="startPage"
             :endPage="endPage"
+            :totalPage="allrentlist.totalPages"
         />
     </div>
 </main>
@@ -63,6 +64,7 @@ export default {
             .then(response=>{
                 this.allrentlist = response.data
                 console.log(this.allrentlist)
+                console.log(response.data.totalPages)
                 if(this.currentPage <=  this.allrentlist.totalPages){
                     this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
                     this.endPage = this.startPage + 5 - 1
