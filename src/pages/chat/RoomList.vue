@@ -45,20 +45,20 @@
 
 <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
+      // room_name, chatrooms, search 초기화
       room_name: "",
       chatrooms: [],
       search: "",
-      memberId: "",
+      memberId: "", // 사번 저장
     };
   },
   // 페이지가 로드될 때 findAllRoom 메소드를 호출
   created() {
     this.findAllRoom();
-    // 로컬 스토리지에서 직원 번호를 불러오기
+    // 추가: 로컬 스토리지에서 직원 번호를 불러오기
     this.memberId = localStorage.getItem("memberId") || "";
   },
   //채팅방 검색 기능
@@ -66,7 +66,7 @@ export default {
     // 검색어에 따라 필터된 채팅방 목록을 반환합니다.
     filteredChatrooms() {
       return this.chatrooms.filter((room) => {
-        // 검색어가 방 이름에 포함된 경우만 반환합니다.
+        // 방 이름 또는 검색어가 포함된 경우만 반환합니다.
         return room.name.includes(this.search);
       });
     },
@@ -108,7 +108,7 @@ export default {
     },
 
     enterRoom(roomId) {
-      // 직원 번호를 입력 받지 않고 로컬 스토리지에서 불러오기
+      // 추가: 직원 번호를 입력 받지 않고 로컬 스토리지에서 불러오기
       const sender = this.memberId;
       if (sender !== "") {
         localStorage.setItem("wschat.sender", sender);

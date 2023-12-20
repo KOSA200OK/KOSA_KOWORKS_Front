@@ -34,7 +34,9 @@ export default {
 </script>
   
 <style scoped>
-
+main {
+    margin-top: 50px;
+}
 .req-container {
   display: flex;
   justify-content: center;
