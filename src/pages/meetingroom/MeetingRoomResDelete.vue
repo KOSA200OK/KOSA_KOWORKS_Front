@@ -7,9 +7,8 @@
           <!-- Modal head -->
           <div class="modal-head">
             <div class="title"><h3>예약을 취소하겠습니까?</h3></div>
-            <br><br>
+            <br>
           </div>
-
           <!-- Modal body -->
           <h4>예약내역</h4><br>
           <div class="info">
@@ -102,15 +101,26 @@ export default {
 /* 모달 컨텐츠 부분 */
 .modal-content {
   width: 500px;
-  height: 250px;
+  height: auto;
   background: #fff;
-  padding: 20px;
+  padding: 30px;
   border-radius: 8px;
 
   align-content: center;
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.title {
+  text-align: center;
+  font-size: 20px;
+  color: #2c3e50;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px #ccc;
+
+  padding-top: 20px;
 }
 
 button.close {
@@ -128,6 +138,13 @@ button.close {
   float: right;
   width: 30px;
   height: 30px;
+}
+
+h4 {
+  font-size: 20px;
+  color: #2c3e50;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 1px #ccc;
 }
 
 .meetingroominfo {
@@ -172,6 +189,46 @@ table.infotbl>tbody>tr>td {
   border-top: 2px solid gray;
 
   padding: 5px;
+}
+
+.button {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.confirmbtn {
+  display: inline-block;
+
+  border-radius: 4px;
+  background: var(--dark);
+  color: #ddd;
+  border: none;
+
+  text-align: center;
+  font-size: 15px;
+
+  padding: 5px;
+  width: 50px;
+  height: 40px;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.cancelbtn {
+  display: inline-block;
+
+  border-radius: 4px;
+  color: var(--dark);
+  border: 2px solid var(--dark);
+
+  text-align: center;
+  font-size: 15px;
+
+  padding: 5px;
+  width: 50px;
+  height: 40px;
+  vertical-align: middle;
+  align-items: center;
 }
 
 </style>
