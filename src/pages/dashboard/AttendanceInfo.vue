@@ -70,6 +70,7 @@ export default {
                 .post(url, memberData)
                 .then((response) => {
                     alert("출근 완료");
+                    location.href = "/dashboard"
                 })
                 .catch((error) => {
                     console.error("출근 요청 실패", error);
@@ -78,11 +79,6 @@ export default {
         },
 
         attendance2Handler() {
-            // 확인 대화상자 추가
-            if (!confirm('요청을 취소하시겠습니까?')) {
-                return; // 사용자가 '아니오'를 선택한 경우, 함수를 빠져나간다.
-            }
-            
             const id = localStorage.getItem("memberId");
 
             const url = `${this.backURL}/attendance`;
@@ -98,6 +94,10 @@ export default {
                         if (attendanceData.endTime) {
                             alert('이미 퇴근한 사원입니다.');
                         } else {
+                            // 확인 대화상자 추가
+                            if (!confirm('퇴근 처리하겠습니까?')) {
+                                return; // 사용자가 '아니오'를 선택한 경우, 함수를 빠져나간다.
+                            }
                             // 출석 데이터가 있고 퇴근하지 않은 경우
                             const currentTime = new Date(); // 현재 시간을 가져옴
                             const memberData = {
@@ -113,6 +113,7 @@ export default {
                                 .then((response) => {
                                     if (response.status === 200) {
                                         alert("퇴근 완료! 조심히가세요~");
+                                        location.href = "/dashboard"
                                     }
                                 })
                                 .catch((error) => {
