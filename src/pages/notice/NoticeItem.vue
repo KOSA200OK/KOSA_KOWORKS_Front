@@ -10,6 +10,12 @@
 export default {
     name: 'NoticeItem',
     props:["n"],
+    computed: {
+        // 현재 아이템의 index + 1을 rownum으로 설정
+        rowNum() {
+            return this.$parent.noticelist.content.indexOf(this.n) + 1;
+        },
+    },
     data(){
         return {
             

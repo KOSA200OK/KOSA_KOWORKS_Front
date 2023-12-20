@@ -14,7 +14,7 @@
 
       <tbody>
         <NoticeItem
-          :n="n"
+          :n="addRowNumToNotice(n)"
           v-if="noticelist"
           v-for="n in noticelist.content"
           v-bind:key="n.id"
@@ -78,6 +78,13 @@ export default {
       this.$router.push({ path: `./${id}` });
     },
     //----리스트 중 한 항목 클릭되었을 때 할 일 END----
+
+    addRowNumToNotice(n) {
+      // 현재 아이템의 index + 1을 rownum으로 설정
+      const rowNum = this.noticelist.content.indexOf(n) + 1;
+      // n.id를 rowNum으로 대체한 객체를 반환
+      return { ...n, id: rowNum };
+    },
   },
   watch: {
     //----라우터값이 변경되었을 때 할 일 START----
