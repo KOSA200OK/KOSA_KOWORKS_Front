@@ -238,7 +238,7 @@ thead {
 }
 .dateselectbutton{
     margin-left: 20px;
-    background-color: #58d3e9;
+    background-color: #2196f3;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -246,7 +246,7 @@ thead {
     cursor: pointer;
 }
 button:hover{
-    background-color: #58b5c5;
+    background-color: #2189df;
 }
 tbody::v-deep tr:nth-child(even) {
     background-color: #f9f9f9;
