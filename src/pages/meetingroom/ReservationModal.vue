@@ -198,7 +198,8 @@ export default {
             id: 0
           },
           member: {
-            id: ''
+            id: '',
+            name: ''
           },
           participants: [
 
@@ -323,6 +324,7 @@ export default {
       const url = `${this.backURL}/meetingroom`
       this.formData.meetingroom.id = this.mr.id;
       this.formData.member.id = localStorage.getItem('memberId')
+      this.formData.member.name = localStorage.getItem('name')
       const data = this.formData
 
       console.log(this.formData)
