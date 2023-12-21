@@ -1,6 +1,6 @@
 <template lang="">
     <tr>
-        <td>{{ mrr.id }}</td>
+        <td>{{ mrr.meetingroom.location }}</td>
         <td>{{mrr.meetingroom.name}}</td>
         <td>{{mrr.meetingDate}}&nbsp;{{mrr.startTime}} - {{mrr.endTime}}</td>
 
@@ -71,9 +71,9 @@ export default {
             this.showUpdateModal = false;
             this.showCancelModal = false;
         },
-        rowNum() {
-            return this.$parent.meetingroomreslist.content.indexOf(this.mrr) + 1;
-        },
+        // rowNum() {
+        //     return this.$parent.meetingroomreslist.content.indexOf(this.mrr) + 1;
+        // },
     },
 
 }

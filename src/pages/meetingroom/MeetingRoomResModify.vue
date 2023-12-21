@@ -241,6 +241,7 @@ export default {
   height: auto;
   background: #fff;
   padding: 10px;
+  padding-bottom: 30px;
   border-radius: 10px;
 
   align-content: center;
