@@ -79,6 +79,25 @@ export default {
                 default:
                     break;
             }
+
+            const idValue = this.n.id;
+            const url = `${this.backURL}/subscribe/${idValue}`;
+            axios.delete(url)
+                .then(response => {
+                console.log('DELETE 요청 성공', response.data);
+
+                const index = this.$parent.notificationList.content.findIndex(item => item.id === this.n.id);
+
+                if (index !== -1) {
+                    this.$parent.notificationList.content.splice(index, 1);
+                    if (this.$parent.notificationList.content.length === 0) {
+                    window.location.reload();
+                    }
+                }
+                })
+                .catch(error => {
+                console.log('DELETE 요청 실패', error.response.data);
+                });
         }
     },    
 }
