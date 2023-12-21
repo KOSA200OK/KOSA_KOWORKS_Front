@@ -28,12 +28,8 @@
                             'reserved-time': isTimeReserved(time),
                         }"
                         class="time-slot"
-                        @click = "detailInfoHandler"
+                        @mouseover = "detailInfoHandler(time,id)"
                     ></div>
-
-                <!-- <div v-for="box in reservationBoxes" :key="box.time" class="time-slot">
-                    <div v-if="box.reserved" class="reservation-box"></div>
-                </div> -->
                 </div>
             </div>
         </td>
@@ -41,6 +37,7 @@
 </template>
 <script>
 import Modal from "@/pages/meetingroom/ReservationModal.vue";
+import axios from 'axios';
 export default {
     name: 'MeetingRoomItem',
     props:['mr', 'date'],
@@ -49,11 +46,16 @@ export default {
     },
     data(){
         return {
+            id: 0,
             times: this.generateTimeSlots(),
             showModal: false,
             starttime: '', // 시작 시간
             endtime: '',   // 종료 시간
             reservations: [], // 추가된 부분: 초기에 표시될 예약 박스들
+            info: {
+                purpose: '',
+                name: ''
+            },
         }
     },
     watch: {
@@ -127,10 +129,11 @@ export default {
             this.reservations = []; //배열 초기화
 
             for (const reservation of matchingReservations) {
-                console.log(reservation.startTime, reservation.endTime);
+                console.log(reservation.id, reservation.startTime, reservation.endTime);
 
                 // 회의의 시작 시간과 종료 시간을 배열에 추가
                 this.reservations.push({
+                    id: reservation.id,
                     startTime: reservation.startTime,
                     endTime: reservation.endTime,
                 });
@@ -154,6 +157,20 @@ export default {
             //     this.starttime = '';
             //     this.endtime = '';
             // }
+        },
+        detailInfoHandler(id) {
+            console.log("정보");
+
+            // time와 id에 대한 예약 정보 가져오기
+            const reservation = this.reservations.find((reservation) => reservation.id === id);
+
+            // 가져온 정보로 axios 호출 등의 작업 수행
+            if (reservation) {
+                const url = `${this.backURL}/meetingroom/reservation/${id}`;
+                console.log(`예약 ID: ${id}`);
+                console.log(`요청 URL: ${url}`);
+                // axios 호출 등의 작업 수행
+            }
         },
         getRandomColor() {
             const colors = ['red', 'blue', 'green', 'yellow', 'purple']; // 원하는 색상들을 배열로 정의
