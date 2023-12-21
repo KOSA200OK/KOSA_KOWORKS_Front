@@ -10,7 +10,8 @@
             <span class="tag" v-if="r.status==1" style="background-color: rgb(252, 49, 49);">반려</span>
             <span class="tag" v-if="r.status==2 && formatYYYYmmdd(currentDate)>r.endDate" style="background-color: rgb(252, 49, 49);">미반납</span></td>
         <td><button class="approvebutton" v-if="r.status==0" @click="approve">승인</button>
-            <button class="rejectbutton" v-if="r.status==0" @click="openRejectModal">반려</button></td>
+            <button class="rejectbutton" v-if="r.status==0" @click="openRejectModal">반려</button>
+            <button class="returnbutton" v-if="r.status==2 && formatYYYYmmdd(currentDate)>r.endDate" @click="returnHandler">반납처리</button></td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck==true" >
         <div class="modal-container">
@@ -150,6 +151,22 @@ export default {
                 return date
             }
         },
+        returnHandler(){
+            
+            const url = `${this.backURL}/carrent/return?id=${this.r.id}`
+            if(confirm("반납처리를 하시겠습니까?")){
+                axios.get(url)
+                .then(response=>{
+                    if(response.status==200){
+                        alert("처리되었습니다.")
+                        window.location.reload()
+                    }
+                })
+                .catch((Error)=>{
+                    console.log(Error)
+                })
+            }
+        }
     },
     created(){
         console.log('r: ',this.r)
@@ -221,7 +238,7 @@ label{
     padding-bottom:5px;
     font-size: 12px;
 }
-.ok, .approvebutton, .rejectbutton{
+.ok, .approvebutton, .rejectbutton, .returnbutton{
     background-color: #2196f3;
     color: white;
     padding: 10px 15px;
@@ -233,6 +250,9 @@ label{
     background-color: #2189df;
 }
 .rejectbutton:hover{
+    background-color: #2189df;
+}
+.returnbutton:hover{
     background-color: #2189df;
 }
 .ok:hover{
