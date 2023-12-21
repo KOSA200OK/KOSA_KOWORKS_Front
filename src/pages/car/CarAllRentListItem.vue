@@ -90,81 +90,79 @@ export default {
     openModal() {
       this.modalCheck = !this.modalCheck;
     },
-    methods: {
-        openModal() {
-            this.modalCheck = !this.modalCheck
-        },
-        openRejectModal() {
-            this.rejectModalCheck = !this.rejectModalCheck
-        },
-        openApproveModal() {
-            this.approveModalCheck = !this.approveModalCheck
-        },
-        approve(){
-            const url = `${this.backURL}/carrent/approve?id=${this.r.id}`
-            axios.get(url)
-            .then(response=>{
-                if(response.status==200){
-                    alert('승인되었습니다.')
-                    window.location.reload()
-                }
-            })
-            .catch((Error)=>{
-                console.log(Error)
-            })
-        },
-        rejectHandler(){
-            this.formData.reject = this.reject
-            const url = `${this.backURL}/carrent/reject`
-            // const data = this.formData
-            axios.put(url,{
-                id : this.w.id,
-                reject: this.formData.reject
-            })
-            .then((Response)=>{
-                if(Response.status==200){
-                    alert('반려되었습니다.')
-                    window.location.reload()
-                }
-            })
-            .catch((Error)=>{
-                console.log(Error)
-            })
-        },
-        formatYYYYmmdd(date){
-            console.log(date)
-            if(date!==null){
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-
-                return `${year}-${month}-${day}`
-            }else{
-                return date
-            }
-        },
-        returnHandler(){
-
-            const url = `${this.backURL}/carrent/return?id=${this.r.id}`
-            if(confirm("반납처리를 하시겠습니까?")){
-                axios.get(url)
-                .then(response=>{
-                    if(response.status==200){
-                        alert("처리되었습니다.")
-                        window.location.reload()
-                    }
-                })
-                .catch((Error)=>{
-                    console.log(Error)
-                })
-            }
-        }
+    openRejectModal() {
+      this.rejectModalCheck = !this.rejectModalCheck;
     },
-    created(){
-        console.log('r: ',this.r)
-        console.log('currentDate',this.currentDate)
-    }
-}
+    openApproveModal() {
+      this.approveModalCheck = !this.approveModalCheck;
+    },
+    approve() {
+      const url = `${this.backURL}/carrent/approve?id=${this.r.id}`;
+      axios
+        .get(url)
+        .then((response) => {
+          if (response.status == 200) {
+            alert("승인되었습니다.");
+            window.location.reload();
+          }
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    },
+    rejectHandler() {
+      this.formData.reject = this.reject;
+      const url = `${this.backURL}/carrent/reject`;
+      // const data = this.formData
+      axios
+        .put(url, {
+          id: this.w.id,
+          reject: this.formData.reject,
+        })
+        .then((Response) => {
+          if (Response.status == 200) {
+            alert("반려되었습니다.");
+            window.location.reload();
+          }
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    },
+    formatYYYYmmdd(date) {
+      console.log(date);
+      if (date !== null) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+      } else {
+        return date;
+      }
+    },
+    returnHandler() {
+      const url = `${this.backURL}/carrent/return?id=${this.r.id}`;
+      if (confirm("반납처리를 하시겠습니까?")) {
+        axios
+          .get(url)
+          .then((response) => {
+            if (response.status == 200) {
+              alert("처리되었습니다.");
+              window.location.reload();
+            }
+          })
+          .catch((Error) => {
+            console.log(Error);
+          });
+      }
+    },
+  },
+  created() {
+    console.log("r: ", this.r);
+    console.log("currentDate", this.currentDate);
+  },
+};
 </script>
 <style scoped>
 td {
