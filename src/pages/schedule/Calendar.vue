@@ -308,7 +308,7 @@ export default {
 
                 axios.post(url,data)
                     .then((Response)=>{
-                        alert('성공')
+                        alert('추가되었습니다')
                         this.addModalCheck = !this.addModalCheck
                         window.location.reload()
                     })

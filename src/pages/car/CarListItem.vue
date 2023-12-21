@@ -104,7 +104,7 @@ export default {
 
             axios.post(url,data)
                 .then((Response)=>{
-                    alert('성공')
+                    alert('신청되었습니다')
                     this.modalCheck = !this.modalCheck
                     return false
                 })
