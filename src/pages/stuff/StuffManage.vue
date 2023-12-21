@@ -165,6 +165,7 @@ export default {
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
+    margin-top: 50px;
     background-color: white;
     box-shadow: 1px 1px 15px 6px rgb(231, 231, 231);
 }
