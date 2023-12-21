@@ -11,10 +11,10 @@
                 </div>
             </template>
         </FullCalendar>
-        <ScheduleInfo v-if="detailModalCheck" 
+        <!-- <ScheduleInfo v-if="detailModalCheck" 
                     :c="c"
                     :detailModalCheck="detailModalCheck" 
-                    @closeModal="closeModal" />
+                    @closeModal="closeModal" /> -->
         <!--***************************일정 추가********************************-->
         <div class="modal-wrap" v-show="addModalCheck" >
             <div class="modal-container">
@@ -26,7 +26,7 @@
   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
 </svg></button>
                 <div class="formdiv">
-                <form class="add-schedule">
+                <form class="add-schedule" @submit.prevent="scheduleAddHandler">
                     <label>제목 </label><input type="text" 
                                             v-model="FormData.scheduleTitle"
                                             class="title"
@@ -55,12 +55,79 @@
                                             maxlength="60"
                                             placeholder="60자 이내로 입력하세요"></textarea>
                     <div class="modal-btn">
-                        <button type="submit" class="ok" @click="scheduleAddHandler">등록</button>
+                        <button type="submit" class="ok" >등록</button>
                     </div>
                 </form>
                 </div>
             </div>
         </div>
+        <!--***************************상세 정보 및 수정********************************-->
+        <div class="modal-wrap" v-show="detailModalCheck">
+        <div class="modal-container">
+                <button class="cancel" @click="closeDetailModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg></button><br>
+            <div class="schedule-detail" v-if="modifyCheck==false && c!==null">
+                <span class="detail-label">제목</span> <span style="font-size: 15px;">{{c.title}}</span><br>
+                <hr><br>
+                <!-- <span class="detail-label">기간</span> -->
+                <div>
+                    <div class="startdiv">
+                        <span style="font-size: 20px;">{{formatYYYYmmdd(c.start)}}</span><br>
+                        <span style="font-size: 17px;">{{formatHHmmss(c.start)}}</span>
+                    </div>
+                    <div class="enddiv">
+                        <span style="font-size: 20px;">{{c.end? formatYYYYmmdd(c.end) : formatYYYYmmdd(c.start)}}</span><br>
+                        <span style="font-size: 17px;">{{c.end? formatHHmmss(c.end):formatHHmmss(c.start)}}</span>
+                    </div>
+                </div><br>
+                <hr><br>
+                <span v-if="c.extendedProps.memo" class="detail-label">메모</span><br><br>
+                <span style="text-align: justify;">{{c.extendedProps.memo}}</span><br><br><br>
+            </div>
+            <div class="modal-btn" v-if="modifyCheck==false">
+                <button type="submit" class="ok" @click="modifyModal">수정</button>
+                <button class="delete" @click="deleteHandler">삭제</button>
+            </div>
+            <div class="modify-detail" v-if="modifyCheck==true && FormData!==null">
+                <form @submit.prevent="modifyHandler">
+                    <label>제목 </label><input class="title"
+                                                type="text" 
+                                                name="scheduleTitle"
+                                                v-model="FormData.scheduleTitle"
+                                                maxlength="15"
+                                                placeholder="15자 이내로 입력하세요"
+                                                required><br><br>
+                    <label>기간</label><input type="date"
+                                        name="startDate"
+                                        v-model="startDate"
+                                        required> <input type="time"
+                                                            name="start"
+                                                            v-model="sTime"
+                                                            required><br><br>
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>~ <input type="date"
+                        name="endDate"
+                        v-model="endDate"
+                        :min ="startDate"
+                        required> <input type="time"
+                                            name="endtime"
+                                            v-model="eTime"
+                                            :min ="sTime"
+                                            required><br><br><br>
+                    <label>메모 </label><textarea type="text" 
+                                                class="content"
+                                                name="content" 
+                                                v-model="FormData.content"
+                                                maxlength="60"
+                                                placeholder="60자 이내로 입력하세요"></textarea>
+                    <div class="modal-btn" v-if="modifyCheck">
+                        <button type="submit" class="ok">완료</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     </div>    
 </main>
 </template>
@@ -69,7 +136,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import ScheduleInfo from '@/pages/schedule/ScheduleInfo.vue'
+// import ScheduleInfo from '@/pages/schedule/ScheduleInfo.vue'
 import { Calendar } from '@fullcalendar/core';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import 'bootstrap/dist/css/bootstrap.css'
@@ -78,7 +145,7 @@ import axios from 'axios'
 export default {
     name: 'Calendar',
     components: {
-        FullCalendar, ScheduleInfo // make the <FullCalendar> tag available
+        FullCalendar // make the <FullCalendar> tag available
     },
     data() {
         return {
@@ -102,7 +169,7 @@ export default {
                 customButtons:{
                     addbutton: {
                         text: '일정추가',
-                        click: this.openModal
+                        click: this.openAddModal
                     }
                 },
                 headerToolbar: {
@@ -115,8 +182,11 @@ export default {
             },
             addModalCheck : false,
             detailModalCheck : false,
+            modifyCheck: false,
             startDate : null,
             endDate : null,
+            sTime: null,
+            eTime: null,
             FormData: {
                 startTime : null,
                 endTime : null,
@@ -129,7 +199,7 @@ export default {
         }
     },
     methods: {
-        openModal(){
+        openAddModal(){
             this.addModalCheck = !this.addModalCheck
         },
         closeAddModal(){
@@ -138,6 +208,28 @@ export default {
             this.FormData.endTime = null
             this.FormData.scheduleTitle = null
             this.FormData.content = null
+        },
+        closeDetailModal(){
+            this.detailModalCheck = !this.detailModalCheck
+            this.modifyCheck = false
+        },
+        modifyModal(){
+            this.FormData.scheduleTitle = this.c.title 
+                this.FormData.content = this.c.extendedProps.memo
+                this.startDate = this.formatYYYYmmdd(this.c.start)
+                this.sTime = this.formatHHmmss(this.c.start)
+
+                if(this.c.end==null){
+                    this.endDate = this.formatYYYYmmdd(this.c.start)
+                    this.eTime = this.formatHHmmss(this.c.start)
+                }else{
+                    this.endDate = this.formatYYYYmmdd(this.c.end)
+                    this.eTime = this.formatHHmmss(this.c.end)
+                }
+
+                console.log(this.FormData.scheduleTitle)
+                console.log(this.FormData.content)
+                this.modifyCheck = !this.modifyCheck
         },
         scheduleHandler(memberId){
             console.log(memberId)
@@ -165,7 +257,25 @@ export default {
         handleDateClick: function(arg) {
             this.startDate = arg.dateStr
             this.endDate = arg.dateStr
-            this.openModal()
+            this.openAddModal()
+        },
+        formatYYYYmmdd(date){
+            console.log(date)
+            if(date!==null){
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+    
+                return `${year}-${month}-${day}`
+            }else{
+                return date
+            }
+        },
+        formatHHmmss(date){
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+                return `${hours}:${minutes}`
         },
         formatTime(time) {
             if (time instanceof Date) {
@@ -187,25 +297,26 @@ export default {
             if(this.FormData.endTime<this.FormData.startTime){
                 alert("올바른 시간 기입이 아닙니다. 시간을 다시 확인하세요.")
                 return false
-            }
+            }else{
+                this.FormData.startTime = `${this.startDate} ${this.FormData.startTime}:00`
+                this.FormData.endTime = `${this.endDate} ${this.FormData.endTime}:00`
+                this.FormData.member.id = localStorage.getItem('memberId')
 
-            this.FormData.startTime = `${this.startDate} ${this.FormData.startTime}:00`
-            this.FormData.endTime = `${this.endDate} ${this.FormData.endTime}:00`
-            this.FormData.member.id = localStorage.getItem('memberId')
+                const url = `${this.backURL}/schedule/add`
+                const data = this.FormData
+                console.log(data)
 
-            const url = `${this.backURL}/schedule/add`
-            const data = this.FormData
-            console.log(data)
+                axios.post(url,data)
+                    .then((Response)=>{
+                        alert('성공')
+                        this.addModalCheck = !this.addModalCheck
+                        window.location.reload()
+                    })
+                    .catch((Error)=>{
+                        console.log(Error)
+                    })
+                }
 
-            axios.post(url,data)
-                .then((Response)=>{
-                    alert('성공')
-                    this.addModalCheck = !this.addModalCheck
-                    window.location.reload()
-                })
-                .catch((Error)=>{
-                    console.log(Error)
-                })
         },
         scheduleDetailHandler(arg){
             // console.log(arg.event.extendedProps);
@@ -213,8 +324,56 @@ export default {
             this.c = arg.event
             this.detailModalCheck = !this.detailModalCheck
         },
-        closeModal(value){
-            this.detailModalCheck = value
+        modifyHandler(){
+            console.log(this.c.extendedProps.eventId)
+            this.FormData.id = this.c.extendedProps.eventId
+            console.log(this.FormData.id)
+            if(this.endDate<this.startDate){
+                alert("올바른 날짜 기입이 아닙니다. 기간을 다시 확인하세요.")
+                return false
+            }
+
+            if(this.eTime<this.sTime){
+                alert("올바른 시간 기입이 아닙니다. 시간을 다시 확인하세요.")
+                return false
+            }
+            
+            this.FormData.startTime = `${this.startDate} ${this.sTime}:00`
+            this.FormData.endTime = `${this.endDate} ${this.eTime}:00`
+
+            const url = `${this.backURL}/schedule/modify`
+            const data = this.FormData
+            console.log(data)
+
+            axios.put(url,data)
+                .then((Response)=>{
+                    console.log('됐음')
+                    if(Response.status==200){
+                        alert('수정되었습니다')
+                        this.modifyCheck = !this.modifyCheck
+                        window.location.reload()
+                    }
+                })
+                .catch((Error)=>{
+                    console.log(Error)
+                })
+        },
+        deleteHandler(){
+            const id = this.c.extendedProps.eventId
+            const url = `${this.backURL}/schedule/delete/${id}`
+
+            if(confirm("삭제하시겠습니까?")){
+                axios.delete(url)
+                .then((Response)=>{
+                    if(Response.status==200){
+                        alert('삭제되었습니다')
+                        window.location.reload()
+                    }
+                })
+                .catch((Error)=>{
+                    console.log(Error)
+                })
+            }
         }
     },
     created(){
@@ -275,7 +434,7 @@ export default {
     margin-top : 50px;
     text-align: center;
 }
-.ok{
+.ok, .delete{
     background-color: #2196f3;
     color: white;
     padding: 10px 15px;
@@ -284,6 +443,9 @@ export default {
     cursor: pointer;
 }
 .ok:hover {
+    background-color: #2189df;
+}
+.delete:hover{
     background-color: #2189df;
 }
 .cancel:hover {
@@ -311,6 +473,7 @@ label{
 }
 .title{
     width: 300px;
+    border-radius : 5px;
 }
 .content{
     border : 1px solid #d8d8d8;
@@ -325,8 +488,32 @@ label{
 
 input{
     border : 1px solid #d8d8d8;
-    border-radius: 5px;
-    padding: 10px;
+    border-radius : 5px;
+    padding : 10px;
+    height : 35px;
+    font-size : 13px;
 }
+
+
+.detail-label{
+    color : black;
+    font-size: 15px;
+    font-weight: 700;
+    padding-right : 40px;
+    vertical-align: top;
+}
+hr{
+    border : solid 1px #cccccc;
+}
+.startdiv, .enddiv{
+    width: 50%;
+    text-align: center;
+    display: inline-block;
+
+}
+.startdiv{
+    border-right: solid 1px #e6e6e6;
+}
+
 
 </style>
