@@ -5,12 +5,13 @@
         <td @click = "openModal">{{r.member.name}}</td>
         <td @click = "openModal">{{r.car.carNo}}</td>
         <td @click = "openModal">{{r.startDate}} ~ {{r.endDate}}</td>
-        <td><span class="tag" v-if="r.status==2 && currentDate<=r.endDate" style="background-color: rgb(25, 189, 74);">승인</span>
+        <td><span class="tag" v-if="r.status==2 && formatYYYYmmdd(currentDate)==r.endDate" style="background-color: rgb(25, 189, 74);">대여중</span>
             <span class="tag" v-if="r.status==0" style="background-color: rgb(255, 217, 0);">대기</span>
             <span class="tag" v-if="r.status==1" style="background-color: rgb(252, 49, 49);">반려</span>
-            <span class="tag" v-if="r.status==2 && currentDate>r.endDate" style="background-color: rgb(252, 49, 49);">미반납</span></td>
+            <span class="tag" v-if="r.status==2 && formatYYYYmmdd(currentDate)>r.endDate" style="background-color: rgb(252, 49, 49);">미반납</span></td>
         <td><button class="approvebutton" v-if="r.status==0" @click="approve">승인</button>
-            <button class="rejectbutton" v-if="r.status==0" @click="openRejectModal">반려</button></td>
+            <button class="rejectbutton" v-if="r.status==0" @click="openRejectModal">반려</button>
+            <button class="returnbutton" v-if="r.status==2 && formatYYYYmmdd(currentDate)>r.endDate" @click="returnHandler">반납처리</button></td>
     </tr>
     <div class="modal-wrap" v-show="modalCheck==true" >
         <div class="modal-container">
@@ -113,8 +114,7 @@ export default {
             .then(response=>{
                 if(response.status==200){
                     alert('승인되었습니다.')
-                    this.$router.push("/carrent/allrentlist")
-                    // window.location.reload()
+                    window.location.reload()
                 }
             })
             .catch((Error)=>{
@@ -132,28 +132,45 @@ export default {
             .then((Response)=>{
                 if(Response.status==200){
                     alert('반려되었습니다.')
-                    // window.location.reload()
-                    this.$router.push("/carrent/allrentlist")
+                    window.location.reload()
                 }
             })
             .catch((Error)=>{
                 console.log(Error)
             })
         },
-        approve(){
-            const url = `${this.backURL}/carrent/approve?id=${this.w.id}`
-            axios.get(url)
-            .then(response=>{
-                if(response.status==200){
-                    alert('승인되었습니다.')
-                    this.$router.push("/carrent/allrentlist")
-                    // window.location.reload()
-                }
-            })
-            .catch((Error)=>{
-                console.log(Error)
-            })
+        formatYYYYmmdd(date){
+            console.log(date)
+            if(date!==null){
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+    
+                return `${year}-${month}-${day}`
+            }else{
+                return date
+            }
         },
+        returnHandler(){
+            
+            const url = `${this.backURL}/carrent/return?id=${this.r.id}`
+            if(confirm("반납처리를 하시겠습니까?")){
+                axios.get(url)
+                .then(response=>{
+                    if(response.status==200){
+                        alert("처리되었습니다.")
+                        window.location.reload()
+                    }
+                })
+                .catch((Error)=>{
+                    console.log(Error)
+                })
+            }
+        }
+    },
+    created(){
+        console.log('r: ',this.r)
+        console.log('currentDate',this.currentDate)
     }
 }
 </script>
@@ -221,7 +238,7 @@ label{
     padding-bottom:5px;
     font-size: 12px;
 }
-.ok, .approvebutton, .rejectbutton{
+.ok, .approvebutton, .rejectbutton, .returnbutton{
     background-color: #2196f3;
     color: white;
     padding: 10px 15px;
@@ -233,6 +250,9 @@ label{
     background-color: #2189df;
 }
 .rejectbutton:hover{
+    background-color: #2189df;
+}
+.returnbutton:hover{
     background-color: #2189df;
 }
 .ok:hover{

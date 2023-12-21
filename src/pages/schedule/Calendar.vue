@@ -351,7 +351,7 @@ export default {
                     if(Response.status==200){
                         alert('수정되었습니다')
                         this.modifyCheck = !this.modifyCheck
-                        // window.location.reload()
+                        window.location.reload()
                     }
                 })
                 .catch((Error)=>{
@@ -434,7 +434,7 @@ export default {
     margin-top : 50px;
     text-align: center;
 }
-.ok{
+.ok, .delete{
     background-color: #2196f3;
     color: white;
     padding: 10px 15px;
@@ -443,6 +443,9 @@ export default {
     cursor: pointer;
 }
 .ok:hover {
+    background-color: #2189df;
+}
+.delete:hover{
     background-color: #2189df;
 }
 .cancel:hover {

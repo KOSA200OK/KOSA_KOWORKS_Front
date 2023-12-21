@@ -63,7 +63,7 @@ export default {
             axios.get(url)
             .then(response=>{
                 this.allrentlist = response.data
-                console.log(this.allrentlist)
+                console.log('rentlist: ',this.allrentlist)
                 console.log(response.data.totalPages)
                 if(this.currentPage <=  this.allrentlist.totalPages){
                     this.startPage = parseInt((this.currentPage - 1 ) / 5) * 5+1
