@@ -18,8 +18,8 @@ export default {
     watch : {
 		c: {
             handler(newValue, oldValue) {
+                console.log('ㅎㅎ')
                 this.recreateMarkers()
-                // console.log('ㅎㅎ')
             },
             deep: true
         }

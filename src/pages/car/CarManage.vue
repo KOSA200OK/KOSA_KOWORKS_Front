@@ -113,9 +113,10 @@ export default {
             axios.get(url)
             .then(response=>{
                 for(var car of this.carlist){
-                    if(car.id==='740293'){
+                    if(car.id==='635591'){
                         car.latitude = response.data.latitude
                         car.longitude = response.data.longitude
+                        console.log('이건 가져온거',response.data.latitude,', ',response.data.longitude)
                     }
                 }
             })

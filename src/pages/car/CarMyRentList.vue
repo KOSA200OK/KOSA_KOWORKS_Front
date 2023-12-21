@@ -55,7 +55,7 @@ export default {
     methods: {
         //----페이지그룹의 페이지(ex: [1] [2] [NEXT])객체가 클릭되었을 때 할 일 START----   
         axiosHandler() {
-            const memberId = "0002"
+            const memberId = localStorage.getItem('memberId')
             const url = `${this.backURL}/carrent/myrentlist?memberId=${memberId}&currentPage=${this.currentPage}`
             axios.get(url)
             .then(response=>{
@@ -68,6 +68,7 @@ export default {
                         this.endPage =this.myrentlist.totalPages
                     }
                 }
+                console.log(this.myrentlist)
                 // this.myrentlist.content.reqDate = this.formatToYYYYMMDD(this.myrentlist.content.reqDate)
                 // this.myrentlist.content.startDate = this.formatToYYYYMMDD(this.myrentlist.content.startDate)
                 // this.myrentlist.content.endDate = this.formatToYYYYMMDD(this.myrentlist.content.endDate)

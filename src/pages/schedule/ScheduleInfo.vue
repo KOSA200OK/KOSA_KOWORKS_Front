@@ -19,8 +19,8 @@
                         <span style="font-size: 17px;">{{formatHHmmss(c.start)}}</span>
                     </div>
                     <div class="enddiv">
-                        <span style="font-size: 20px;">{{formatYYYYmmdd(c.end)}}</span><br>
-                        <span style="font-size: 17px;">{{formatHHmmss(c.end)}}</span>
+                        <span style="font-size: 20px;">{{c.end? formatYYYYmmdd(c.end) : formatYYYYmmdd(c.start)}}</span><br>
+                        <span style="font-size: 17px;">{{c.end? formatHHmmss(c.end):formatHHmmss(c.start)}}</span>
                     </div>
                 </div><br>
                 <hr><br>
@@ -100,15 +100,22 @@ export default {
     },
     methods: {
         modifyModal(){
-            this.schedule.scheduleTitle = this.c.title 
-            this.schedule.content = this.c.extendedProps.memo
-            this.startDate = this.formatYYYYmmdd(this.c.start)
-            this.endDate = this.formatYYYYmmdd(this.c.end)
-            this.sTime = this.formatHHmmss(this.c.start)
-            this.eTime = this.formatHHmmss(this.c.end)
-            console.log(this.schedule.scheduleTitle)
-            console.log(this.schedule.content)
-            this.modifyCheck = !this.modifyCheck
+                this.schedule.scheduleTitle = this.c.title 
+                this.schedule.content = this.c.extendedProps.memo
+                this.startDate = this.formatYYYYmmdd(this.c.start)
+                this.sTime = this.formatHHmmss(this.c.start)
+
+                if(this.c.end==null){
+                    this.endDate = this.formatYYYYmmdd(this.c.start)
+                    this.eTime = this.formatHHmmss(this.c.start)
+                }else{
+                    this.endDate = this.formatYYYYmmdd(this.c.end)
+                    this.eTime = this.formatHHmmss(this.c.end)
+                }
+
+                console.log(this.schedule.scheduleTitle)
+                console.log(this.schedule.content)
+                this.modifyCheck = !this.modifyCheck
         },
         closeModal(){
             // window.location.reload()
@@ -116,17 +123,22 @@ export default {
             this.$emit("closeModal",this.detailModalCheck)
         },
         formatYYYYmmdd(date){
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-
-            return `${year}-${month}-${day}`
+            console.log(date)
+            if(date!==null){
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+    
+                return `${year}-${month}-${day}`
+            }else{
+                return date
+            }
         },
         formatHHmmss(date){
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-
-            return `${hours}:${minutes}`
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+                return `${hours}:${minutes}`
         },
         modifyHandler(){
             console.log(this.c.extendedProps.eventId)
@@ -149,11 +161,13 @@ export default {
             const data = this.schedule
             console.log(data)
 
-            axios.put(url,data,{ withCredentials: true })
+            axios.put(url,data)
                 .then((Response)=>{
-                    alert('성공')
-                    this.modifyCheck = !this.modifyCheck
-                    window.location.reload()
+                    if(Response.status==200){
+                        alert('수정되었습니다')
+                        // this.modifyCheck = !this.modifyCheck
+                        window.location.reload()
+                    }
                 })
                 .catch((Error)=>{
                     console.log(Error)
@@ -166,8 +180,10 @@ export default {
             if(confirm("삭제하시겠습니까?")){
                 axios.delete(url)
                 .then((Response)=>{
-                    alert('삭제되었습니다')
-                    window.location.reload()
+                    if(Response.status==200){
+                        alert('삭제되었습니다')
+                        window.location.reload()
+                    }
                 })
                 .catch((Error)=>{
                     console.log(Error)
