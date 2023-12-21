@@ -5,7 +5,7 @@
         <table>
             <thead>
                 <tr>
-                <th>번호</th>
+                <th>구역</th>
                 <th>회의실</th>
                 <th>예약시간</th>
                 <th>상태</th>
@@ -14,7 +14,7 @@
 
             <tbody>
                 <MeetingRoomResItem 
-                    :mrr="addRowNumToReservation(mrr)"
+                    :mrr="mrr"
                     v-if="meetingroomreslist.content"
                     v-for="mrr in meetingroomreslist.content" 
                     v-bind:key="mrr.id"
@@ -80,12 +80,12 @@ export default {
         },
         //----리스트 중 한 항목 클릭되었을 때 할 일 END----
 
-        addRowNumToReservation(mrr) {
-            // 현재 아이템의 index + 1을 rownum으로 설정
-            const rowNum = this.meetingroomreslist.content.indexOf(mrr) + 1;
-            // mrr.id를 rowNum으로 대체한 객체를 반환
-            return { ...mrr, id: rowNum };
-        },
+        // addRowNumToReservation(mrr) {
+        //     // 현재 아이템의 index + 1을 rownum으로 설정
+        //     const rowNum = this.meetingroomreslist.content.indexOf(mrr) + 1;
+        //     // mrr.id를 rowNum으로 대체한 객체를 반환
+        //     return { ...mrr, id: rowNum };
+        // },
     },
     watch: {
         //----라우터값이 변경되었을 때 할 일 START----

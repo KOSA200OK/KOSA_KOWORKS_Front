@@ -45,24 +45,6 @@
         <!--희의실 예약 정보 입력-->
         <form class="modalform" @submit.prevent="saveReservationHandler">
             <div class="grid gap-4 mb-4 grid-cols-2">
-                <div class="meetingroom">
-                    <label class="labelroom">자원 이름*</label><br>
-                    <select 
-                    id="category" 
-                    v-model="mr.name"
-                    class="meetingroom"
-                    @change="updateMeetingId"
-                    required>
-                        <option selected="">자원을 선택해주세요</option>
-                        <!-- <option v-for="mrinfo in mrlist" :key="mrinfo.id" :value="mrinfo.name">
-                          {{ meeting.name }}
-                        </option> -->
-                        <option id=1 value="회의실1">회의실1</option>
-                        <option id=2 value="회의실2">회의실2</option>
-                        <option id=3 value="회의실3">회의실3</option>
-                        <option id=4 value="회의실4">회의실4</option>
-                    </select>
-                </div>
                 <div class="resdate">
                     <label for="date" class="labeldate">날짜*</label><br>
                     <VueDatePicker 
@@ -115,7 +97,7 @@
                       <!-- key를 member.id로 정해서 <tr></tr>안의 내용을 반복 -->
                       <div v-for="member in filteredMembers" :key="member.id">
                         <div class="table-row">
-                          <div class="table-cell" @click="addParticipant(member)">{{ member.name }}</div>
+                          <div class="table-cell" @click="addParticipant(member)" @keydown.enter="addParticipant(member)">{{ member.name }}</div>
                         </div>
                       </div>
                   </div>
@@ -434,6 +416,10 @@ h2 {
   margin-bottom: 1rem; /* 아래쪽 여백 추가 */
 
   padding: 10px;
+}
+
+.meetingroom {
+  display: inline-block;
 }
 
 .roomname {
