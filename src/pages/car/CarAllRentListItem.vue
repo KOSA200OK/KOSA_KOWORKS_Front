@@ -1,69 +1,212 @@
 <template lang="">
-  <tr> <td @click="openModal">{{ r.reqDate }}</td> <td @click="openModal">{{
-    r.member.department.name
-  }}</td> <td @click="openModal">{{ r.member.name }}</td> <td @click="openModal">{{
-    r.car.carNo
-  }}</td> <td @click="openModal">{{ r.startDate }} ~ {{ r.endDate }}</td> <td> <span
-  class="tag" v-if="r.status == 2 && formatYYYYmmdd(currentDate) == r.endDate"
-  style="background-color: rgb(25, 189, 74)" >대여중</span > <span class="tag"
-  v-if="r.status == 0" style="background-color: rgb(255, 217, 0)" >대기</span > <span
-  class="tag" v-if="r.status == 1" style="background-color: rgb(252, 49, 49)" >반려</span
-  > <span class="tag" v-if="r.status == 2 && formatYYYYmmdd(currentDate) > r.endDate"
-  style="background-color: rgb(252, 49, 49)" >미반납</span > </td> <td> <button
-  class="approvebutton" v-if="r.status == 0" @click="approve"> 승인 </button> <button
-  class="rejectbutton" v-if="r.status == 0" @click="openRejectModal" > 반려 </button>
-  <button class="returnbutton" v-if="r.status == 2 && formatYYYYmmdd(currentDate) >
-  r.endDate" @click="returnHandler" > 반납처리 </button> </td> </tr> <div
-  class="modal-wrap" v-show="modalCheck == true"> <div class="modal-container"> <button
-  class="cancel" @click="openModal"> <svg xmlns="http://www.w3.org/2000/svg" width="16"
-  height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" > <path d="M8
-  15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" /> <path d="M4.646
+  <tr>
+    <td @click="openModal">{{ r.reqDate }}</td>
+    <td @click="openModal">{{ r.member.department.name }}</td>
+    <td @click="openModal">{{ r.member.name }}</td>
+    <td @click="openModal">{{ r.car.carNo }}</td>
+    <td @click="openModal">{{ r.startDate }} ~ {{ r.endDate }}</td>
+    <td>
+      <span
+        class="tag"
+        v-if="r.status == 2 && formatYYYYmmdd(currentDate) == r.endDate"
+        style="background-color: rgb(25, 189, 74)"
+        >대여중</span
+      >
+      <span
+        class="tag"
+        v-if="r.status == 0"
+        style="background-color: rgb(255, 217, 0)"
+        >대기</span
+      >
+      <span
+        class="tag"
+        v-if="r.status == 1"
+        style="background-color: rgb(252, 49, 49)"
+        >반려</span
+      >
+      <span
+        class="tag"
+        v-if="r.status == 2 && formatYYYYmmdd(currentDate) > r.endDate"
+        style="background-color: rgb(252, 49, 49)"
+        >미반납</span
+      >
+    </td>
+    <td>
+      <button class="approvebutton" v-if="r.status == 0" @click="approve">
+        승인
+      </button>
+      <button
+        class="rejectbutton"
+        v-if="r.status == 0"
+        @click="openRejectModal"
+      >
+        반려
+      </button>
+      <button
+        class="returnbutton"
+        v-if="r.status == 2 && formatYYYYmmdd(currentDate) > r.endDate"
+        @click="returnHandler"
+      >
+        반납처리
+      </button>
+    </td>
+  </tr>
+  <div class="modal-wrap" v-show="modalCheck == true">
+    <div class="modal-container">
+      <button class="cancel" @click="openModal">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-x-circle"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8
+  15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+          />
+          <path
+            d="M4.646
   4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5
   0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1
-  0-.708z" /> </svg> </button> <div class="rentdetail"> <h3 style="margin-bottom: 30px;
-  color: #2196f3">신청 정보</h3> <label>신청자 </label ><span style="font-size: 15px;
-  margin-left: 30px">{{ r.member.name }}</span ><br /><br /> <label>부서명 </label ><span
-  style="font-size: 15px; margin-left: 30px">{{ r.member.department.name }}</span ><br
-  /><br /> <label>차량번호 </label ><span style="font-size: 15px; margin-left: 15px">{{
-    r.car.carNo
-  }}</span ><br /><br /> <label>차종 </label ><span style="font-size: 15px; margin-left:
-  45px">{{ r.car.carType }}</span ><br /><br /> <label>대여기간 </label ><span
-  style="font-size: 15px; margin-left: 15px" >{{ r.startDate }} ~ {{ r.endDate }}</span
-  ><br /><br /> <label>대여목적 </label ><span style="font-size: 15px; margin-left:
-  15px">{{ r.purpose }}</span ><br /><br /> <label v-if="r.status == 1">반려사유 </label
-  ><span style="font-size: 15px; margin-left: 15px">{{ r.reject }}</span ><br /><br />
-  <div class="modal-btn" v-if="r.status == 0"> <button type="submit" class="ok"
-  @click="approve">승인</button> </div> </div> </div> </div> <div class="modal-wrap"
-  v-show="rejectModalCheck"> <div class="modal-container"> <button class="cancel"
-  @click="openRejectModal"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-  fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" > <path d="M8 15A7 7 0 1
-  1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" /> <path d="M4.646 4.646a.5.5 0
+  0-.708z"
+          />
+        </svg>
+      </button>
+      <div class="rentdetail">
+        <h3 style="margin-bottom: 30px; color: #2196f3">신청 정보</h3>
+        <label>신청자 </label
+        ><span style="font-size: 15px; margin-left: 30px">{{
+          r.member.name
+        }}</span
+        ><br /><br />
+        <label>부서명 </label
+        ><span style="font-size: 15px; margin-left: 30px">{{
+          r.member.department.name
+        }}</span
+        ><br /><br />
+        <label>차량번호 </label
+        ><span style="font-size: 15px; margin-left: 15px">{{
+          r.car.carNo
+        }}</span
+        ><br /><br />
+        <label>차종 </label
+        ><span style="font-size: 15px; margin-left: 45px">{{
+          r.car.carType
+        }}</span
+        ><br /><br />
+        <label>대여기간 </label
+        ><span style="font-size: 15px; margin-left: 15px"
+          >{{ r.startDate }} ~ {{ r.endDate }}</span
+        ><br /><br />
+        <label>대여목적 </label
+        ><span style="font-size: 15px; margin-left: 15px">{{ r.purpose }}</span
+        ><br /><br />
+        <label v-if="r.status == 1">반려사유 </label
+        ><span style="font-size: 15px; margin-left: 15px">{{ r.reject }}</span
+        ><br /><br />
+        <div class="modal-btn" v-if="r.status == 0">
+          <button type="submit" class="ok" @click="approve">승인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-wrap" v-show="rejectModalCheck">
+    <div class="modal-container">
+      <button class="cancel" @click="openRejectModal">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-x-circle"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 15A7 7 0 1
+  1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+          />
+          <path
+            d="M4.646 4.646a.5.5 0
   0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0
   1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1
-  0-.708z" /> </svg> </button> <div class="rejectdetail"> <h3 style="color:
-  #2196f3">반려사유</h3> <form class="rejectmessage" @submit.prevent="rejectHandler">
-  <textarea type="text" name="reject" v-model="reject" @input="inputHandler"
-  maxlength="60" placeholder="60자 이내로 입력하세요" required ></textarea> <div
-  class="modal-btn"> <button type="submit" class="ok">완료</button> </div> </form> </div>
-  </div> </div> <div class="modal-wrap" v-show="approveModalCheck"> <div
-  class="modal-container"> <button class="cancel" @click="openApproveModal"> <svg
-  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi
-  bi-x-circle" viewBox="0 0 16 16" > <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8
-  0 1 0 8 0a8 8 0 0 0 0 16z" /> <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8
+  0-.708z"
+          />
+        </svg>
+      </button>
+      <div class="rejectdetail">
+        <h3 style="color: #2196f3">반려사유</h3>
+        <form class="rejectmessage" @submit.prevent="rejectHandler">
+          <textarea
+            type="text"
+            name="reject"
+            v-model="reject"
+            @input="inputHandler"
+            maxlength="60"
+            placeholder="60자 이내로 입력하세요"
+            required
+          ></textarea>
+          <div class="modal-btn">
+            <button type="submit" class="ok">완료</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-wrap" v-show="approveModalCheck">
+    <div class="modal-container">
+      <button class="cancel" @click="openApproveModal">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-x-circle"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8
+  0 1 0 8 0a8 8 0 0 0 0 16z"
+          />
+          <path
+            d="M4.646 4.646a.5.5 0 0 1 .708 0L8
   7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8
-  8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-  </svg> </button> <div class="approvedetail"> <label>신청자</label> <span
-  style="font-size: 15px; margin-left: 15px">{{ r.member.name }}</span ><br /><br />
-  <label>부서명</label> <span style="font-size: 15px; margin-left: 15px">{{
-    r.member.department.name
-  }}</span ><br /><br /> <label>차량번호</label> <span style="font-size: 15px">{{
-    r.car.carNo
-  }}</span ><br /><br /> <label>차종</label> <span style="font-size: 15px; margin-left:
-  30px">{{ r.car.carType }}</span ><br /><br /> <label>대여기간</label> <span
-  style="font-size: 15px">{{ r.startDate }} ~ {{ r.endDate }}</span ><br /><br />
-  <label>대여목적</label> <span style="font-size: 15px">{{ r.purpose }}</span ><br /><br
-  /> <div class="modal-btn"> <button type="submit" class="ok"
-  @click="approve">승인</button> </div> </div> </div> </div>
+  8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+          />
+        </svg>
+      </button>
+      <div class="approvedetail">
+        <label>신청자</label>
+        <span style="font-size: 15px; margin-left: 15px">{{
+          r.member.name
+        }}</span
+        ><br /><br />
+        <label>부서명</label>
+        <span style="font-size: 15px; margin-left: 15px">{{
+          r.member.department.name
+        }}</span
+        ><br /><br />
+        <label>차량번호</label>
+        <span style="font-size: 15px">{{ r.car.carNo }}</span
+        ><br /><br />
+        <label>차종</label>
+        <span style="font-size: 15px; margin-left: 30px">{{
+          r.car.carType
+        }}</span
+        ><br /><br />
+        <label>대여기간</label>
+        <span style="font-size: 15px">{{ r.startDate }} ~ {{ r.endDate }}</span
+        ><br /><br />
+        <label>대여목적</label>
+        <span style="font-size: 15px">{{ r.purpose }}</span
+        ><br /><br />
+        <div class="modal-btn">
+          <button type="submit" class="ok" @click="approve">승인</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -116,7 +259,7 @@ export default {
       // const data = this.formData
       axios
         .put(url, {
-          id: this.w.id,
+          id: this.r.id,
           reject: this.formData.reject,
         })
         .then((Response) => {
@@ -185,6 +328,7 @@ td {
   top: 0;
   width: 100%;
   height: 100%;
+  z-index: 99;
 }
 /* modal or popup */
 .modal-container {
